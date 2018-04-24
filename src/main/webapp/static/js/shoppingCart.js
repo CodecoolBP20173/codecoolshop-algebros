@@ -15,3 +15,13 @@ function myFunction() {
         navbar.classList.remove("sticky");
     }
 }
+
+
+$(".addToCart").on("click", function (event) {
+    let attribute = event.target.dataset.productId;
+    alert(attribute)
+})
+
+
+
+
