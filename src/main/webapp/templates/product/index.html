@@ -38,7 +38,9 @@
         <div class="dropdown">
             <strong>Categories</strong>
             <div class="dropdown-content">
-
+                <div th:each="cat,iterStart:${categories}">
+                    <p th:text="${cat.name}"></p>
+                </div>
             </div>
         </div>
     </div>
