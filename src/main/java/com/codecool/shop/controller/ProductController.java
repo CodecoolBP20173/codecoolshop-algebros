@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -41,6 +42,8 @@ public class ProductController extends HttpServlet {
         if (category != null) {
             context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(category)));
         }
+        List<Supplier> suppliers = supplierDataStore.getAll();
+        context.setVariable("suppliers",suppliers);
         String supplier = req.getParameter("supplier");
         if (supplier != null) {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));

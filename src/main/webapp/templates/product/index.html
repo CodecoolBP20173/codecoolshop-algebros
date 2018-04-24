@@ -36,10 +36,18 @@
 
 <div class="container">
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Category</button>
-        <div id="myDropdown" class="dropdown-content">
+        <button onclick="CategoriesDropdown()" class="dropbtn">Category</button>
+        <div id="CategoriesDropdown" class="dropdown-content">
             <div th:each="cat,iterStart:${categories}">
                 <a th:href="@{'/?category=' + ${cat.name}}" th:text="${cat.name}"></a>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button onclick="SuppliersDropdown()" class="dropbtn">Supplier</button>
+        <div id="SuppliersDropdown" class="dropdown-content">
+            <div th:each="sup,iterStart:${suppliers}">
+                <a th:href="@{'/?supplier=' + ${sup.name}}" th:text="${sup.name}"></a>
             </div>
         </div>
     </div>
