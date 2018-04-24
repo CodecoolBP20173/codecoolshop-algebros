@@ -23,6 +23,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <script src="/static/js/navbar.js" ></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
@@ -34,13 +35,11 @@
 </div>
 
 <div class="container">
-    <div class="well well-sm">
-        <div class="dropdown">
-            <strong>Categories</strong>
-            <div class="dropdown-content">
-                <div th:each="cat,iterStart:${categories}">
-                    <p th:text="${cat.name}"></p>
-                </div>
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Category</button>
+        <div id="myDropdown" class="dropdown-content">
+            <div th:each="cat,iterStart:${categories}">
+                <a href="/" th:text="${cat.name}"></a>
             </div>
         </div>
     </div>
