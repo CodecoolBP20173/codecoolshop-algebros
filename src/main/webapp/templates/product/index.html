@@ -39,7 +39,7 @@
         <button onclick="myFunction()" class="dropbtn">Category</button>
         <div id="myDropdown" class="dropdown-content">
             <div th:each="cat,iterStart:${categories}">
-                <a href="/" th:text="${cat.name}"></a>
+                <a th:href="@{'/category/' + ${cat.name}}" th:text="${cat.name}"></a>
             </div>
         </div>
     </div>
