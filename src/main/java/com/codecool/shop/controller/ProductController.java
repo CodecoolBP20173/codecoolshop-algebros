@@ -11,12 +11,14 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import com.codecool.shop.model.Order;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +50,13 @@ public class ProductController extends HttpServlet {
         if (supplier != null) {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
         }
-
+        if (req.getSession(false) == null  ){
+            HttpSession session = req.getSession(true);
+            session.setAttribute("Order", new Order());
+        }
+        HttpSession session = req.getSession(true);
+        Order order = (Order) session.getAttribute("Order");
+        context.setVariable("shoppingCart", order);
 
         engine.process("product/index.html", context, resp.getWriter());
     }
@@ -56,6 +64,14 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        System.out.println(id);
+        if (req.getSession(false) == null  ){
+            HttpSession session = req.getSession(true);
+            session.setAttribute("Order", new Order());
+        }
+        HttpSession session = req.getSession(true);
+        Order order = (Order) session.getAttribute("Order");
+        order.addProduct(id);
+        session.setAttribute("Order", order);
+        System.out.println(order.getItemList());
     }
 }
