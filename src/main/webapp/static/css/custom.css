@@ -58,6 +58,26 @@
     margin: 0 0 11px;
 }
 
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    opacity: 0.92;
+}
+
+.list-group-image:hover{
+    opacity: 0.70;
+}
+
+#exampleModal.modal-backdrop.fade.in{
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+    background: #fff;
+}
+.modal{
+    left: auto !important;
+}
 .dropbtn {
     background-color: #3498DB;
     color: white;
@@ -66,6 +86,16 @@
     border: none;
     cursor: pointer;
 }
+
+.cartButton {
+    background-color:darkorange;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
 
 .dropbtn:hover, .dropbtn:focus {
     background-color: #2980B9;
@@ -98,4 +128,15 @@
 
 .show {
     display: block;
+}
+
+#cartButton {
+    float: right;
+}
+
+td,th {
+    padding: 15px;
+}
+.alignRight {
+    float: right;
 }
