@@ -23,6 +23,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <script src="/static/js/navbar.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
 
@@ -43,6 +44,23 @@
                     Launch demo modal
                 </button>
             </div>
+    <div class="well well-sm">
+        <div class="dropdown">
+            <button onclick="CategoriesDropdown()" class="dropbtn">Category</button>
+            <div id="CategoriesDropdown" class="dropdown-content">
+                <div th:each="cat,iterStart:${categories}">
+                    <a th:href="@{'/?category=' + ${cat.name}}" th:text="${cat.name}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button onclick="SuppliersDropdown()" class="dropbtn">Supplier</button>
+            <div id="SuppliersDropdown" class="dropdown-content">
+                <div th:each="sup,iterStart:${suppliers}">
+                    <a th:href="@{'/?supplier=' + ${sup.name}}" th:text="${sup.name}"></a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="products" class="row list-group">
@@ -88,6 +106,7 @@
         </div>
     </div>
     <div th:replace="footer.html :: copy"></div>
+</div>
 </div>
 </body>
 </html>
