@@ -87,6 +87,16 @@
     cursor: pointer;
 }
 
+.cartButton {
+    background-color:darkorange;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+
 .dropbtn:hover, .dropbtn:focus {
     background-color: #2980B9;
 }
@@ -118,4 +128,15 @@
 
 .show {
     display: block;
+}
+
+#cartButton {
+    float: right;
+}
+
+td,th {
+    padding: 15px;
+}
+.alignRight {
+    float: right;
 }
