@@ -41,6 +41,9 @@
 {
     background: #eeeeee;
 }
+p{
+    font-size: medium;
+}
 
 .item.list-group-item:before, .item.list-group-item:after
 {
@@ -59,4 +62,7 @@
 .list-group-item-text
 {
     margin: 0 0 11px;
+}
+#sub {
+    width: 10em;  height: 2em;
 }
