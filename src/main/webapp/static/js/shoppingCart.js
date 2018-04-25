@@ -26,8 +26,11 @@ $(".addToCart").on("click", function (event) {
         type: "POST",
         data: {"id" : attribute},
         url: url,
-        success: function () {
-            alert("success")
+        success: function (productsString) {
+            alert("success");
+            console.log(productsString);
+            let products =  productsString["products"];
+            console.log(products);
         }
         })
 });

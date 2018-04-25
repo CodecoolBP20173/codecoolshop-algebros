@@ -9,6 +9,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import org.json.simple.JSONObject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import com.codecool.shop.model.Order;
@@ -72,5 +73,9 @@ public class ProductController extends HttpServlet {
         Order order = (Order) session.getAttribute("Order");
         order.addProduct(id);
         session.setAttribute("Order", order);
+        JSONObject responeJson = new JSONObject();
+        responeJson.put("products",order.getItemList());
+        resp.getWriter().write(responeJson.toJSONString());
+
     }
 }
