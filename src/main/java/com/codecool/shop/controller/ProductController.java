@@ -72,6 +72,5 @@ public class ProductController extends HttpServlet {
         Order order = (Order) session.getAttribute("Order");
         order.addProduct(id);
         session.setAttribute("Order", order);
-        System.out.println(order.getItemList());
     }
 }
