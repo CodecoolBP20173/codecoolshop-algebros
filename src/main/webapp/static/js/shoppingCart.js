@@ -32,12 +32,6 @@ $(".addToCart").on("click", function (event) {
         })
 });
 
-let product1 = {name:"Samsung Galaxy S9",quantity:2,price:200};
-let product2 = {name:"Apple iPhone X",quantity:1,price:2000};
-let products = [product1,product2];
-console.log(product1);
-changeCartModal(products);
-
 
 
 
