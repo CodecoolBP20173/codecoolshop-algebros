@@ -11,6 +11,7 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import com.codecool.shop.model.Order;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,7 +55,7 @@ public class ProductController extends HttpServlet {
             session.setAttribute("Order", new Order());
         }
         HttpSession session = req.getSession(true);
-        Order order = (Order) sessison.getAttribute("Order");
+        Order order = (Order) session.getAttribute("Order");
         context.setVariable("shoppingCart", order);
 
         engine.process("product/index.html", context, resp.getWriter());
@@ -71,5 +72,6 @@ public class ProductController extends HttpServlet {
         Order order = (Order) session.getAttribute("Order");
         order.addProduct(id);
         session.setAttribute("Order", order);
+        System.out.println(order.getItemList());
     }
 }

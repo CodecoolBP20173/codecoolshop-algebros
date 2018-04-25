@@ -11,6 +11,11 @@ public class Order implements Orderable {
     private static AtomicInteger uniqueId = new AtomicInteger();
     private int id;
     private String status;
+
+    public List<Product> getItemList() {
+        return itemList;
+    }
+
     private List<Product> itemList = new ArrayList<>();
     private HashMap<Integer , Integer> orderQuantity = new HashMap<>();
 
