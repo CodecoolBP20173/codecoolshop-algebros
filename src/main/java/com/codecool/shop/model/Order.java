@@ -84,6 +84,7 @@ public class Order implements Orderable {
             jsonObject.put("name", product.getName());
             jsonObject.put("defaultPrice", product.getDefaultPrice());
             jsonObject.put("quantity", this.getOrderQuantity().get(product.getId()));
+            jsonObject.put("price", product.getPrice());
             productList.add(jsonObject);
         }
         return productList;

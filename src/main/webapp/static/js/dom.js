@@ -11,12 +11,12 @@ function changeCartModal(items) {
         cartItemsOutput+=`<tr class="product" data-product-id="${item["id"]}">
                                 <td>${item["name"]}</td>
                                 <td><button class="incrementButton" data-product-id="${item["id"]}">+</button> <span class="quantity" data-product-id="${item["id"]}">${item["quantity"]}</span> <button class="decrementButton" data-product-id="${item["id"]}">-</button></td>
-                                <td class="defaultPrice" data-default-price="${item["defaultPrice"]}">${item["defaultPrice"]}</td>
+                                <td class="defaultPrice" data-default-price="${item["defaultPrice"]}">${item["price"]}</td>
                                 <td><button class="removeProductButton" data-product-id="${item["id"]}" title="remove">x</button></td>
                             </tr>`;
     }
     document.getElementById("cartTableBody").innerHTML=cartItemsOutput;
-    document.getElementById("totalPricePlace").innerHTML="<strong id='totalPrice'>" + totalPrice.toString()+"<strong>";
+    document.getElementById("totalPricePlace").innerHTML="<strong id='totalPrice'>" + totalPrice.toString()+" USD<strong>";
 }
 
 function addShoppingCartButtonListeners(){
@@ -68,7 +68,7 @@ function incrementNumberOfProduct(productId, quantity) {
     for (let price of prices) {
         totalPrice += parseFloat(price.dataset.defaultPrice)*quantity;
     }
-    $("#totalPrice").html(totalPrice)
+    $("#totalPrice").html("<strong>" + totalPrice +" USD</strong>")
 }
 
 function decrementNumberOfProduct(productId, quantity) {
@@ -80,14 +80,15 @@ function decrementNumberOfProduct(productId, quantity) {
     for (let price of prices) {
         totalPrice += parseFloat(price.dataset.defaultPrice)*quantity;
     }
-    $("#totalPrice").html(totalPrice)
+    $("#totalPrice").html("<strong>" + totalPrice +" USD</strong>")
     }
     else {
-        $(".product").filter(filter).remove();
+        removeProductFromCart(productId)
     }
 }
 
 function removeProductFromCart(productId) {
     const filter = "[data-product-id='" + productId + "']";
     $(".product").filter(filter).remove();
+    $("#totalPricePlace").html("<strong>0 USD</strong>");
 }
