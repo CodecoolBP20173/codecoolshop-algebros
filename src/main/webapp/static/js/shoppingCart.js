@@ -20,16 +20,27 @@ function myFunction() {
 
 
 $(".addToCart").on("click", function (event) {
-    let attribute = event.target.dataset.productId;
-    let url = "/";
+    const attribute = event.target.dataset.productId;
+    const url = "/";
     $.ajax({
         type: "POST",
-        data: {"id" : attribute},
+        data: {"id" : attribute, "process": "add"},
         url: url,
-        success: function (productsJSONString) {
-            alert("success");
-            let products =  JSON.parse(productsJSONString);
-            changeCartModal(products);
+        success: function () {
         }
         })
+});
+
+$("#cartButton").on("click", function () {
+    const url = "/";
+    $.ajax({
+        type: "POST",
+        data: {"id": 0, "process": "openCart"},
+        url: url,
+        success: function (productsJSONString) {
+            const products =  JSON.parse(productsJSONString);
+            changeCartModal(products);
+            addShoppingCartButtonListeners();
+        }
+    })
 });

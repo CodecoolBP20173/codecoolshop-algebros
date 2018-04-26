@@ -9,7 +9,6 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import com.codecool.shop.model.Order;
@@ -70,10 +69,29 @@ public class ProductController extends HttpServlet {
         }
         HttpSession session = req.getSession(true);
         Order order = (Order) session.getAttribute("Order");
-        order.addProduct(id);
+        String process = req.getParameter("process");
+        String json = "";
+        switch (process) {
+            case "add":
+                order.addProduct(id);
+                break;
+            case "remove":
+                order.removeProduct(id);
+                json = order.getCartItems().toJSONString();
+                break;
+            case "increment":
+                order.addProduct(id);
+                json = order.getProductQuantity(id).toJSONString();
+                break;
+            case "decrement":
+                order.decrementQuantityOfProduct(id);
+                json = order.getProductQuantity(id).toJSONString();
+                break;
+            case "openCart":
+                json = order.getCartItems().toJSONString();
+                break;
+        }
         session.setAttribute("Order", order);
-        Gson gson = new Gson();
-        String json = gson.toJson(order.getItemList());
         resp.getWriter().write(json);
     }
 }
