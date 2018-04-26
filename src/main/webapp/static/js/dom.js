@@ -132,10 +132,7 @@ function changePaymentToCard() {
                                         </div>
                                     </div>
 
-function removeProductFromCart(productId) {
-    const filter = "[data-product-id='" + productId + "']";
-    $(".product").filter(filter).remove();
-    $("#totalPricePlace").html("<strong>0 USD</strong>");
+
                                     <br><button style="font-size:12px" id="sub">Submit</button>
                                     <br>
                                     <br><input id="checkBox" type="checkbox">
@@ -145,3 +142,7 @@ function removeProductFromCart(productId) {
                             </div>
                         </div>`;
 }
+function removeProductFromCart(productId) {
+    const filter = "[data-product-id='" + productId + "']";
+    $(".product").filter(filter).remove();
+    $("#totalPricePlace").html("<strong>0 USD</strong>")}
