@@ -14,6 +14,8 @@ public class Order implements Orderable {
     private static AtomicInteger uniqueId = new AtomicInteger();
     private int id;
     private String status;
+    private CheckoutProcess checkoutProcess;
+    private PaymentProcess paymentProcess;
 
     public List<Product> getItemList() {
         return itemList;
@@ -57,18 +59,18 @@ public class Order implements Orderable {
     }
 
     
-    public boolean checkout() {
+    public boolean checkout(CheckoutProcess checkoutProcess) {
         if (this.getStatus().equals("new")) {
             this.status = "checked";
-            return true;
+            this.checkoutProcess = checkoutProcess;
         }
         return false;
     }
 
-    public boolean pay() {
+    public boolean pay(PaymentProcess paymentProcess) {
         if (this.getStatus().equals("checked")) {
             this.status = "payed";
-            return true;
+            this.paymentProcess = paymentProcess;
         }
         return false;
     }

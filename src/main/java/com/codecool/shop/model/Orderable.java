@@ -1,6 +1,6 @@
 package com.codecool.shop.model;
 
 public interface Orderable {
-    boolean checkout();
-    boolean pay();
+    boolean checkout(CheckoutProcess checkoutProcess);
+    boolean pay(PaymentProcess paymentProcess);
 }
