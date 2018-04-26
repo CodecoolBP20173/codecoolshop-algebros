@@ -42,6 +42,13 @@ public class Checkout extends HttpServlet {
     }
 
 
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map customerInfo = req.getParameterMap();
+    }
+
+
     public double totalPrice(Order order) {
         double sumPrice = 0;
         List<Product> orderCartItems = order.getItemList();
@@ -49,6 +56,5 @@ public class Checkout extends HttpServlet {
             sumPrice += (item.getDefaultPrice() * order.getOrderQuantity().get(item.getId()));
         }
         return sumPrice;
-
     }
 }

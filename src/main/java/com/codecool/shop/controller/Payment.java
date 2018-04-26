@@ -21,10 +21,9 @@ import java.util.Map;
 public class Payment extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Map customerInfo = req.getParameterMap();
         engine.process("product/payment.html", context, resp.getWriter());
 
     }
