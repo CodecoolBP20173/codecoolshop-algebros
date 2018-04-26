@@ -146,3 +146,6 @@ td,th {
 .alignRight {
     float: right;
 }
+.totalPrice {
+    font-size: larger;
+}
