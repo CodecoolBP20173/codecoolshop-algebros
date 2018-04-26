@@ -96,7 +96,9 @@ public class Order implements Orderable {
             jsonObject.put("defaultPrice", product.getDefaultPrice());
             jsonObject.put("quantity", this.getOrderQuantity().get(product.getId()));
             jsonObject.put("price", product.getPrice());
+            jsonObject.put("totalPrice", this.totalPrice());
             productList.add(jsonObject);
+
         }
         return productList;
     }
@@ -104,6 +106,15 @@ public class Order implements Orderable {
     public JSONObject getProductQuantity(int id){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("quantity", this.getOrderQuantity().get(id));
+        jsonObject.put("totalPrice", this.totalPrice());
         return jsonObject;
+    }
+    public double totalPrice() {
+        double sumPrice = 0;
+        List<Product> orderCartItems = this.getItemList();
+        for (Product item: orderCartItems) {
+            sumPrice += (item.getDefaultPrice() * this.getOrderQuantity().get(item.getId()));
+        }
+        return sumPrice;
     }
 }

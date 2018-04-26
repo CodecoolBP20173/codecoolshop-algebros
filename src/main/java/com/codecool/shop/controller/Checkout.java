@@ -38,7 +38,7 @@ public class Checkout extends HttpServlet {
         }
         Order order = (Order) session.getAttribute("Order");
         context.setVariable("shoppingCart", order.getCartItems());
-        double sumPrice = totalPrice(order);
+        double sumPrice = order.totalPrice();
         context.setVariable("sumPrice", sumPrice);
         engine.process("product/checkout.html", context, resp.getWriter());
     }
@@ -61,15 +61,5 @@ public class Checkout extends HttpServlet {
         Order order = (Order) session.getAttribute("Order");
         order.checkout(checkoutProcess);
         resp.sendRedirect("/payment");
-    }
-
-
-    public double totalPrice(Order order) {
-        double sumPrice = 0;
-        List<Product> orderCartItems = order.getItemList();
-        for (Product item: orderCartItems) {
-            sumPrice += (item.getDefaultPrice() * order.getOrderQuantity().get(item.getId()));
-        }
-        return sumPrice;
     }
 }

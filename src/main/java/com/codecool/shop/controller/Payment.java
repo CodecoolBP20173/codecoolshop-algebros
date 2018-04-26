@@ -42,7 +42,7 @@ public class Payment extends HttpServlet {
             Order order = (Order) session.getAttribute("Order");
             order.pay(new PaymentProcess());
             mail.send(order);
-            engine.process("product/index.html", context, resp.getWriter());
+            resp.sendRedirect("/payment");
         }
     }
 }

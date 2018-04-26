@@ -5,18 +5,16 @@ function changeCartModal(items) {
                                         <th>Price</th>
                                         <th> </th>
                                    </tr>`;
-    let totalPrice = 0;
     for (let item of items) {
-        totalPrice+=item["defaultPrice"];
         cartItemsOutput+=`<tr class="product" data-product-id="${item["id"]}">
                                 <td>${item["name"]}</td>
-                                <td><button class="incrementButton" data-product-id="${item["id"]}">+</button> <span class="quantity" data-product-id="${item["id"]}">${item["quantity"]}</span> <button class="decrementButton" data-product-id="${item["id"]}">-</button></td>
-                                <td class="defaultPrice" data-default-price="${item["defaultPrice"]}">${item["price"]}</td>
+                                <td><button class="incrementButton" data-product-id="${item["id"]}">+</button> <span class="quantity" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}">${item["quantity"]}</span> <button class="decrementButton" data-product-id="${item["id"]}">-</button></td>
+                                <td class="defaultPrice" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}" data-default-price="${item["defaultPrice"]}">${item["price"]}</td>
                                 <td><button class="removeProductButton" data-product-id="${item["id"]}" title="remove">x</button></td>
                             </tr>`;
     }
     document.getElementById("cartTableBody").innerHTML=cartItemsOutput;
-    document.getElementById("totalPricePlace").innerHTML="<strong id='totalPrice'>" + totalPrice.toString()+" USD<strong>";
+    document.getElementById("totalPricePlace").innerHTML=`<strong id='totalPrice'>${items[0]['totalPrice']} USD<strong>`;
 }
 
 function addShoppingCartButtonListeners(){
@@ -29,7 +27,7 @@ function addShoppingCartButtonListeners(){
             url: url,
             success: function (quantityJSONString) {
                 const quantity = JSON.parse(quantityJSONString);
-                incrementNumberOfProduct(productId, quantity["quantity"])
+                incrementNumberOfProduct(productId, quantity["quantity"], quantity["totalPrice"])
             }
         })
     });
@@ -42,7 +40,7 @@ function addShoppingCartButtonListeners(){
             url: url,
             success: function (quantityJSONString) {
                 const quantity = JSON.parse(quantityJSONString);
-                decrementNumberOfProduct(productId, quantity["quantity"])
+                decrementNumberOfProduct(productId, quantity["quantity"], quantity["totalPrice"])
             }
         })
     });
@@ -53,41 +51,28 @@ function addShoppingCartButtonListeners(){
             type: "POST",
             data: {"id" : productId, "process": "remove"},
             url: url,
-            success: function () {
-                removeProductFromCart(productId)
+            success: function (quantityJSONString) {
+                const quantity = JSON.parse(quantityJSONString);
+                removeProductFromCart(productId, quantity["totalPrice"])
             }
         })
     })
 }
 
-function incrementNumberOfProduct(productId, quantity) {
+function incrementNumberOfProduct(productId, quantity, totalPrice) {
     const filter = "[data-product-id='" + productId + "']";
     $(".quantity").filter(filter).html(quantity);
-    const prices = $(".defaultPrice");
-    let totalPrice = 0;
-    for (let price of prices) {
-        totalPrice += parseFloat(price.dataset.defaultPrice)*quantity;
-    }
-    $("#totalPrice").html("<strong>" + totalPrice +" USD</strong>")
+    $("#totalPricePlace").html("<strong>" + totalPrice +" USD</strong>")
 }
 
-function decrementNumberOfProduct(productId, quantity) {
+function decrementNumberOfProduct(productId, quantity, totalPrice) {
     const filter = "[data-product-id='" + productId + "']";
     if (quantity>0){
     $(".quantity").filter(filter).html(quantity);
-    const prices = $(".defaultPrice");
-    let totalPrice = 0;
-    for (let price of prices) {
-        totalPrice += parseFloat(price.dataset.defaultPrice)*quantity;
-    }
-    $("#totalPrice").html("<strong>" + totalPrice +" USD</strong>")
     }
     else {
-        removeProductFromCart(productId)
+        removeProductFromCart(productId, totalPrice)
     }
-    $("#totalPrice").html(totalPrice)
-    document.getElementById("cartTableBody").innerHTML = cartItemsOutput;
-    document.getElementById("totalPrice").innerHTML = "<strong id=\"totalPrice\"> Total price : " + totalPrice.toString() + "<strong>";
 }
 
 function changePaymentToPayPal() {
@@ -142,7 +127,8 @@ function changePaymentToCard() {
                             </div>
                         </div>`;
 }
-function removeProductFromCart(productId) {
+function removeProductFromCart(productId, totalPrice) {
     const filter = "[data-product-id='" + productId + "']";
+    $("#totalPricePlace").html("<strong>" + totalPrice +" USD</strong>")
     $(".product").filter(filter).remove();
-    $("#totalPricePlace").html("<strong>0 USD</strong>")}
+}
