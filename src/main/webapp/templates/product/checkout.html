@@ -36,11 +36,16 @@
                 <div class="card-body" align="center">
                     <h2>Shopping Cart:</h2>
                         <table  class="table" align="center">
-                            <tr th:each="prod,iterStart:${shoppingCart}">
+                            <thead>
+                                <td>Product name</td>
+                                <td>Quantity</td>
+                                <td>Price</td>
+                            </thead>
+                            <tbody th:each="prod,iterStart:${shoppingCart}">
                                 <td th:text="${prod['name']}">text</td>
                                 <td th:text="${prod['quantity']}">text</td>
                                 <td th:text="${prod['defaultPrice']} + ' USD'">text</td>
-                            </tr>
+                            </tbody>
                         </table>
                         <div class="alignRight"><strong>Total Price: </strong><span th:text="${sumPrice} + ' USD'"></span></div>
                     </div>
@@ -48,35 +53,35 @@
                     <div class="col" align="center">
                         <div class="card">
                             <div class="card-body">
-                                <h2>Customer information</h2><br>
-                                <p>Name</p>
-                                <input type="text" name="name">
-                                <br>
-                                <p>E-mail</p>
-                                <input type="text" name="email" placeholder="xyz@zxy.yzx"><br>
-                                <br>
-                                <p>Phone number</p>
-                                <input type="text" name="phone" placeholder="+36999876543"><br>
-                                <div class="col-6">
-                                    <br><p>Billing address</p>
-                                    <input type="text" name="country" placeholder="Country" required>
-                                    <input type="text" name="city" placeholder="City" required>
-                                    <input type="text" name="zip" placeholder="Zipcode" required>
-                                    <input type="text" name="address" placeholder="Address" required><br>
-                                </div>
-                                <div class="col-6">
-                                    <br><p>Shipping address</p>
-                                    <input type="text" name="country" placeholder="Country">
-                                    <input type="text" name="city" placeholder="City">
-                                    <input type="text" name="zip" placeholder="Zipcode">
-                                    <input type="text" name="address" placeholder="Address"><br>
-                                </div>
-                                </div>
+                                <form action="/payment" method="post">
+                                    <h2>Customer information</h2><br>
+                                    <p>Name</p>
+                                    <input type="text" name="name">
+                                    <br>
+                                    <p>E-mail</p>
+                                    <input type="text" name="email" placeholder="xyz@zxy.yzx"><br>
+                                    <br>
+                                    <p>Phone number</p>
+                                    <input type="text" name="phone" placeholder="+36999876543"><br>
+                                    <div class="col-6">
+                                        <br><p>Billing address</p>
+                                        <input type="text" name="country" placeholder="Country" required>
+                                        <input type="text" name="city" placeholder="City" required>
+                                        <input type="text" name="zip" placeholder="Zipcode" required>
+                                        <input type="text" name="address" placeholder="Address" required><br>
+                                    </div>
+                                    <div class="col-6">
+                                        <br><p>Shipping address</p>
+                                        <input type="text" name="country" placeholder="Country">
+                                        <input type="text" name="city" placeholder="City">
+                                        <input type="text" name="zip" placeholder="Zipcode">
+                                        <input type="text" name="address" placeholder="Address"><br>
+                                    </div>
+                                    <button type="submit" style="font-size:12px" id="sub">Proceed to Payment</button>
+                                </form>
                             </div>
-
-                            <br><button style="font-size:12px" id="sub">Submit</button>
-                            <p>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
