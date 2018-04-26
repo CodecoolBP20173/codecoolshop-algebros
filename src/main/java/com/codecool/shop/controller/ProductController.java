@@ -76,7 +76,6 @@ public class ProductController extends HttpServlet {
         switch (process) {
             case "add":
                 order.addProduct(id);
-                json = order.getCartItems().toJSONString();
                 break;
             case "remove":
                 order.removeProduct(id);
@@ -87,8 +86,11 @@ public class ProductController extends HttpServlet {
                 json = order.getProductQuantity(id).toJSONString();
                 break;
             case "decrement":
-                order.removeProduct(id);
+                order.decrementQuantityOfProduct(id);
                 json = order.getProductQuantity(id).toJSONString();
+                break;
+            case "openCart":
+                json = order.getCartItems().toJSONString();
                 break;
         }
         session.setAttribute("Order", order);

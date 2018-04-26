@@ -44,6 +44,10 @@ public class Order implements Orderable {
     }
 
     public void removeProduct(int id) {
+            itemList.remove(ProductDaoMem.getInstance().find(id));
+            orderQuantity.remove(id);
+    }
+    public void decrementQuantityOfProduct(int id) {
         if (orderQuantity.get(id) == 1) {
             itemList.remove(ProductDaoMem.getInstance().find(id));
             orderQuantity.remove(id);
@@ -80,6 +84,7 @@ public class Order implements Orderable {
             jsonObject.put("name", product.getName());
             jsonObject.put("defaultPrice", product.getDefaultPrice());
             jsonObject.put("quantity", this.getOrderQuantity().get(product.getId()));
+            jsonObject.put("price", product.getPrice());
             productList.add(jsonObject);
         }
         return productList;

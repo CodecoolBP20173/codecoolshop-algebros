@@ -26,11 +26,21 @@ $(".addToCart").on("click", function (event) {
         type: "POST",
         data: {"id" : attribute, "process": "add"},
         url: url,
+        success: function () {
+        }
+        })
+});
+
+$("#cartButton").on("click", function () {
+    const url = "/";
+    $.ajax({
+        type: "POST",
+        data: {"id": 0, "process": "openCart"},
+        url: url,
         success: function (productsJSONString) {
-            alert("success");
             const products =  JSON.parse(productsJSONString);
             changeCartModal(products);
             addShoppingCartButtonListeners();
         }
-        })
+    })
 });
