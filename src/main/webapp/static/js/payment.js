@@ -6,3 +6,6 @@ $(".pay-pal").on("click", function () {
 $(".credit-card").on("click", function () {
     changePaymentToCard();
 });
+$("#sub").on('click',function(){
+    alert("success");
+})
