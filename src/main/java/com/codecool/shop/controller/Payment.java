@@ -5,6 +5,9 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.Order;
+import com.codecool.shop.model.PaymentProcess;
+import com.codecool.shop.model.mail;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -13,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +37,11 @@ public class Payment extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         String paypalName = req.getParameter("userName");
         String creditName = req.getParameter("name");
-        System.out.println(paypalName);
         if (paypalName!=null || creditName!=null){
+            HttpSession session = req.getSession();
+            Order order = (Order) session.getAttribute("Order");
+            order.pay(new PaymentProcess());
+            mail.send(order);
             engine.process("product/index.html", context, resp.getWriter());
         }
     }

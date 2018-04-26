@@ -7,8 +7,15 @@ import javax.mail.internet.*;
 
 public class mail
 {
-    public static void send(String to, String name, int orderId, String adress,String city,String zipcode )
+    public static void send(Order order)
     {
+        String name = order.getCheckoutProcess().getBuyerInfo().get("name").toString();
+        String zipcode = order.getCheckoutProcess().getBuyerInfo().get("zip").toString();
+        String city = order.getCheckoutProcess().getBuyerInfo().get("city").toString();
+        String adress = order.getCheckoutProcess().getBuyerInfo().get("address").toString();
+        String orderId = Integer.toString(order.getId());
+        String to = order.getCheckoutProcess().getBuyerInfo().get("email").toString();
+
         String user = System.getenv("serverEmailName");
         String pass = System.getenv("serverEmailPassword");
         //create an instance of Properties Class

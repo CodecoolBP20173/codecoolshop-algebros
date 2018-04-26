@@ -34,6 +34,14 @@ public class Order implements Orderable {
         this.status = "new";
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public CheckoutProcess getCheckoutProcess() {
+        return checkoutProcess;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -71,6 +79,7 @@ public class Order implements Orderable {
         if (this.getStatus().equals("checked")) {
             this.status = "payed";
             this.paymentProcess = paymentProcess;
+
         }
         return false;
     }

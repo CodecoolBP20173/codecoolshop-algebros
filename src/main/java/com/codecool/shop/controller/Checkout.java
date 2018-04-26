@@ -49,7 +49,13 @@ public class Checkout extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Map customerInfo = req.getParameterMap();
+        Map customerInfo = new HashMap();
+        customerInfo.put("name",req.getParameter("name"));
+        customerInfo.put("email",req.getParameter("email"));
+        customerInfo.put("zip",req.getParameter("zip"));
+        customerInfo.put("city",req.getParameter("city"));
+        customerInfo.put("country",req.getParameter("country"));
+        customerInfo.put("address",req.getParameter("address"));
         CheckoutProcess checkoutProcess = new CheckoutProcess(customerInfo);
         HttpSession session = req.getSession();
         Order order = (Order) session.getAttribute("Order");
