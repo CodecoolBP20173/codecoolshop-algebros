@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminLog {
     private JSONObject orderLog = new JSONObject();
@@ -23,20 +25,22 @@ public class AdminLog {
     }
 
     public void initialLog(int orderId) {
-        fileName = String.valueOf(orderId) + "-" +  LocalDate.now() + ".json";
         orderLog.put(LocalDateTime.now(), "Order, with ID: " + String.valueOf(orderId) + " created.");
+    }
+
+    public void logToAdminLog(String log) {
+        orderLog.put(LocalDateTime.now(), log);
+    }
+
+    public void logToFile(int orderId) {
+        fileName = String.valueOf(orderId) + "-" +  LocalDate.now() + ".json";
         try (FileWriter adminLog = new FileWriter(fileName, true)) {
-            adminLog.write(orderLog.toJSONString());
+            adminLog.append(orderLog.toJSONString());
+            orderLog.clear();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void logToFile() {
-        try (FileWriter adminLog = new FileWriter(fileName, true)) {
-            adminLog.append(orderLog.toJSONString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

@@ -41,8 +41,9 @@ public class Payment extends HttpServlet {
             HttpSession session = req.getSession();
             Order order = (Order) session.getAttribute("Order");
             order.pay(new PaymentProcess());
-            mail.send(order);
-            resp.sendRedirect("/payment");
+//            mail.send(order);
+            resp.sendRedirect("/");
+            session.invalidate();
         }
     }
 }
