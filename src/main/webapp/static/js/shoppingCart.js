@@ -20,16 +20,17 @@ function myFunction() {
 
 
 $(".addToCart").on("click", function (event) {
-    let attribute = event.target.dataset.productId;
-    let url = "/";
+    const attribute = event.target.dataset.productId;
+    const url = "/";
     $.ajax({
         type: "POST",
-        data: {"id" : attribute},
+        data: {"id" : attribute, "process": "add"},
         url: url,
         success: function (productsJSONString) {
             alert("success");
-            let products =  JSON.parse(productsJSONString);
+            const products =  JSON.parse(productsJSONString);
             changeCartModal(products);
+            addShoppingCartButtonListeners();
         }
         })
 });

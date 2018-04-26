@@ -46,6 +46,5 @@ public class Initializer implements ServletContextListener {
         productDataStore.add((new Product("Lenovo XO12", 500, "USD", "Best phone ever.", smartPhone, lenovo)));
         productDataStore.add(new Product("Samsung S9+", 879, "USD", "Latest Sasmung smartphone with Octa Core processor.", smartPhone, samsung));
         productDataStore.add(new Product("Samsung Notebook 9 15\"", 1500, "USD", "Lightweight notebook with the capabilities of a desktop PC ", notebook, samsung));
-
     }
 }
