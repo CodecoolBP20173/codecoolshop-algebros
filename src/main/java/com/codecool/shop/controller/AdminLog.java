@@ -26,11 +26,14 @@ public class AdminLog {
 
     public void initialLog(int orderId) {
         orderLog.put(LocalDateTime.now(), "Order, with ID: " + String.valueOf(orderId) + " created.");
+        this.logToFile(orderId);
     }
 
-    public void logToAdminLog(String log) {
+    public void logStringToAdminLog(int orderId, String log) {
         orderLog.put(LocalDateTime.now(), log);
+        this.logToFile(orderId);
     }
+
 
     public void logToFile(int orderId) {
         fileName = String.valueOf(orderId) + "-" +  LocalDate.now() + ".json";

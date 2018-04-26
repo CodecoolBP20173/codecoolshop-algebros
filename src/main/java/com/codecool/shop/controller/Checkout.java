@@ -28,9 +28,6 @@ import java.util.Map;
 public class Checkout extends HttpServlet {
     private static HashMap<String, String > userInfo;
 
-    public static HashMap<String, String> getUserInfo() {
-        return userInfo;
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -56,7 +53,7 @@ public class Checkout extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        userInfo = new HashMap();
+        userInfo = new HashMap<>();
         userInfo.put("name",req.getParameter("name"));
         userInfo.put("email",req.getParameter("email"));
         userInfo.put("zip",req.getParameter("zip"));
