@@ -34,10 +34,3 @@ $(".addToCart").on("click", function (event) {
         }
         })
 });
-
-
-
-let product1 = {name:"Samsung Galaxy S9",quantity:2,price:300};
-let product2 = {name:"Samsung Galaxy S6",quantity:1,price:30};
-let products = [product1,product2];
-changeCartModal(products);
