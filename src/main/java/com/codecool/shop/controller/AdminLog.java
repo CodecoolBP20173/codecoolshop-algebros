@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 public class AdminLog {
     private JSONObject orderLog = new JSONObject();
     private String fileName;
-    private FileWriter adminLog;
-
 
     public AdminLog(int orderId) {
        initialLog(orderId);
@@ -23,12 +21,6 @@ public class AdminLog {
     public JSONObject getOrderLog() {
         return orderLog;
     }
-
-
-    public FileWriter getAdminLog() {
-        return adminLog;
-    }
-
 
     public void initialLog(int orderId) {
         fileName = String.valueOf(orderId) + "-" +  LocalDate.now() + ".json";
