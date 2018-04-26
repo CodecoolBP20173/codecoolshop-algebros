@@ -6,6 +6,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.Order;
+import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet(urlPatterns = {"/checkout"})
@@ -33,10 +35,20 @@ public class Checkout extends HttpServlet {
             session = req.getSession();
         }
         Order order = (Order) session.getAttribute("Order");
-        context.setVariable("shoppingCart", order);
-        System.out.println(order.getItemList());
-
+        context.setVariable("shoppingCart", order.getCartItems());
+        double sumPrice = totalPrice(order);
+        context.setVariable("sumPrice", sumPrice);
         engine.process("product/checkout.html", context, resp.getWriter());
+    }
+
+
+    public double totalPrice(Order order) {
+        double sumPrice = 0;
+        List<Product> orderCartItems = order.getItemList();
+        for (Product item: orderCartItems) {
+            sumPrice += (item.getDefaultPrice() * order.getOrderQuantity().get(item.getId()));
+        }
+        return sumPrice;
 
     }
 }
