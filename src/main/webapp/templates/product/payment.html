@@ -25,6 +25,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
+
+    <script src="static/js/dom.js" defer></script>
+    <script src="/static/js/payment.js" defer></script>
+
     <title>Payment</title>
 
 </head>
@@ -36,18 +40,18 @@
                 <div class="card-body" align="center">
                     <h2>Select Payment Method</h2>
                     <div class="row">
-                        <div class="col" align="center">
+                        <div class="col pay-pal" align="center">
                             <button style="font-size:24px"><i class="fa fa-paypal"></i></button>
                             <br>
                             <p>Paypal</p>
                         </div>
-                        <div class="col" align="center">
+                        <div class="col credit-card" align="center">
                             <button style="font-size:24px"><i class="fa fa-credit-card"></i></button>
                             <br>
                             <p>Credit Card</p>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="paymentMethod">
                         <div class="col" align="center">
                             <div class="card">
                                 <div class="card-body">
