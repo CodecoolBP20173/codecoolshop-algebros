@@ -63,17 +63,20 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session;
         int id = Integer.parseInt(req.getParameter("id"));
         if (req.getSession(false) == null  ){
-            HttpSession session = req.getSession(true);
+            session = req.getSession(true);
             session.setAttribute("Order", new Order());
+        } else {
+            session = req.getSession();
         }
-        HttpSession session = req.getSession(true);
         Order order = (Order) session.getAttribute("Order");
         order.addProduct(id);
         session.setAttribute("Order", order);
         Gson gson = new Gson();
         String json = gson.toJson(order.getItemList());
         resp.getWriter().write(json);
+
     }
 }
