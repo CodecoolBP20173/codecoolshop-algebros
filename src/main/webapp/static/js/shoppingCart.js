@@ -29,7 +29,7 @@ $(".addToCart").on("click", function (event) {
         success: function (productsString) {
             alert("success");
             console.log(productsString);
-            let products =  productsString["products"];
+            let products =  JSON.parse(productsString);
             console.log(products);
         }
         })
@@ -37,5 +37,7 @@ $(".addToCart").on("click", function (event) {
 
 
 
-
-
+let product1 = {name:"Samsung Galaxy S9",quantity:2,price:300};
+let product2 = {name:"Samsung Galaxy S6",quantity:1,price:30};
+let products = [product1,product2];
+changeCartModal(products);
