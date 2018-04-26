@@ -1,3 +1,5 @@
+changePaymentToPayPal();
+
 $(".pay-pal").on("click", function () {
     changePaymentToPayPal();
 });
