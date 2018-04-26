@@ -27,4 +27,15 @@ public class Payment extends HttpServlet {
         engine.process("product/payment.html", context, resp.getWriter());
 
     }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+        WebContext context = new WebContext(req, resp, req.getServletContext());
+        String paypalName = req.getParameter("userName");
+        String creditName = req.getParameter("name");
+        System.out.println(paypalName);
+        if (paypalName!=null || creditName!=null){
+            engine.process("product/index.html", context, resp.getWriter());
+        }
+    }
 }
