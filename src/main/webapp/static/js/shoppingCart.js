@@ -26,11 +26,10 @@ $(".addToCart").on("click", function (event) {
         type: "POST",
         data: {"id" : attribute},
         url: url,
-        success: function (productsString) {
+        success: function (productsJSONString) {
             alert("success");
-            console.log(productsString);
-            let products =  JSON.parse(productsString);
-            console.log(products);
+            let products =  JSON.parse(productsJSONString);
+            changeCartModal(products);
         }
         })
 });
