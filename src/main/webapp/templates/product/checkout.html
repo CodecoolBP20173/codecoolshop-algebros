@@ -56,28 +56,29 @@
                                 <form action="/checkout" method="post">
                                     <h2>Customer information</h2><br>
                                     <p>Name</p>
-                                    <input type="text" name="name">
+                                    <input type="text" name="name" required>
                                     <br>
                                     <p>E-mail</p>
-                                    <input type="text" name="email" placeholder="xyz@zxy.yzx"><br>
+                                    <input type="email" name="email" placeholder="xyz@zxy.yzx" required><br>
                                     <br>
                                     <p>Phone number</p>
-                                    <input type="text" name="phone" placeholder="+36999876543"><br>
-                                    <div class="col-6">
-                                        <br><p>Billing address</p>
-                                        <input type="text" name="country" placeholder="Country" required>
-                                        <input type="text" name="city" placeholder="City" required>
-                                        <input type="text" name="zip" placeholder="Zipcode" required>
-                                        <input type="text" name="address" placeholder="Address" required><br>
-                                    </div>
-                                    <div class="col-6">
-                                        <br><p>Shipping address</p>
-                                        <input type="text" name="country" placeholder="Country">
-                                        <input type="text" name="city" placeholder="City">
-                                        <input type="text" name="zip" placeholder="Zipcode">
-                                        <input type="text" name="address" placeholder="Address"><br>
-                                    </div>
-                                    <button type="submit" style="font-size:12px" id="sub">Proceed to Payment</button>
+                                    <input type="text" name="phone" placeholder="0036999876543" required><br>
+                                        <div class="col-4">
+                                            <br><p>Billing address</p>
+                                            <input type="text" name="country" placeholder="Country" required>
+                                            <input type="text" name="city" placeholder="City" required>
+                                            <input type="text" name="zip" placeholder="Zipcode" required>
+                                            <input type="text" name="address" placeholder="Address" required><br>
+                                        </div>
+                                        <div class="col-4">
+                                            <br><p>Shipping address</p>
+                                            <input type="text" name="country" placeholder="Country">
+                                            <input type="text" name="city" placeholder="City">
+                                            <input type="text" name="zip" placeholder="Zipcode">
+                                            <input type="text" name="address" placeholder="Address"><br>
+                                        </div>
+                                    <br>
+                                    <button type="submit" id="sub">Checkout</button>
                                 </form>
                             </div>
                         </div>
