@@ -7,8 +7,7 @@ import javax.mail.internet.*;
 
 public class mail
 {
-    public static void send(String to, String sub,
-                            String msg)
+    public static void send(String to, String name, int orderId, String adress,String city,String zipcode )
     {
         String user = System.getenv("serverEmailName");
         String pass = System.getenv("serverEmailPassword");
@@ -19,6 +18,17 @@ public class mail
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
+
+        String msg = "";
+        msg += "Dear "+name+",\n";
+        msg += "\n";
+        msg += "Order number : "+orderId+"\n";
+        msg += "Your order have been sent to : "+"\n";
+        msg += "    " + zipcode+"    "+city+"    "+adress+"\n";
+        msg += "\n";
+        msg += "Sincererly,  Codecool Shop"+"\n";
+        msg += "Designed by Algebros";
+
      
      /* Pass Properties object(props) and Authenticator object   
            for authentication to Session instance 
@@ -42,7 +52,7 @@ public class mail
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
-            message.setSubject(sub);
+            message.setSubject("Order confirmation");
             message.setText(msg);
 
             /* Transport class is used to deliver the message to the recipients */
