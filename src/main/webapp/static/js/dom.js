@@ -16,5 +16,5 @@ function changeCartModal(items) {
                             </tr>`;
     }
     document.getElementById("cartTableBody").innerHTML=cartItemsOutput;
-    document.getElementById("totalPrice").innerHTML="Total price : " + totalPrice.toString();
+    document.getElementById("totalPrice").innerHTML="<strong id=\"totalPrice\"> Total price : " + totalPrice.toString()+"<strong>";
 }

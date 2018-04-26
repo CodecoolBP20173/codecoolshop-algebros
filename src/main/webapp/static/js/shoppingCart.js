@@ -29,13 +29,8 @@ $(".addToCart").on("click", function (event) {
         success: function (productsString) {
             alert("success");
             console.log(productsString);
-            let products =  productsString["products"];
+            let products =  JSON.parse(productsString);
             console.log(products);
         }
         })
 });
-
-
-
-
-
