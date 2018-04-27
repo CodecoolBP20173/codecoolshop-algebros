@@ -7,5 +7,5 @@ $(".credit-card").on("click", function () {
     changePaymentToCard();
 });
 $("#sub").on('click',function(){
-    alert("success");
+    alert("Your payment was successful!");
 })
