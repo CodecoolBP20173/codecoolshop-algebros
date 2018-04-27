@@ -14,6 +14,8 @@ public class Order implements Orderable {
     private static AtomicInteger uniqueId = new AtomicInteger();
     private int id;
     private String status;
+    private CheckoutProcess checkoutProcess;
+    private PaymentProcess paymentProcess;
 
     public List<Product> getItemList() {
         return itemList;
@@ -30,6 +32,14 @@ public class Order implements Orderable {
     public Order() {
         this.id = uniqueId.getAndIncrement();
         this.status = "new";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public CheckoutProcess getCheckoutProcess() {
+        return checkoutProcess;
     }
 
     public String getStatus() {
@@ -57,18 +67,19 @@ public class Order implements Orderable {
     }
 
     
-    public boolean checkout() {
+    public boolean checkout(CheckoutProcess checkoutProcess) {
         if (this.getStatus().equals("new")) {
             this.status = "checked";
-            return true;
+            this.checkoutProcess = checkoutProcess;
         }
         return false;
     }
 
-    public boolean pay() {
+    public boolean pay(PaymentProcess paymentProcess) {
         if (this.getStatus().equals("checked")) {
             this.status = "payed";
-            return true;
+            this.paymentProcess = paymentProcess;
+
         }
         return false;
     }
@@ -85,7 +96,9 @@ public class Order implements Orderable {
             jsonObject.put("defaultPrice", product.getDefaultPrice());
             jsonObject.put("quantity", this.getOrderQuantity().get(product.getId()));
             jsonObject.put("price", product.getPrice());
+            jsonObject.put("totalPrice", this.totalPrice());
             productList.add(jsonObject);
+
         }
         return productList;
     }
@@ -93,6 +106,15 @@ public class Order implements Orderable {
     public JSONObject getProductQuantity(int id){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("quantity", this.getOrderQuantity().get(id));
+        jsonObject.put("totalPrice", this.totalPrice());
         return jsonObject;
+    }
+    public double totalPrice() {
+        double sumPrice = 0;
+        List<Product> orderCartItems = this.getItemList();
+        for (Product item: orderCartItems) {
+            sumPrice += (item.getDefaultPrice() * this.getOrderQuantity().get(item.getId()));
+        }
+        return sumPrice;
     }
 }

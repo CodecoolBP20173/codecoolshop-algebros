@@ -41,6 +41,8 @@ $("#cartButton").on("click", function () {
             const products =  JSON.parse(productsJSONString);
             changeCartModal(products);
             addShoppingCartButtonListeners();
+            $("#totalPricePlace").html("<strong>" + Math.round(products[0]["totalPrice"]) + " USD</strong>")
+
         }
     })
 });

@@ -1,5 +1,5 @@
 .glyphicon {
-    margin-right: 5px;
+    margin-right:5px;
 }
 
 .thumbnail {
@@ -40,6 +40,9 @@
 .item.list-group-item:nth-of-type(odd) {
     background: #eeeeee;
 }
+p{
+    font-size: medium;
+}
 
 .item.list-group-item:before, .item.list-group-item:after {
     display: table;
@@ -56,6 +59,9 @@
 
 .list-group-item-text {
     margin: 0 0 11px;
+}
+#sub {
+    width: 10em;  height: 2em;
 }
 
 .sticky {
