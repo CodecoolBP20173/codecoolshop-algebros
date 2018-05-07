@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="author" content="Codecool" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title>Codecool Shop</title>
 
@@ -13,18 +13,23 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
+
+    <script src="static/js/dom.js" defer></script>
+    <script src="static/js/shoppingCart.js" defer></script>
+    <script src="/static/js/navbar.js"></script>
+
 </head>
 
 <body>
@@ -34,34 +39,88 @@
 </div>
 
 <div class="container">
-    <div class="well well-sm">
-        <strong th:text="${category.name}">Category Title</strong>
-    </div>
+    <div id="navbar" class="row">
+        <div class="well well-sm">
+            <div class="dropdown">
+                <button onclick="CategoriesDropdown()" class="dropbtn">Category</button>
+                <div id="CategoriesDropdown" class="dropdown-content">
+                    <div th:each="cat,iterStart:${categories}">
+                        <a th:href="@{'/?category=' + ${cat.name}}" th:text="${cat.name}"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button onclick="SuppliersDropdown()" class="dropbtn">Supplier</button>
+                <div id="SuppliersDropdown" class="dropdown-content">
+                    <div th:each="sup,iterStart:${suppliers}">
+                        <a th:href="@{'/?supplier=' + ${sup.name}}" th:text="${sup.name}"></a>
+                    </div>
+                </div>
+            </div>
+            <button id="cartButton" type="button" class="cartButton" data-toggle="modal" data-target="#cartModal">
+                Cart
+            </button>
+        </div>
 
-    <div id="products" class="row list-group">
+        <div id="products" class="row list-group">
 
-        <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" />
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
-                    <p class="group inner list-group-item-text" th:text="${prod.description}">Product description... </p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="#">Add to cart</a>
+            <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
+                <div class="thumbnail">
+                    <img class="group list-group-image" src="http://placehold.it/400x250/000/fff"
+                         th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt=""/>
+                    <div class="caption">
+                        <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
+                        <p class="group inner list-group-item-text" th:text="${prod.description}">Product
+                            description... </p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <button class="btn btn-success addToCart" th:data-product-id="${prod.id}">Add to cart
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal right" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title" id="cartModalLabel">Your cart</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <table  class="table">
+                            <tbody id="cartTableBody">
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th> </th>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                        <div class="alignRight"><strong>Total Price: </strong><span id="totalPricePlace"></span></div>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/checkout" method="get">
+                            <button type="submit" class="dropbtn" >Proceed to checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="footer.html :: copy"></div>
     </div>
-
 </div>
-
-<div th:replace="footer.html :: copy"></div>
-
 </body>
 </html>
