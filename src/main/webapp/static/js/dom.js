@@ -53,8 +53,8 @@ function addShoppingCartButtonListeners() {
             url: url,
             success: function (quantityJSONString) {
                 const quantity = JSON.parse(quantityJSONString);
-                removeProductFromCart(productId, quantity["totalPrice"]);
-                $("#totalPricePlace").html("<strong>" + Math.round(quantity["totalPrice"]) + " USD</strong>")
+                removeProductFromCart(productId, quantity[0]["totalPrice"]);
+                $("#totalPricePlace").html("<strong>" + Math.round(quantity[0]["totalPrice"]) + " USD</strong>")
             }
         })
     })
@@ -132,6 +132,6 @@ function changePaymentToCard() {
 
 function removeProductFromCart(productId, totalPrice) {
     const filter = "[data-product-id='" + productId + "']";
-    $("#totalPricePlace").html("<strong>" + totalPrice + " USD</strong>")
+    $("#totalPricePlace").html("<strong>" + totalPrice + " USD</strong>");
     $(".product").filter(filter).remove();
 }
