@@ -1,9 +1,9 @@
 package com.codecool.shop.model;
 
 public abstract class AbstractProcess {
-    public void process(Orderable item) {
+    public void process(Order order) {
         stepBefore();
-        action(item);
+        action(order);
         stepAfter();
     }
 
@@ -11,7 +11,7 @@ public abstract class AbstractProcess {
         System.out.println("Process started.");
     }
 
-    protected abstract void action(Orderable item);
+    protected abstract void action(Order order);
 
     public void stepAfter() {
         System.out.println("Process ended succesfully.");

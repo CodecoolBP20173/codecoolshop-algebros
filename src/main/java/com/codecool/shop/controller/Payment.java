@@ -40,9 +40,11 @@ public class Payment extends HttpServlet {
         if (paypalName!=null || creditName!=null){
             HttpSession session = req.getSession();
             Order order = (Order) session.getAttribute("Order");
-            order.pay(new PaymentProcess());
-            mail.send(order);
-            resp.sendRedirect("/payment");
+            PaymentProcess paymentProcess = new PaymentProcess();
+            paymentProcess.process(order);
+         //   mail.send(order);
+            resp.sendRedirect("/");
+            session.invalidate();
         }
     }
 }

@@ -8,6 +8,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.CheckoutProcess;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -25,6 +26,9 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = {"/checkout"})
 public class Checkout extends HttpServlet {
+    private static HashMap<String, String > userInfo;
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
@@ -49,16 +53,17 @@ public class Checkout extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Map customerInfo = new HashMap();
-        customerInfo.put("name",req.getParameter("name"));
-        customerInfo.put("email",req.getParameter("email"));
-        customerInfo.put("zip",req.getParameter("zip"));
-        customerInfo.put("city",req.getParameter("city"));
-        customerInfo.put("country",req.getParameter("country"));
-        customerInfo.put("address",req.getParameter("address"));
-        CheckoutProcess checkoutProcess = new CheckoutProcess(customerInfo);
+        userInfo = new HashMap<>();
+        userInfo.put("name",req.getParameter("name"));
+        userInfo.put("email",req.getParameter("email"));
+        userInfo.put("zip",req.getParameter("zip"));
+        userInfo.put("city",req.getParameter("city"));
+        userInfo.put("country",req.getParameter("country"));
+        userInfo.put("address",req.getParameter("address"));
+        CheckoutProcess checkoutProcess = new CheckoutProcess(userInfo);
         HttpSession session = req.getSession();
         Order order = (Order) session.getAttribute("Order");
+        checkoutProcess.process(order);
         order.checkout(checkoutProcess);
         resp.sendRedirect("/payment");
     }
