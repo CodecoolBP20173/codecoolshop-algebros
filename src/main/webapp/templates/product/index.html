@@ -56,12 +56,12 @@
                     </div>
                 </div>
             </div>
-
-
+            <button id="cartButton" type="button" class="cartButton" data-toggle="modal" data-target="#cartModal">
+                Cart
+            </button>
             <ul class="nav navbar-nav navbar-right">
-                <li><p class="navbar-text">Already have an account?</p></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+                    <button id="login-bn" class="dropdown-toggle" data-toggle="dropdown">Login</button>
                     <ul id="login-dp" class="dropdown-menu">
                         <li>
                             <div class="row">
@@ -82,7 +82,7 @@
                                             <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                                            <button type="submit" class="btn btn-success btn-block">Sign in</button>
                                         </div>
                                     </form>
                                 </div>
@@ -93,9 +93,6 @@
                         </li>
                     </ul>
                 </li>
-                <button id="cartButton" type="button" class="cartButton" data-toggle="modal" data-target="#cartModal">
-                    Cart
-                </button>
             </ul>
         </div>
 

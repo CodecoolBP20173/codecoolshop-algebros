@@ -32,9 +32,13 @@ public class Registration extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         userInfo = new HashMap<>();
-        userInfo.put("name",req.getParameter("name"));
-        userInfo.put("email",req.getParameter("email"));
+        userInfo.put("name",req.getParameter("Username"));
+        userInfo.put("email",req.getParameter("Email"));
+        userInfo.put("password", req.getParameter("password"));
+        System.out.println(userInfo.put("name",req.getParameter("Username")));
+        System.out.println(userInfo.put("email",req.getParameter("Email")));
+        System.out.println(userInfo.put("password", req.getParameter("password")));
         HttpSession session = req.getSession();
-        resp.sendRedirect("/payment");
+        resp.sendRedirect("/");
     }
 }
