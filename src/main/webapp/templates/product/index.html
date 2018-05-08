@@ -64,20 +64,20 @@
 
         <div id="products" class="row list-group">
 
-            <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
+            <div class="item col-xs-6 col-lg-4" th:each="prod,iterStat : ${products}">
                 <div class="thumbnail">
                     <img class="group list-group-image" src="http://placehold.it/400x250/000/fff"
                          th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt=""/>
                     <div class="caption">
-                        <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
+                        <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4><br>
                         <p class="group inner list-group-item-text" th:text="${prod.description}">Product
                             description... </p>
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
-                                <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                                <strong class="lead" th:text="${prod.getPrice()}">100 USD</strong>
                             </div>
                             <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-success addToCart" th:data-product-id="${prod.id}">Add to cart
+                                <button class="btn btn-success addToCart float-right" th:data-product-id="${prod.id}">Add to cart
                                 </button>
                             </div>
                         </div>
