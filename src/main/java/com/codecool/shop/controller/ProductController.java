@@ -9,6 +9,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import com.codecool.shop.util.NetworkUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import com.codecool.shop.model.Order;
@@ -67,14 +68,8 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session;
         int id = Integer.parseInt(req.getParameter("id"));
-        if (req.getSession(false) == null  ){
-            session = req.getSession(true);
-            session.setAttribute("Order", new Order());
-        } else {
-            session = req.getSession();
-        }
+        HttpSession session = NetworkUtils.getHTTPSession(req);
         Order order = (Order) session.getAttribute("Order");
         String process = req.getParameter("process");
         String json = "";
