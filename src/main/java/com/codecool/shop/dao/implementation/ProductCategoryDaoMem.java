@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProductCategoryDaoMem implements ProductCategoryDao {
@@ -26,8 +27,11 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
-        category.setId(data.size() + 1);
-        data.add(category);
+        if (this.find(category.getName()) == null) {
+            category.setId(data.size() + 1);
+            data.add(category);
+        }
+
     }
 
     @Override
@@ -47,6 +51,6 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public List<ProductCategory> getAll() {
-        return data;
+        return Collections.unmodifiableList(data);
     }
 }
