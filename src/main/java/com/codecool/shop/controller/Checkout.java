@@ -50,7 +50,6 @@ public class Checkout extends HttpServlet {
         HttpSession session = req.getSession();
         Order order = (Order) session.getAttribute("Order");
         checkoutProcess.process(order);
-        order.checkout(checkoutProcess);
         resp.sendRedirect("/payment");
     }
 }

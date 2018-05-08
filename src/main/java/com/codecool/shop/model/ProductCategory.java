@@ -15,22 +15,6 @@ public class ProductCategory extends BaseModel {
         this.description = description;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
-
-    public List<Product> getProducts() {
-        return this.products;
-    }
-
     void addProduct(Product product) {
         this.products.add(product);
     }
