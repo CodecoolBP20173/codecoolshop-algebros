@@ -2,19 +2,20 @@ package com.codecool.shop.processes;
 
 import com.codecool.shop.model.Order;
 
-import java.io.*;
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
-public class MailProcess
-{
-    public static void send(Order order)
-    {
-        String name = order.getCheckoutProcess().getBuyerInfo().get("name").toString();
-        String zipcode = order.getCheckoutProcess().getBuyerInfo().get("zip").toString();
-        String city = order.getCheckoutProcess().getBuyerInfo().get("city").toString();
-        String adress = order.getCheckoutProcess().getBuyerInfo().get("address").toString();
+class MailProcess {
+    static void send(Order order) {
+        String name = order.getCheckoutProcess().getBuyerInfo().get("name");
+        String zipcode = order.getCheckoutProcess().getBuyerInfo().get("zip");
+        String city = order.getCheckoutProcess().getBuyerInfo().get("city");
+        String address = order.getCheckoutProcess().getBuyerInfo().get("address");
         String orderId = Integer.toString(order.getId());
         String to = order.getCheckoutProcess().getBuyerInfo().get("email");
 
@@ -29,13 +30,13 @@ public class MailProcess
         props.put("mail.smtp.starttls.enable", "true");
 
         String msg = "";
-        msg += "Dear "+name+",\n";
+        msg += "Dear " + name + ",\n";
         msg += "\n";
-        msg += "Order number : "+orderId+"\n";
-        msg += "Your order have been sent to : "+"\n";
-        msg += "    " + zipcode+"    "+city+"    "+adress+"\n";
+        msg += "Order number : " + orderId + "\n";
+        msg += "Your order have been sent to : " + "\n";
+        msg += "    " + zipcode + "    " + city + "    " + address + "\n";
         msg += "\n";
-        msg += "Sincererly,  Codecool Shop"+"\n";
+        msg += "Sincerely,  Codecool Shop" + "\n";
         msg += "Designed by Algebros";
 
      
@@ -43,16 +44,13 @@ public class MailProcess
            for authentication to Session instance 
         */
 
-        Session session = Session.getInstance(props,new javax.mail.Authenticator()
-        {
-            protected PasswordAuthentication getPasswordAuthentication()
-            {
-                return new PasswordAuthentication(user,pass);
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, pass);
             }
         });
 
-        try
-        {
+        try {
  
  	/* Create an instance of MimeMessage, 
  	      it accept MIME types and headers 
@@ -60,7 +58,7 @@ public class MailProcess
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
-            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject("Order confirmation");
             message.setText(msg);
 
@@ -69,9 +67,7 @@ public class MailProcess
             Transport.send(message);
 
 
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
