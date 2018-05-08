@@ -9,13 +9,13 @@ public abstract class AbstractProcess {
         stepAfter();
     }
 
-    public void stepBefore() {
+    private void stepBefore() {
         System.out.println("Process started.");
     }
 
     protected abstract void action(Order order);
 
-    public void stepAfter() {
+    private void stepAfter() {
         System.out.println("Process ended successfully.");
     }
 }

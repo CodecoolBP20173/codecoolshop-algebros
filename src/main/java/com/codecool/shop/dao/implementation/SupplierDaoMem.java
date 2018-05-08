@@ -4,6 +4,7 @@ import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SupplierDaoMem implements SupplierDao {
@@ -46,6 +47,6 @@ public class SupplierDaoMem implements SupplierDao {
 
     @Override
     public List<Supplier> getAll() {
-        return data;
+        return Collections.unmodifiableList(data);
     }
 }
