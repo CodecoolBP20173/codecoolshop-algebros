@@ -42,8 +42,8 @@ CREATE TABLE productcategory
     CONSTRAINT productcategory_pkey
     PRIMARY KEY,
   name        VARCHAR(40),
-  description VARCHAR(40),
-  department  VARCHAR(40),
+  description VARCHAR(240),
+  department  VARCHAR(80),
   products    VARCHAR(80)
 );
 
@@ -106,4 +106,8 @@ ALTER SEQUENCE public.orderlist_id_seq OWNED BY public.orderlist.id;
 CREATE SEQUENCE public.shoppingcart_id_seq NO MINVALUE NO MAXVALUE NO CYCLE;
 ALTER TABLE public.shoppingcart ALTER COLUMN id SET DEFAULT nextval('public.shoppingcart_id_seq');
 ALTER SEQUENCE public.shoppingcart_id_seq OWNED BY public.shoppingcart.id;
+
+CREATE SEQUENCE public.productcategory_id_seq NO MINVALUE NO MAXVALUE NO CYCLE;
+ALTER TABLE public.productcategory ALTER COLUMN id SET DEFAULT nextval('public.productcategory_id_seq');
+ALTER SEQUENCE public.productcategory_id_seq OWNED BY public.productcategory.id;
 
