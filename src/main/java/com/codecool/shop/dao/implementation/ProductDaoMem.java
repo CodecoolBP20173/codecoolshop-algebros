@@ -51,15 +51,15 @@ public class ProductDaoMem implements ProductDao {
 
     @Override
     public List<Product> getBy(Supplier supplier) {
-        return data.stream()
+        return Collections.unmodifiableList(data.stream()
                 .filter(t -> t.getSupplier().equals(supplier))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())) ;
     }
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
-        return data.stream()
+        return Collections.unmodifiableList(data.stream()
                 .filter(t -> t.getProductCategory().equals(productCategory))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }
