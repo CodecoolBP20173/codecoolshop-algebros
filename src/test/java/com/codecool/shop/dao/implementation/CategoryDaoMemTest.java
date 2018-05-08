@@ -1,6 +1,7 @@
 package com.codecool.shop.dao.implementation;
 
 
+import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,72 +9,81 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryDaoMemTest {
-    private static ProductCategoryDaoMem productCategoryDaoMem;
+    private static ProductCategoryDao productCategoryDao;
 
     @BeforeEach
     void setup() {
-        productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
+        productCategoryDao = ProductCategoryDaoMem.getInstance();
         ProductCategory smartPhone = new ProductCategory("Smart Phone", "Hardware", "A smart phone is a small mobile computer, with the additional feature of making phone calls.");
         ProductCategory notebook = new ProductCategory("Notebook", "Hardware", "Portable comupters");
-        productCategoryDaoMem.add(smartPhone);
-        productCategoryDaoMem.add(notebook);
+        productCategoryDao.add(smartPhone);
+        productCategoryDao.add(notebook);
     }
 
     @Test
     void gettingInstanceTest() {
-        assertEquals(ProductCategoryDaoMem.class, ProductCategoryDaoMem.getInstance().getClass());
+        if (productCategoryDao.getClass().equals(ProductCategoryDaoMem.class)) {
+            assertEquals(productCategoryDao.getClass(),ProductCategoryDaoMem.getInstance().getClass());
+        } else {
+            // assertEquals(productCategoryDao.getClass(),ProductCategoryDaoJdbc.getInstance().getClass());
+        }
     }
 
     @Test
     void addingCategoryTest() {
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
-        productCategoryDaoMem.add(tablet);
-        assertEquals(tablet, productCategoryDaoMem.find("Tablet"));
+        productCategoryDao.add(tablet);
+        assertEquals(tablet, productCategoryDao.find("Tablet"));
     }
 
     @Test
     void gettingValidCategoryByStringTest() {
         ProductCategory notebook = new ProductCategory("Notebook", "Hardware", "Portable comupters");
-        assertEquals(notebook, productCategoryDaoMem.find("Notebook"));
+        assertEquals(notebook, productCategoryDao.find("Notebook"));
     }
 
     @Test
     void gettingInvalidCategoryByStringTest() {
-        assertNull(productCategoryDaoMem.find("null"));
+        assertNull(productCategoryDao.find("null"));
     }
 
     @Test
     void gettingValidCategoryByIdTest() {
-        assertEquals(ProductCategory.class, productCategoryDaoMem.find(1).getClass());
+        assertEquals(ProductCategory.class, productCategoryDao.find(1).getClass());
+    }
+
+    @Test
+    void checkingIfFindByIdGivesBackDifferentResults() {
+        assertNotEquals(productCategoryDao.find(1),productCategoryDao.find(2));
     }
 
     @Test
     void gettingInvalidCategoryByIdTest() {
-        assertNull(productCategoryDaoMem.find(-10));
+        assertNull(productCategoryDao.find(-10));
     }
 
     @Test
     void removingCategoryTest() {
-        productCategoryDaoMem.remove(1);
-        assertNull(productCategoryDaoMem.find(1));
+        productCategoryDao.remove(1);
+        assertNull(productCategoryDao.find(1));
 
     }
 
     @Test
-    void removingInvalidCategory(){
-        int sizeBeforeRemoving = productCategoryDaoMem.getAll().size();
-        productCategoryDaoMem.remove(1234567);
-        int sizeAfterRemoving = productCategoryDaoMem.getAll().size();
-        assertEquals(sizeBeforeRemoving,sizeAfterRemoving);
+    void removingInvalidCategory() {
+        int sizeBeforeRemoving = productCategoryDao.getAll().size();
+        productCategoryDao.remove(1234567);
+        int sizeAfterRemoving = productCategoryDao.getAll().size();
+        assertEquals(sizeBeforeRemoving, sizeAfterRemoving);
     }
 
     @Test
     void addingExistingCategoryTest() {
         ProductCategory testing = new ProductCategory("Testing", "Testing", "Testing Testing");
-        productCategoryDaoMem.add(testing);
-        int listSizeAfterFirstAdding = productCategoryDaoMem.getAll().size();
-        productCategoryDaoMem.add(testing);
-        int listSizeAfterSecondAdding = productCategoryDaoMem.getAll().size();
+        productCategoryDao.add(testing);
+        int listSizeAfterFirstAdding = productCategoryDao.getAll().size();
+        productCategoryDao.add(testing);
+        int listSizeAfterSecondAdding = productCategoryDao.getAll().size();
         assertEquals(listSizeAfterFirstAdding, listSizeAfterSecondAdding);
     }
 }
