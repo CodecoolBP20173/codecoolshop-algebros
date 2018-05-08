@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS supplier CASCADE;
-DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS productcategory CASCADE;
 DROP TABLE IF EXISTS orderlist CASCADE;
 DROP TABLE IF EXISTS shoppingcart CASCADE;
@@ -12,7 +12,7 @@ CREATE TABLE users
     CONSTRAINT users_pkey
     PRIMARY KEY,
   username VARCHAR(40),
-  password VARCHAR(40),
+  password VARCHAR(80),
   email VARCHAR(80)
 );
 
@@ -20,12 +20,12 @@ CREATE TABLE users
 CREATE TABLE products
 (
 id INT PRIMARY KEY,
-name varchar(40),
-description varchar(40),
+name VARCHAR(500),
+description VARCHAR(500),
 defaultPrice INTEGER,
-defaultCurrency VARCHAR(40),
-productCategory VARCHAR (40),
-supplier VARCHAR (40)
+defaultCurrency VARCHAR(500),
+productCategory VARCHAR (500),
+supplier VARCHAR (500)
 );
 CREATE TABLE supplier
 (
@@ -110,4 +110,8 @@ ALTER SEQUENCE public.shoppingcart_id_seq OWNED BY public.shoppingcart.id;
 CREATE SEQUENCE public.productcategory_id_seq NO MINVALUE NO MAXVALUE NO CYCLE;
 ALTER TABLE public.productcategory ALTER COLUMN id SET DEFAULT nextval('public.productcategory_id_seq');
 ALTER SEQUENCE public.productcategory_id_seq OWNED BY public.productcategory.id;
+
+CREATE SEQUENCE public.products_id_seq NO MINVALUE NO MAXVALUE NO CYCLE;
+ALTER TABLE public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq');
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
