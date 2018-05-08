@@ -7,8 +7,9 @@ public class Supplier extends BaseModel {
     private transient List<Product> products;
 
     public Supplier(String name, String description) {
-        super(name);
+        super(name,description);
         this.products = new ArrayList<>();
+
     }
 
     public void setProducts(ArrayList<Product> products) {

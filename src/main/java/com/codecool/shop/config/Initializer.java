@@ -1,5 +1,6 @@
 package com.codecool.shop.config;
 
+import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
@@ -21,15 +22,22 @@ public class Initializer implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
+        System.out.println(amazon.getDescription());
+        supplierDataStoreJdbc.add(amazon);
         supplierDataStore.add(amazon);
         Supplier lenovo = new Supplier("Lenovo", "Computers and Phones");
         supplierDataStore.add(lenovo);
+        supplierDataStoreJdbc.add(lenovo);
         Supplier samsung = new Supplier("Samsung", "Tablets, Phones and Computers");
         supplierDataStore.add(samsung);
+        supplierDataStoreJdbc.add(samsung);
+
 
         //setting up a new product category
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
