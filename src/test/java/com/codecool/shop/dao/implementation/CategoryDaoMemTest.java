@@ -50,4 +50,11 @@ class CategoryDaoMemTest {
     void gettingInvalidCategoryByIdTest(){
         assertNull(productCategoryDaoMem.find(0));
     }
+
+    @Test
+    void removingCategoryTest(){
+        productCategoryDaoMem.remove(1);
+        assertNull(productCategoryDaoMem.find(1));
+
+    }
 }
