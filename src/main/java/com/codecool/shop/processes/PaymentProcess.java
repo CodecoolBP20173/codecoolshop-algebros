@@ -17,17 +17,18 @@ public class PaymentProcess extends AbstractProcess {
     }
 
     protected void action(Order order) {
-        order.pay(this);
-        HashMap<String, String> buyerInfo = order.getCheckoutProcess().getBuyerInfo();
-        JSONArray buyerJsonArray = new JSONArray();
-        for (HashMap.Entry<String, String> pair : buyerInfo.entrySet()) {
-            buyerJsonArray.add(pair.getKey() + ":" + pair.getValue());
+        if (order.pay(this)) {
+            HashMap<String, String> buyerInfo = order.getCheckoutProcess().getBuyerInfo();
+            JSONArray buyerJsonArray = new JSONArray();
+            for (HashMap.Entry<String, String> pair : buyerInfo.entrySet()) {
+                buyerJsonArray.add(pair.getKey() + ":" + pair.getValue());
+            }
+            String orderString = order.getCartItems().toJSONString();
+            AdminLog cartLog = CheckoutProcess.getCartLog();
+            cartLog.logStringToAdminLog(order.getId(), orderString);
+            cartLog.logStringToAdminLog(order.getId(), buyerJsonArray.toJSONString());
+            MailProcess.send(order);
+            cartLog.logStringToAdminLog(order.getId(), "Order with ID: " + order.getId() + " payment successful.");
         }
-        String orderString = order.getCartItems().toJSONString();
-        AdminLog cartLog = CheckoutProcess.getCartLog();
-        cartLog.logStringToAdminLog(order.getId(), orderString);
-        cartLog.logStringToAdminLog(order.getId(), buyerJsonArray.toJSONString());
-        MailProcess.send(order);
-        cartLog.logStringToAdminLog(order.getId(), "Order with ID: " + order.getId() + " payment successful.");
     }
 }

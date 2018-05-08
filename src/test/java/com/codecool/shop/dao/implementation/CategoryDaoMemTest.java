@@ -49,7 +49,7 @@ class CategoryDaoMemTest {
 
     @Test
     void gettingInvalidCategoryByIdTest() {
-        assertNull(productCategoryDaoMem.find(0));
+        assertNull(productCategoryDaoMem.find(-10));
     }
 
     @Test
@@ -57,6 +57,14 @@ class CategoryDaoMemTest {
         productCategoryDaoMem.remove(1);
         assertNull(productCategoryDaoMem.find(1));
 
+    }
+
+    @Test
+    void removingInvalidCategory(){
+        int sizeBeforeRemoving = productCategoryDaoMem.getAll().size();
+        productCategoryDaoMem.remove(1234567);
+        int sizeAfterRemoving = productCategoryDaoMem.getAll().size();
+        assertEquals(sizeBeforeRemoving,sizeAfterRemoving);
     }
 
     @Test
