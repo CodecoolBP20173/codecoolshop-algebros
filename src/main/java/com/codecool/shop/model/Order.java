@@ -1,6 +1,8 @@
 package com.codecool.shop.model;
 
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.processes.CheckoutProcess;
+import com.codecool.shop.processes.PaymentProcess;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

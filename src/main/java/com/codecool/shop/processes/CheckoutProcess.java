@@ -1,8 +1,9 @@
-package com.codecool.shop.model;
+package com.codecool.shop.processes;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.codecool.shop.controller.AdminLog;
+import com.codecool.shop.model.Order;
 
 public class CheckoutProcess extends AbstractProcess {
     private int processId;

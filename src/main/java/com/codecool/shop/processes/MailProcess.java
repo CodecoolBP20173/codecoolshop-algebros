@@ -1,11 +1,13 @@
-package com.codecool.shop.model;
+package com.codecool.shop.processes;
+
+import com.codecool.shop.model.Order;
 
 import java.io.*;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-public class mail
+public class MailProcess
 {
     public static void send(Order order)
     {
@@ -14,7 +16,7 @@ public class mail
         String city = order.getCheckoutProcess().getBuyerInfo().get("city").toString();
         String adress = order.getCheckoutProcess().getBuyerInfo().get("address").toString();
         String orderId = Integer.toString(order.getId());
-        String to = order.getCheckoutProcess().getBuyerInfo().get("email").toString();
+        String to = order.getCheckoutProcess().getBuyerInfo().get("email");
 
         String user = System.getenv("serverEmailName");
         String pass = System.getenv("serverEmailPassword");
