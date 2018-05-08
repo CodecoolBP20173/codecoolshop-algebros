@@ -24,20 +24,30 @@ class CategoryDaoMemTest {
     }
 
     @Test
-    void addingAndRetrievingCategoryTest() {
+    void addingCategoryTest() {
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
         productCategoryDaoMem.add(tablet);
-        assertEquals(tablet.getName(), productCategoryDaoMem.find("Tablet").getName());
+        assertEquals(tablet, productCategoryDaoMem.find("Tablet"));
     }
 
     @Test
     void gettingValidCategoryByStringTest() {
         ProductCategory notebook = new ProductCategory("Notebook", "Hardware", "Portable comupters");
-        assertEquals(notebook.getName(), productCategoryDaoMem.find("Notebook").getName());
+        assertEquals(notebook, productCategoryDaoMem.find("Notebook"));
     }
 
     @Test
     void gettingInvalidCategoryByStringTest() {
         assertNull(productCategoryDaoMem.find("null"));
+    }
+
+    @Test
+    void gettingValidCategoryByIdTest() {
+        assertEquals(ProductCategory.class,productCategoryDaoMem.find(1).getClass());
+    }
+
+    @Test
+    void gettingInvalidCategoryByIdTest(){
+        assertNull(productCategoryDaoMem.find(0));
     }
 }
