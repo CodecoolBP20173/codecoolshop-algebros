@@ -2,16 +2,17 @@ package com.codecool.shop.dao.implementation;
 
 
 import com.codecool.shop.model.ProductCategory;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryDaoMemTest {
-    private static ProductCategoryDaoMem productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
+    private static ProductCategoryDaoMem productCategoryDaoMem;
 
-    @BeforeAll
-    static void setup() {
+    @BeforeEach
+    void setup() {
+        productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
         ProductCategory smartPhone = new ProductCategory("Smart Phone", "Hardware", "A smart phone is a small mobile computer, with the additional feature of making phone calls.");
         ProductCategory notebook = new ProductCategory("Notebook", "Hardware", "Portable comupters");
         productCategoryDaoMem.add(smartPhone);
@@ -43,18 +44,28 @@ class CategoryDaoMemTest {
 
     @Test
     void gettingValidCategoryByIdTest() {
-        assertEquals(ProductCategory.class,productCategoryDaoMem.find(1).getClass());
+        assertEquals(ProductCategory.class, productCategoryDaoMem.find(1).getClass());
     }
 
     @Test
-    void gettingInvalidCategoryByIdTest(){
+    void gettingInvalidCategoryByIdTest() {
         assertNull(productCategoryDaoMem.find(0));
     }
 
     @Test
-    void removingCategoryTest(){
+    void removingCategoryTest() {
         productCategoryDaoMem.remove(1);
         assertNull(productCategoryDaoMem.find(1));
 
+    }
+
+    @Test
+    void addingExistingCategoryTest() {
+        ProductCategory testing = new ProductCategory("Testing", "Testing", "Testing Testing");
+        productCategoryDaoMem.add(testing);
+        int listSizeAfterFirstAdding = productCategoryDaoMem.getAll().size();
+        productCategoryDaoMem.add(testing);
+        int listSizeAfterSecondAdding = productCategoryDaoMem.getAll().size();
+        assertEquals(listSizeAfterFirstAdding, listSizeAfterSecondAdding);
     }
 }
