@@ -27,6 +27,7 @@ defaultCurrency VARCHAR(500),
 productCategory VARCHAR (500),
 supplier VARCHAR (500)
 );
+CREATE UNIQUE INDEX products_name_uindex ON public.products (name);
 CREATE TABLE supplier
 (
 id INT PRIMARY KEY,
