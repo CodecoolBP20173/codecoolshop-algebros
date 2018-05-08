@@ -28,55 +28,68 @@
     <title>Payment</title>
 
 </head>
-<body style="background-color:darkorange;">
+<body>
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-body" align="center">
                     <h2>Shopping Cart:</h2>
-                        <table  class="table" align="center">
-                            <thead>
-                                <td>Product name</td>
-                                <td>Quantity</td>
-                                <td>Price</td>
-                            </thead>
-                            <tbody th:each="prod,iterStart:${shoppingCart}">
-                                <td th:text="${prod['name']}">text</td>
-                                <td th:text="${prod['quantity']}">text</td>
-                                <td th:text="${prod['defaultPrice']} + ' USD'">text</td>
-                            </tbody>
-                        </table>
-                        <div class="alignRight"><strong>Total Price: </strong><span th:text="${sumPrice} + ' USD'"></span></div>
+                    <table class="table" align="center">
+                        <thead>
+                        <tr>
+                            <th>Product name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="prod,iterStart:${shoppingCart}">
+                        <tr>
+                            <td th:text="${prod['name']}">text</td>
+                            <td th:text="${prod['quantity']}">text</td>
+                            <td th:text="${prod['defaultPrice']} + ' USD'">text</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="alignRight"><strong>Total Price: </strong><span th:text="${sumPrice} + ' USD'"></span>
                     </div>
+                </div>
                 <div class="row">
                     <div class="col" align="center">
                         <div class="card">
                             <div class="card-body">
                                 <form action="/checkout" method="post">
                                     <h2>Customer information</h2><br>
-                                    <p>Name</p>
-                                    <input type="text" name="name" required>
-                                    <br>
-                                    <p>E-mail</p>
-                                    <input type="email" name="email" placeholder="xyz@zxy.yzx" required><br>
-                                    <br>
-                                    <p>Phone number</p>
-                                    <input type="text" name="phone" placeholder="0036999876543" required><br>
-                                        <div class="col-4">
-                                            <br><p>Billing address</p>
-                                            <input type="text" name="country" placeholder="Country" required>
-                                            <input type="text" name="city" placeholder="City" required>
-                                            <input type="text" name="zip" placeholder="Zipcode" required>
-                                            <input type="text" name="address" placeholder="Address" required><br>
-                                        </div>
-                                        <div class="col-4">
-                                            <br><p>Shipping address</p>
-                                            <input type="text" name="country" placeholder="Country">
-                                            <input type="text" name="city" placeholder="City">
-                                            <input type="text" name="zip" placeholder="Zipcode">
-                                            <input type="text" name="address" placeholder="Address"><br>
-                                        </div>
+                                    <label for="checkoutName">Name</label><br>
+                                    <input id="checkoutName" type="text" name="name" required><br>
+                                    <label for="checkoutEmail">E-mail</label><br>
+                                    <input id="checkoutEmail" type="email" name="email" required><br><br>
+                                    <label for="checkoutPhoneNumber">Phone</label><br>
+                                    <input id="checkoutPhoneNumber" type="text" name="phone" required><br>
+                                    <div class="col-4">
+                                        <br>
+                                        <p>Billing address</p>
+                                        <label for="billingCountry">Country</label><br>
+                                        <input id="billingCountry" type="text" name="country" required><br>
+                                        <label for="billingCity">City</label><br>
+                                        <input id="billingCity" type="text" name="city" required><br>
+                                        <label for="billingZipCode">ZIP Code</label><br>
+                                        <input id="billingZipCode" type="text" name="zip" required><br>
+                                        <label for="billingAddress">Address</label><br>
+                                        <input id="billingAddress" type="text" name="address" required><br>
+                                    </div>
+                                    <div class="col-4">
+                                        <br>
+                                        <p>Shipping address</p>
+                                        <label for="shippingCountry">Country</label><br>
+                                        <input id="shippingCountry" type="text" name="country"><br>
+                                        <label for="shippingCity">City</label><br>
+                                        <input id="shippingCity" type="text" name="city"><br>
+                                        <label for="shippingZipCode">ZIP Code</label><br>
+                                        <input id="shippingZipCode" type="text" name="zip"><br>
+                                        <label for="shippingAddress">Address</label><br>
+                                        <input id="shippingAddress" type="text" name="address"><br><br>
+                                    </div>
                                     <br>
                                     <button type="submit" id="sub">Checkout</button>
                                 </form>

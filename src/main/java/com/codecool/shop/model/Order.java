@@ -1,12 +1,13 @@
 package com.codecool.shop.model;
 
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.processes.CheckoutProcess;
+import com.codecool.shop.processes.PaymentProcess;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,17 +18,17 @@ public class Order implements Orderable {
     private CheckoutProcess checkoutProcess;
     private PaymentProcess paymentProcess;
 
-    public List<Product> getItemList() {
+    private List<Product> getItemList() {
         return itemList;
     }
 
     private List<Product> itemList = new ArrayList<>();
 
-    public HashMap<Integer, Integer> getOrderQuantity() {
+    private HashMap<Integer, Integer> getOrderQuantity() {
         return orderQuantity;
     }
 
-    private HashMap<Integer , Integer> orderQuantity = new HashMap<>();
+    private HashMap<Integer, Integer> orderQuantity = new HashMap<>();
 
     public Order() {
         this.id = uniqueId.getAndIncrement();
@@ -42,7 +43,7 @@ public class Order implements Orderable {
         return checkoutProcess;
     }
 
-    public String getStatus() {
+    private String getStatus() {
         return status;
     }
 
@@ -50,13 +51,14 @@ public class Order implements Orderable {
         if (!(itemList.contains(ProductDaoMem.getInstance().find(id)))) {
             itemList.add(ProductDaoMem.getInstance().find(id));
         }
-        orderQuantity.merge(id, 1,Integer::sum);
+        orderQuantity.merge(id, 1, Integer::sum);
     }
 
     public void removeProduct(int id) {
-            itemList.remove(ProductDaoMem.getInstance().find(id));
-            orderQuantity.remove(id);
+        itemList.remove(ProductDaoMem.getInstance().find(id));
+        orderQuantity.remove(id);
     }
+
     public void decrementQuantityOfProduct(int id) {
         if (orderQuantity.get(id) == 1) {
             itemList.remove(ProductDaoMem.getInstance().find(id));
@@ -66,7 +68,7 @@ public class Order implements Orderable {
         }
     }
 
-    
+
     public boolean checkout(CheckoutProcess checkoutProcess) {
         if (this.getStatus().equals("new")) {
             this.status = "checked";
@@ -84,18 +86,16 @@ public class Order implements Orderable {
         return false;
     }
 
-    public JSONArray getCartItems(){
+    public JSONArray getCartItems() {
         JSONArray productList = new JSONArray();
         JSONObject jsonObject;
-        Iterator<Product> iterator = this.getItemList().iterator();
-        while (iterator.hasNext()){
+        for (Product product1 : this.getItemList()) {
             jsonObject = new JSONObject();
-            Product product = iterator.next();
-            jsonObject.put("id", product.getId());
-            jsonObject.put("name", product.getName());
-            jsonObject.put("defaultPrice", product.getDefaultPrice());
-            jsonObject.put("quantity", this.getOrderQuantity().get(product.getId()));
-            jsonObject.put("price", product.getPrice());
+            jsonObject.put("id", product1.getId());
+            jsonObject.put("name", product1.getName());
+            jsonObject.put("defaultPrice", product1.getDefaultPrice());
+            jsonObject.put("quantity", this.getOrderQuantity().get(product1.getId()));
+            jsonObject.put("price", product1.getPrice());
             jsonObject.put("totalPrice", this.totalPrice());
             productList.add(jsonObject);
 
@@ -103,16 +103,17 @@ public class Order implements Orderable {
         return productList;
     }
 
-    public JSONObject getProductQuantity(int id){
+    public JSONObject getProductQuantity(int id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("quantity", this.getOrderQuantity().get(id));
         jsonObject.put("totalPrice", this.totalPrice());
         return jsonObject;
     }
+
     public double totalPrice() {
         double sumPrice = 0;
         List<Product> orderCartItems = this.getItemList();
-        for (Product item: orderCartItems) {
+        for (Product item : orderCartItems) {
             sumPrice += (item.getDefaultPrice() * this.getOrderQuantity().get(item.getId()));
         }
         return sumPrice;
