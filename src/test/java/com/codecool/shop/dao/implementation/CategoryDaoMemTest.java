@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CategoryDaoMemTest {
+class CategoryDaoMemTest {
     private static ProductCategoryDaoMem productCategoryDaoMem = ProductCategoryDaoMem.getInstance();
 
     @BeforeAll
