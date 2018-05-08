@@ -1,19 +1,24 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.config.Initializer;
+import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.dao.Jdbc.Utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao{
 
     private static ProductDaoJdbc instance= null;
+    ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
+    SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
+
+
 
     private ProductDaoJdbc(){
 
@@ -50,6 +55,23 @@ public class ProductDaoJdbc implements ProductDao{
 
     @Override
     public Product find(int id) {
+
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE id = ?;");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                return result;
+            } else {
+                return null;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
