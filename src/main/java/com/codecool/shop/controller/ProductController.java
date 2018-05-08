@@ -42,6 +42,9 @@ public class ProductController extends HttpServlet {
         if (category != null) {
             context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(category)));
         }
+        else {
+            context.setVariable("products", productDataStore.getAll());
+        }
         List<Supplier> suppliers = supplierDataStore.getAll();
         context.setVariable("suppliers", suppliers);
         String supplier = req.getParameter("supplier");
