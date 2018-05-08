@@ -3,6 +3,7 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,8 +27,10 @@ public class SupplierDaoMem implements SupplierDao {
 
     @Override
     public void add(Supplier supplier) {
-        supplier.setId(data.size() + 1);
-        data.add(supplier);
+        if (this.find(supplier.getName()) != null) {
+            supplier.setId(data.size() + 1);
+            data.add(supplier);
+        }
     }
 
     @Override
