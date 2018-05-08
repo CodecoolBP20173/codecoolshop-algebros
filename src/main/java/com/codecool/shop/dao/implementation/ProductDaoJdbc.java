@@ -83,8 +83,23 @@ public class ProductDaoJdbc implements ProductDao{
 
     @Override
     public List<Product> getAll() {
-        return null;
+        List<Product>allProducts=new ArrayList<>();
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                allProducts.add(result);
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return allProducts;
     }
+
 
     @Override
     public List<Product> getBy(Supplier supplier) {
@@ -108,6 +123,21 @@ public class ProductDaoJdbc implements ProductDao{
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
-        return null;
+        List<Product>productsByCategory=new ArrayList<>();
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE productcategory = ?;");
+            preparedStatement.setString(1, productCategory.getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                productsByCategory.add(result);
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return productsByCategory;
     }
 }
