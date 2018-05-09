@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -116,7 +117,17 @@ class ProductDaoTest {
     void getProductByValidCategory() {
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
         List products = productDao.getBy(tablet);
-        Product product = (Product) products.get(1);
-        assertEquals(tablet, product.getProductCategory());
+        boolean isTablet = true;
+        for (Object object : products) {
+            Product product = (Product) object;
+            if (!isTablet) {
+                break;
+            } else {
+                if (!product.getProductCategory().equals(tablet)){
+                    isTablet=false;
+                }
+            }
+        }
+        assertTrue(isTablet);
     }
 }
