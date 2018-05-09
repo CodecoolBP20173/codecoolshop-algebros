@@ -16,6 +16,10 @@ public class ProductCategory extends BaseModel {
         this.description = description;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
     void addProduct(Product product) {
         this.products.add(product);
     }

@@ -10,8 +10,8 @@ import java.sql.*;
 public class Utils {
 
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/codecoolshop";
-    private static final String DB_USER = "dzsoi";
-    private static final String DB_PASSWORD = "george";
+    private static final String DB_USER = "gergelyk89";
+    private static final String DB_PASSWORD = "DaiFtu74";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
