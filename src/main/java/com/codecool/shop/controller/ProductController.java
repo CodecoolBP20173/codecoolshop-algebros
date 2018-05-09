@@ -51,7 +51,6 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("recipient", "World");
         List<ProductCategory> categories = productCategoryDataStore.getAll();
-        System.out.println(productCategoryDataStore.find(2));
 
         context.setVariable("categories", categories);
         String category = req.getParameter("category");
@@ -91,6 +90,11 @@ public class ProductController extends HttpServlet {
         switch (process) {
             case "add":
                 order.addProduct(id);
+                if (ProductControllerJdbc.findQuantity(id)==0){
+                    ProductControllerJdbc.add(id,1,1);
+                }else{
+                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id)+1,id);
+                }
                 break;
             case "remove":
                 order.removeProduct(id);
