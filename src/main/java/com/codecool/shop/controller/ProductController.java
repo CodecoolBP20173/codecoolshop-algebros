@@ -51,6 +51,8 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("recipient", "World");
         List<ProductCategory> categories = productCategoryDataStore.getAll();
+        System.out.println(productCategoryDataStore.find(2));
+
         context.setVariable("categories", categories);
         String category = req.getParameter("category");
         if (category != null) {

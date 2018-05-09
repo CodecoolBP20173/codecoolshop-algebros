@@ -26,7 +26,7 @@ public class Initializer implements ServletContextListener {
         ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
         ProductDaoJdbc productDataStoreJdbc = ProductDaoJdbc.getInstance();
 
-        if (productCategoryDataStoreJdbc.getAll() != null) {
+        if (productCategoryDataStoreJdbc.getAll().size()>0) {
             this.isDataAvailable = true;
         }
 
