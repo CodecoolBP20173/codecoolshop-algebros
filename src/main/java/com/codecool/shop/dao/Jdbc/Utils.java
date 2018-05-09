@@ -9,9 +9,9 @@ import java.sql.*;
 
 public class Utils {
 
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/codecoolshop";
-    private static final String DB_USER = "dzsoi";
-    private static final String DB_PASSWORD = "george";
+    private static final String DATABASE = System.getenv("database");
+    private static final String DB_USER = System.getenv("databaseUsername");
+    private static final String DB_PASSWORD = System.getenv("databasePassword");
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
