@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierDaoJdbc implements SupplierDao {
@@ -45,6 +46,21 @@ public class SupplierDaoJdbc implements SupplierDao {
 
     @Override
     public Supplier find(int id) {
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM supplier WHERE id = ?;");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Supplier result = new Supplier(resultSet.getString("name"),resultSet.getString("description"));
+                return result;
+            } else {
+                return null;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -71,11 +87,32 @@ public class SupplierDaoJdbc implements SupplierDao {
 
     @Override
     public void remove(int id) {
-
+        Connection dbConnection=null;
+        try {
+            dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM supplier WHERE id=?");
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate(); } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<Supplier> getAll() {
-        return null;
+        List<Supplier>allSupplier = new ArrayList<>();
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM supplier;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Supplier result = new Supplier(resultSet.getString("name"),resultSet.getString("description"));
+                allSupplier.add(result);
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return allSupplier;
     }
 }

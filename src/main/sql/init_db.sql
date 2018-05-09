@@ -13,7 +13,8 @@ CREATE TABLE users
     PRIMARY KEY,
   username VARCHAR(40),
   password VARCHAR(80),
-  email VARCHAR(80)
+  email VARCHAR(80),
+  salt VARCHAR(120)
 );
 
 
