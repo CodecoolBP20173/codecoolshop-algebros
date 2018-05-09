@@ -64,6 +64,7 @@ public class ProductDaoJdbc implements ProductDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                result.setId(resultSet.getInt("id"));
                 return result;
             } else {
                 return null;
@@ -98,6 +99,7 @@ public class ProductDaoJdbc implements ProductDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                result.setId(resultSet.getInt("id"));
                 allProducts.add(result);
             }
 
@@ -119,6 +121,7 @@ public class ProductDaoJdbc implements ProductDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                result.setId(resultSet.getInt("id"));
                 productsBySupplier.add(result);
             }
 
@@ -139,6 +142,7 @@ public class ProductDaoJdbc implements ProductDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Product result = new Product(resultSet.getString("name"),Float.parseFloat(resultSet.getString("defaultprice")),resultSet.getString("defaultcurrency"),resultSet.getString("description"),productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
+                result.setId(resultSet.getInt("id"));
                 productsByCategory.add(result);
             }
 

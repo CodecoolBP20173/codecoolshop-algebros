@@ -48,6 +48,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ProductCategory result = new ProductCategory(resultSet.getString("name"),resultSet.getString("department"),resultSet.getString("description"));
+                result.setId(resultSet.getInt("id"));
                 return result;
             } else {
                 return null;
@@ -69,6 +70,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao{
             ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     ProductCategory result = new ProductCategory(resultSet.getString("name"),resultSet.getString("department"),resultSet.getString("description"));
+                    result.setId(resultSet.getInt("id"));
                     return result;
                 } else {
                     return null;
@@ -105,6 +107,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 ProductCategory result = new ProductCategory(resultSet.getString("name"),resultSet.getString("department"),resultSet.getString("description"));
+                result.setId(resultSet.getInt("id"));
                 allProductCategory.add(result);
             }
 

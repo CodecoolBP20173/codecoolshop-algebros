@@ -53,6 +53,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Supplier result = new Supplier(resultSet.getString("name"),resultSet.getString("description"));
+                result.setId(resultSet.getInt("id"));
                 return result;
             } else {
                 return null;
@@ -73,6 +74,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Supplier result = new Supplier(resultSet.getString("name"),resultSet.getString("description"));
+                result.setId(resultSet.getInt("id"));
                 return result;
             } else {
                 return null;
@@ -106,6 +108,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Supplier result = new Supplier(resultSet.getString("name"),resultSet.getString("description"));
+                result.setId(resultSet.getInt("id"));
                 allSupplier.add(result);
             }
 
