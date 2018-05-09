@@ -8,7 +8,7 @@ form {
     background: #fff;
     padding: 4em 4em 2em;
     max-width: 400px;
-    margin: 50px auto 0;
+    margin: 20px auto 0;
     box-shadow: 0 0 1em #222;
     border-radius: 2px;
 }
@@ -91,14 +91,8 @@ form label.floatLabel {
 
 #footer {
     position:absolute;
-    bottom:0;
+    bottom:-10px;
     width:100%;
 }
 
-#container {
-    height:100%;
-}
 
-html {
-    height: 100%;
-}
