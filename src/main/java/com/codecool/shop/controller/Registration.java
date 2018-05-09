@@ -41,7 +41,6 @@ public class Registration extends HttpServlet {
         System.out.println(userInfo.put("email",req.getParameter("Email")));
         System.out.println(userInfo.put("password", req.getParameter("password")));
         hashUserInfo(req.getParameter("password"));
-        HttpSession session = req.getSession();
         resp.sendRedirect("/");
     }
 
@@ -53,5 +52,9 @@ public class Registration extends HttpServlet {
             System.out.println(exc.getMessage());
         }
         String hashedpwrd = HashUtils.get_SHA_256_SecurePassword(pword, salt);
+    }
+
+    private boolean loginAuth(String pwrd, String userSalt, String hashFromDb) {
+        return hashFromDb.equals(HashUtils.get_SHA_256_SecurePassword(pwrd, userSalt.getBytes()));
     }
 }
