@@ -30,8 +30,6 @@ public class Checkout extends HttpServlet {
         }
         Order order = (Order) session.getAttribute("Order");
         context.setVariable("shoppingCart", order.getCartItems());
-        double sumPrice = order.totalPrice();
-        context.setVariable("sumPrice", sumPrice);
         engine.process("product/checkout.html", context, resp.getWriter());
     }
 

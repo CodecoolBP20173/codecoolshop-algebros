@@ -35,29 +35,32 @@ public class ProductController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("recipient", "World");
         List<ProductCategory> categories = productCategoryDataStore.getAll();
-        context.setVariable("categories", categories);
+        List<Supplier> suppliers = supplierDataStore.getAll();
+        HttpSession session = NetworkUtils.getHTTPSession(req);
+        Order order = (Order) session.getAttribute("Order");
+
         String category = req.getParameter("category");
-        if (category != null) {
-            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(category)));
-        }
-        else {
+        String supplier = req.getParameter("supplier");
+        if (category == null && supplier == null){
             context.setVariable("products", productDataStore.getAll());
         }
-        List<Supplier> suppliers = supplierDataStore.getAll();
-        context.setVariable("suppliers", suppliers);
-        String supplier = req.getParameter("supplier");
-        if (supplier != null) {
+        else if (category == null){
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
         }
-        if (req.getSession(false) == null) {
-            HttpSession session = req.getSession(true);
-            session.setAttribute("Order", new Order());
+        else if (supplier == null){
+            System.out.println(category);
+            ProductCategory productCategory = productCategoryDataStore.find(category);
+            context.setVariable("products", productDataStore.getBy(productCategory));
         }
-        HttpSession session = req.getSession(true);
-        Order order = (Order) session.getAttribute("Order");
+        else {
+            context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier), productCategoryDataStore.find(category)));
+        }
+
         context.setVariable("shoppingCart", order);
+        context.setVariable("categories", categories);
+        context.setVariable("suppliers", suppliers);
+        context.setVariable("recipient", "World");
 
         engine.process("product/index.html", context, resp.getWriter());
     }

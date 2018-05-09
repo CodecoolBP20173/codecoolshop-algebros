@@ -21,6 +21,8 @@ public class Product extends BaseModel {
         return defaultPrice;
     }
 
+    public Currency getDefaultCurrency() { return defaultCurrency; }
+
     public String getPrice() {
         return String.valueOf(this.defaultPrice) + " " + this.defaultCurrency.toString();
     }
