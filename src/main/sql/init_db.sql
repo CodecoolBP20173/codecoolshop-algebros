@@ -29,7 +29,7 @@ CREATE TABLE products
 id INT PRIMARY KEY,
 name VARCHAR(500),
 description VARCHAR(500),
-defaultPrice INTEGER,
+defaultPrice FLOAT,
 defaultCurrency VARCHAR(500),
 productCategory VARCHAR (500),
 supplier VARCHAR (500)
@@ -64,7 +64,7 @@ CREATE TABLE orderlist
     PRIMARY KEY,
   date       DATE,
   status     VARCHAR(40),
-  totalprice INTEGER,
+  totalprice FLOAT,
   products   VARCHAR(80),
   userid     INTEGER NOT NULL
 );
