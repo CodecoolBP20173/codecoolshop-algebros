@@ -5,6 +5,7 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,10 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProductDaoTest {
     private static ProductDao productDao;
+    private boolean isDatabase = false;
 
     @BeforeEach
     void setup() {
-        productDao = ProductDaoMem.getInstance();
+        if (isDatabase) {
+            productDao = ProductDaoJdbc.getInstance();
+            isDatabase = !isDatabase;
+        } else {
+            productDao = ProductDaoMem.getInstance();
+            isDatabase = !isDatabase;
+        }
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
         Supplier lenovo = new Supplier("Lenovo", "Computers and Phones");
         Supplier samsung = new Supplier("Samsung", "Tablets, Phones and Computers");
@@ -41,12 +49,17 @@ class ProductDaoTest {
 
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingInstanceTest() {
-        assertEquals(ProductDaoMem.class, ProductDaoMem.getInstance().getClass());
+        if (productDao.getClass().equals(ProductDaoMem.getInstance().getClass())) {
+            assertEquals(ProductDaoMem.class, ProductDaoMem.getInstance().getClass());
+        } else {
+            assertEquals(ProductDaoJdbc.class,ProductDaoJdbc.getInstance().getClass());
+        }
+
     }
 
-    @Test
+    @RepeatedTest(2)
     void checkIfGetAllDoesNotReturnReferenceTest() {
         List products = productDao.getAll();
         try {
@@ -56,7 +69,7 @@ class ProductDaoTest {
         }
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingAllProductsTest() {
         int expectedListSize = productDao.getAll().size();
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
@@ -66,7 +79,7 @@ class ProductDaoTest {
         assertNotEquals(expectedListSize, productDao.getAll().size());
     }
 
-    @Test
+    @RepeatedTest(2)
     void addValidProductTest() {
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
         ProductCategory notebook = new ProductCategory("Notebook", "Hardware", "Portable comupters");
@@ -76,36 +89,36 @@ class ProductDaoTest {
         assertTrue(products.contains(testProduct));
     }
 
-    @Test
+    @RepeatedTest(2)
     void addInvalidProductTest() {
         assertThrows(NullPointerException.class, () -> productDao.add(null));
     }
 
-    @Test
+    @RepeatedTest(2)
     void findByValidIdTest() {
         assertEquals(Product.class, productDao.find(1).getClass());
     }
 
-    @Test
+    @RepeatedTest(2)
     void findByInvalidIdTest() {
         assertThrows(NullPointerException.class, () -> productDao.add(null));
     }
 
-    @Test
+    @RepeatedTest(2)
     void removeValidProductTest() {
         int expectedLength = productDao.getAll().size();
         productDao.remove(1);
         assertNotEquals(expectedLength, productDao.getAll().size());
     }
 
-    @Test
+    @RepeatedTest(2)
     void removeInvalidProductTest() {
         int expectedLength = productDao.getAll().size();
         productDao.remove(-100);
         assertEquals(expectedLength, productDao.getAll().size());
     }
 
-    @Test
+    @RepeatedTest(2)
     void getProductsByValidSupplier() {
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
         List products = productDao.getBy(amazon);
@@ -113,7 +126,7 @@ class ProductDaoTest {
         assertEquals(amazon, product.getSupplier());
     }
 
-    @Test
+    @RepeatedTest(2)
     void getProductByValidCategory() {
         ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
         List products = productDao.getBy(tablet);
@@ -123,8 +136,8 @@ class ProductDaoTest {
             if (!isTablet) {
                 break;
             } else {
-                if (!product.getProductCategory().equals(tablet)){
-                    isTablet=false;
+                if (!product.getProductCategory().equals(tablet)) {
+                    isTablet = false;
                 }
             }
         }

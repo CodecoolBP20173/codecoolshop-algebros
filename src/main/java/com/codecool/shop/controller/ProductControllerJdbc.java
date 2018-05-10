@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductControllerJdbc {
+    public static void add(int id, int userid, int quantity) {
+        Connection dbConnection = null;
 
     private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
     private static SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
@@ -29,21 +31,25 @@ public class ProductControllerJdbc {
             preparedStatement.setInt(1, userid);
             preparedStatement.setInt(2, id);
             preparedStatement.setInt(3, quantity);
-            preparedStatement.executeUpdate(); } catch (SQLException e) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-        public static void update(int quantity,int id) {
-            Connection dbConnection=null;
-            try {
-                dbConnection = Utils.getConnection();
-                PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
-                preparedStatement.setInt(1, quantity);
-                preparedStatement.setInt(2, id);
-                preparedStatement.executeUpdate(); } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
+    public static void update(int quantity, int id) {
+        Connection dbConnection = null;
+        try {
+            dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
     public static int findQuantity(int id) {
 
         try {
@@ -79,12 +85,27 @@ public class ProductControllerJdbc {
                 Supplier supplier = supplierDataStoreJdbc.find(resultSet.getString("supplier"));
                 return new Product(name,defaultPrice,defaultCurrency,description,category,supplier);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public static Product getShoppingCart() {
-        return null;
+
+    public static List<Product> getShoppingCart() {
+        List<Product> shoppingCart = new ArrayList<>();
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Product product = findProductByProductId(resultSet.getInt("productid"));
+                shoppingCart.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return shoppingCart;
     }
 }
