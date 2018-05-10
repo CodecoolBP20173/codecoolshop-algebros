@@ -48,6 +48,9 @@ public class ProductController extends HttpServlet {
         String category = req.getParameter("category");
         String supplier = req.getParameter("supplier");
         HttpSession session = NetworkUtils.getHTTPSession(req);
+        if (session.getAttribute("loggedIn") == null) {
+            session.setAttribute("loggedIn", "false");
+        }
         Order order = (Order) session.getAttribute("Order");
         if (category == null && supplier == null) {
             context.setVariable("products", productDataStore.getAll());
