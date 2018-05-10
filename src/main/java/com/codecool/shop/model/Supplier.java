@@ -2,6 +2,7 @@ package com.codecool.shop.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Supplier extends BaseModel {
     private transient List<Product> products;
@@ -9,6 +10,7 @@ public class Supplier extends BaseModel {
     public Supplier(String name, String description) {
         super(name,description);
         this.products = new ArrayList<>();
+        this.description = description;
 
     }
 
@@ -20,7 +22,7 @@ public class Supplier extends BaseModel {
         return this.products;
     }
 
-    public void addProduct(Product product) {
+    void addProduct(Product product) {
         this.products.add(product);
     }
 
@@ -32,5 +34,26 @@ public class Supplier extends BaseModel {
                 this.name,
                 this.description
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Supplier)) {
+            return false;
+        } else {
+            Supplier objectAsSupplier = (Supplier) o;
+            if (Objects.equals(name, objectAsSupplier.name))
+                return Objects.equals(description, objectAsSupplier.description);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(products);
     }
 }

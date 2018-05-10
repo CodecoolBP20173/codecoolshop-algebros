@@ -3,10 +3,8 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.util.NetworkUtils;
@@ -14,6 +12,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import com.codecool.shop.model.Order;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,39 +23,50 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
+    ProductDao productDataStore;
+    ProductCategoryDao productCategoryDataStore;
+    SupplierDao supplierDataStore;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-
-//        Map params = new HashMap<>();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (System.getenv("datastore").equals("jdbc")) {
+            productDataStore = ProductDaoJdbc.getInstance();
+            productCategoryDataStore = ProductCategoryDaoJdbc.getInstance();
+            supplierDataStore = SupplierDaoJdbc.getInstance();
+        } else {
+            productDataStore = ProductDaoMem.getInstance();
+            productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            supplierDataStore = SupplierDaoMem.getInstance();
+        }
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("recipient", "World");
         List<ProductCategory> categories = productCategoryDataStore.getAll();
+        List<Supplier> suppliers = supplierDataStore.getAll();
+
         context.setVariable("categories", categories);
         String category = req.getParameter("category");
-        if (category != null) {
-            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(category)));
-        }
-        else {
-            context.setVariable("products", productDataStore.getAll());
-        }
-        List<Supplier> suppliers = supplierDataStore.getAll();
-        context.setVariable("suppliers", suppliers);
         String supplier = req.getParameter("supplier");
-        if (supplier != null) {
-            context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
-        }
         HttpSession session = NetworkUtils.getHTTPSession(req);
         if (session.getAttribute("loggedIn") == null) {
             session.setAttribute("loggedIn", "false");
         }
         Order order = (Order) session.getAttribute("Order");
+        if (category == null && supplier == null) {
+            context.setVariable("products", productDataStore.getAll());
+        } else if (category == null) {
+            context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
+        } else if (supplier == null) {
+            ProductCategory productCategory = productCategoryDataStore.find(category);
+            context.setVariable("products", productDataStore.getBy(productCategory));
+        } else {
+            context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier), productCategoryDataStore.find(category)));
+        }
+
         context.setVariable("shoppingCart", order);
+        context.setVariable("categories", categories);
+        context.setVariable("suppliers", suppliers);
+        context.setVariable("recipient", "World");
 
         engine.process("product/index.html", context, resp.getWriter());
     }
@@ -71,6 +81,11 @@ public class ProductController extends HttpServlet {
         switch (process) {
             case "add":
                 order.addProduct(id);
+                if (ProductControllerJdbc.findQuantity(id) == 0) {
+                    ProductControllerJdbc.add(id, 1, 1);
+                } else {
+                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id) + 1, id);
+                }
                 break;
             case "remove":
                 order.removeProduct(id);
