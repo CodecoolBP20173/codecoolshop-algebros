@@ -102,7 +102,7 @@ public class OrderJdbc {
                 jsonObject.put("id",resultSet.getInt("productid"));
                 int quantity = resultSet.getInt("quantity");
                 jsonObject.put("quantity", quantity);
-                jsonObject.put("price", product.getDefaultPrice() * quantity);
+                jsonObject.put("price", product.getDefaultPrice());
                 cartItems.add(jsonObject);
             }
         } catch (SQLException e) {
