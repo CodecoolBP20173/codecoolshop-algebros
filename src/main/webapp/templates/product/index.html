@@ -45,7 +45,10 @@
                 <button onclick="CategoriesDropdown()" class="dropbtn">Category</button>
                 <div id="CategoriesDropdown" class="dropdown-content">
                     <div th:each="cat,iterStart:${categories}">
-                        <a th:href="@{'/?category=' + ${cat.name}}" th:text="${cat.name}"></a>
+                        <a class="categorySelector" th:data-category="${cat.name}" th:text="${cat.name}"></a>
+                    </div>
+                    <div>
+                        <a class="categorySelector" data-category="None">None</a>
                     </div>
                 </div>
             </div>
@@ -53,7 +56,10 @@
                 <button onclick="SuppliersDropdown()" class="dropbtn">Supplier</button>
                 <div id="SuppliersDropdown" class="dropdown-content">
                     <div th:each="sup,iterStart:${suppliers}">
-                        <a th:href="@{'/?supplier=' + ${sup.name}}" th:text="${sup.name}"></a>
+                        <a class="supplierSelector" th:data-supplier="${sup.name}" th:text="${sup.name}"></a>
+                    </div>
+                    <div>
+                        <a class="supplierSelector" data-supplier="None">None</a>
                     </div>
                 </div>
             </div>
@@ -99,17 +105,16 @@
                     <div class="modal-body">
 
                         <table class="table">
-                            <tbody id="cartTableBody">
-                            <tr>
+                            <thead><tr>
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
-                                <th></th>
-                            </tr>
+                                <th> </th>
+                            </tr></thead>
+                            <tbody id="cartTableBody">
                             </tbody>
-
                         </table>
-                        <div class="alignRight"><strong>Total Price: </strong><span id="totalPricePlace"></span></div>
+                        <div class="alignRight"><strong>Total Price: </strong><span id="totalPricePlace"></span><strong th:text=" USD"> Currency </strong></div>
                     </div>
                     <div class="modal-footer">
                         <form action="/checkout" method="get">

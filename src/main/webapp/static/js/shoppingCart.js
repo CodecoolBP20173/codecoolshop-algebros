@@ -21,8 +21,37 @@ $("#cartButton").on("click", function () {
             const products = JSON.parse(productsJSONString);
             changeCartModal(products);
             addShoppingCartButtonListeners();
-            $("#totalPricePlace").html("<strong>" + Math.round(products[0]["totalPrice"]) + " USD</strong>")
-
         }
     })
+});
+
+$(".categorySelector").on("click", function (event) {
+    let url_string = window.location.href;
+    let url = new URL(url_string);
+    let supplier = url.searchParams.get("supplier");
+    let category = event.target.dataset.category;
+    category = category === "None" ? null : category;
+    createSearchURL(url, category, supplier);
+    window.location.replace(url.toString());
+});
+
+function createSearchURL(url, category, supplier) {
+    url.searchParams.delete("category");
+    url.searchParams.delete("supplier");
+    if (category !== null) {
+        url.searchParams.append("category", category)
+    }
+    if (supplier !== null) {
+        url.searchParams.append("supplier", supplier)
+    }
+}
+
+$(".supplierSelector").on("click", function (event) {
+    let url_string = window.location.href;
+    let url = new URL(url_string);
+    let category = url.searchParams.get("category");
+    let supplier = event.target.dataset.supplier;
+    supplier = supplier === "None" ? null : supplier;
+    createSearchURL(url, category, supplier);
+    window.location.replace(url.toString());
 });
