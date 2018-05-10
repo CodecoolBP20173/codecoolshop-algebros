@@ -98,7 +98,7 @@ public class ProductController extends HttpServlet {
                 json = order.getProductQuantity(id).toJSONString();
                 break;
             case "openCart":
-                List <cartItem> cartItems= ProductControllerJdbc.getShoppingCart();
+                json = ProductControllerJdbc.getShoppingCart().toJSONString();
                 //json = order.getCartItems().toJSONString();
                 break;
         }

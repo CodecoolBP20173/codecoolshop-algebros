@@ -8,6 +8,8 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.cartItem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -90,22 +92,26 @@ public class ProductControllerJdbc {
         return null;
     }
 
-    public static List<cartItem> getShoppingCart() {
-        List<cartItem> shoppingCart = new ArrayList<>();
+    public static JSONArray getShoppingCart() {
+        JSONArray cartItems = new JSONArray();
         try {
             Connection dbConnection = Utils.getConnection();
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String name = Objects.requireNonNull(findProductByProductId(resultSet.getInt("productid"))).getName();
+                Product product = findProductByProductId(resultSet.getInt("productid"));
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("name", product.getName());
                 int quantity = resultSet.getInt("quantity");
-                int price = resultSet.getInt("price") * quantity;
-                shoppingCart.add(new cartItem(name, quantity, price));
+                jsonObject.put("quantity", quantity);
+                jsonObject.put("price", product.getDefaultPrice() * quantity);
+                cartItems.add(jsonObject);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return shoppingCart;
+        return cartItems;
     }
 }
