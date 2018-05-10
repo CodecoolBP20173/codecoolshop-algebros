@@ -104,6 +104,8 @@ public class ProductControllerJdbc {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("name", product.getName());
                 int quantity = resultSet.getInt("quantity");
+                int id = resultSet.getInt("productid");
+                jsonObject.put("id",id);
                 jsonObject.put("quantity", quantity);
                 jsonObject.put("price", product.getDefaultPrice() * quantity);
                 cartItems.add(jsonObject);
@@ -114,4 +116,17 @@ public class ProductControllerJdbc {
 
         return cartItems;
     }
+    static void updateIncrement(int id) {
+        Connection dbConnection;
+        try {
+            dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
+            preparedStatement.setInt(1, findQuantity(id)+1);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

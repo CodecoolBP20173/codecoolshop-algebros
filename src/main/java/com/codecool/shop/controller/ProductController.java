@@ -90,8 +90,8 @@ public class ProductController extends HttpServlet {
                 json = order.getCartItems().toJSONString();
                 break;
             case "increment":
-                order.addProduct(id);
-                json = order.getProductQuantity(id).toJSONString();
+                ProductControllerJdbc.updateIncrement(id);
+                json = ProductControllerJdbc.getShoppingCart().toJSONString();
                 break;
             case "decrement":
                 order.decrementQuantityOfProduct(id);
