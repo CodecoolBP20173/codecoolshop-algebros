@@ -17,7 +17,7 @@ public class Product extends BaseModel {
         this.setProductCategory(productCategory);
     }
 
-    float getDefaultPrice() {
+    public float getDefaultPrice() {
         return defaultPrice;
     }
 
@@ -50,6 +50,9 @@ public class Product extends BaseModel {
 
     }
 
+    public Currency getDefaultCurrency() {
+        return defaultCurrency;
+    }
 
     @Override
     public String toString() {

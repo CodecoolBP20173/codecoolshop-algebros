@@ -40,5 +40,7 @@ public class ProductCategory extends BaseModel {
         return Objects.equals(department, category.department);
     }
 
-
+    public String getDepartment() {
+        return department;
+    }
 }
