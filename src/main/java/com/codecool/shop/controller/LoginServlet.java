@@ -1,9 +1,12 @@
 package com.codecool.shop.controller;
 
 
+import com.codecool.shop.model.Product;
 import com.codecool.shop.util.HashUtils;
 import com.codecool.shop.util.NetworkUtils;
 import com.codecool.shop.util.SqlUserUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,12 +24,19 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("user");
         HashMap<String, String> userInfo = SqlUserUtils.getUser(email);
-        if (loginAuth(req.getParameter("password"), userInfo.get("salt"), userInfo.get("password"))) {
+        if (!userInfo.isEmpty() && loginAuth(req.getParameter("password"), userInfo.get("salt"), userInfo.get("password"))) {
             HttpSession session = NetworkUtils.getHTTPSession(req);
             session.setAttribute("username", userInfo.get("username"));
             session.setAttribute("userid", userInfo.get("id"));
-            resp.setContentType("text/html;charset=UTF-8");
-            resp.getWriter().write("True");
+            String json = UserInfoToJson(userInfo).toJSONString();
+            resp.getWriter().write(json);
+        } else {
+            JSONArray failToAuth = new JSONArray();
+            JSONObject jsonObject;
+            jsonObject = new JSONObject();
+            jsonObject.put("auth", "False");
+            failToAuth.add(jsonObject);
+            resp.getWriter().write(failToAuth.toJSONString());
         }
     }
 
@@ -39,5 +49,16 @@ public class LoginServlet extends HttpServlet {
             e.getMessage();
         }
         return authLogin;
+    }
+
+    public JSONArray UserInfoToJson(HashMap<String, String> userInfo) {
+        JSONArray userData = new JSONArray();
+        JSONObject jsonObject;
+        jsonObject = new JSONObject();
+        jsonObject.put("userid", userInfo.get("id"));
+        jsonObject.put("username", userInfo.get("username"));
+        jsonObject.put("auth", "True");
+        userData.add(jsonObject);
+        return userData;
     }
 }
