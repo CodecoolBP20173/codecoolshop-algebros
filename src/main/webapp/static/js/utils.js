@@ -13,7 +13,7 @@ let utils = {
     calculateTotalPrice: function (products) {
         let totalPrice = 0;
         for (let i = 0; i < products.length; i++) {
-            totalPrice += products[i]["defaultPrice"] * products[i]["quantity"];
+            totalPrice += products[i]["price"] * products[i]["quantity"];
         }
         return totalPrice;
     },
