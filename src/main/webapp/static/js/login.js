@@ -9,23 +9,23 @@ let login = {
     loginTrue: function (userinfo) {
         $('#loginPlace').html("<button id=\"profile-bn\">" + userinfo[0]["username"] + "\'s profile</button>" +
             "<button id=\"logout-bn\">Logout</button>");
+        shoppingCart.showCartButton();
     },
 
     logoutReplace: function () {
         $('#loginPlace').html(loginButton);
     },
 
-    loginAjax : function () {
-        $('#login').click(function()
-        {
-            let user=$('#useremail').val();
-            let pwd=$('#userpassword').val();
+    loginAjax: function () {
+        $('#login').on("click",function () {
+            let user = $('#useremail').val();
+            let pwd = $('#userpassword').val();
             $.ajax({
                 type: "POST",
-                url:"/login",
-                data:{"user":user,"password":pwd},
+                url: "/login",
+                data: {"user": user, "password": pwd},
                 success: function (data) {
-                    if (JSON.parse(data)[0]["auth"] == "True") {
+                    if (JSON.parse(data)[0]["auth"] === "True") {
                         login.loginTrue(JSON.parse(data));
                         login.profileButton();
                         login.logoutAjax();
@@ -42,28 +42,28 @@ let login = {
         $('#authFail').html("Wrong e-mail or password.");
     },
 
-    logoutAjax : function () {
-        $('#logout-bn').click(function()
-        {
+    logoutAjax: function () {
+        $('#logout-bn').on("click",function () {
             $.ajax({
                 type: "POST",
-                url:"/logout",
-                data:{"user": "logging-out"},
+                url: "/logout",
+                data: {"user": "logging-out"},
                 success: function () {
                     login.logoutReplace();
                     login.loginAjax();
+                    shoppingCart.hideCartButton();
                 }
             });
         });
     },
 
-    profileButton : function () {
-      $('#profile-bn').on('click', function () {
-          window.location.replace("/user");
-      })
+    profileButton: function () {
+        $('#profile-bn').on('click', function () {
+            window.location.replace("/user");
+        })
     },
 
-    var : loginButton = `<li class="dropdown">
+    var: loginButton = `<li class="dropdown">
                     <button id="login-bn" class="dropdown-toggle" data-toggle="dropdown">Login</button>
                     <ul id="login-dp" class="dropdown-menu">
                         <li>

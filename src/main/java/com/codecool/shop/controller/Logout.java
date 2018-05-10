@@ -11,10 +11,12 @@ import javax.servlet.http.HttpSession;
 
 
 @WebServlet(urlPatterns = {"/logout"})
-public class LogoutServlet extends HttpServlet  {
+public class Logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = NetworkUtils.getHTTPSession(req);
-        session.invalidate();
+        if (NetworkUtils.checkLoginStatus(session)) {
+            session.invalidate();
+        }
     }
 }

@@ -1,11 +1,12 @@
 package com.codecool.shop.dao.implementation;
 
 
-import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.dao.interfaces.ProductCategoryDao;
+import com.codecool.shop.dao.implementation.jdbc.ProductCategoryDaoJdbc;
+import com.codecool.shop.dao.implementation.memory.ProductCategoryDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +16,7 @@ class ProductCategoryDaoTest {
 
     @BeforeEach
     void setup() {
-        if (isDatabase){
+        if (isDatabase) {
             productCategoryDao = ProductCategoryDaoJdbc.getInstance();
             isDatabase = !isDatabase;
         } else {
@@ -31,9 +32,9 @@ class ProductCategoryDaoTest {
     @RepeatedTest(2)
     void gettingInstanceTest() {
         if (productCategoryDao.getClass().equals(ProductCategoryDaoMem.class)) {
-            assertEquals(productCategoryDao.getClass(),ProductCategoryDaoMem.getInstance().getClass());
+            assertEquals(productCategoryDao.getClass(), ProductCategoryDaoMem.getInstance().getClass());
         } else {
-            assertEquals(productCategoryDao.getClass(),ProductCategoryDaoJdbc.getInstance().getClass());
+            assertEquals(productCategoryDao.getClass(), ProductCategoryDaoJdbc.getInstance().getClass());
         }
     }
 
@@ -62,7 +63,7 @@ class ProductCategoryDaoTest {
 
     @RepeatedTest(2)
     void checkingIfFindByIdGivesBackDifferentResults() {
-        assertNotEquals(productCategoryDao.find(1),productCategoryDao.find(2));
+        assertNotEquals(productCategoryDao.find(1), productCategoryDao.find(2));
     }
 
     @RepeatedTest(2)

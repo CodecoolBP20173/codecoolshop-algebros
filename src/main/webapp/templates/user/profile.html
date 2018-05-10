@@ -5,7 +5,7 @@
     <meta name="author" content="Codecool"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <title>Codecool Shop</title>
+    <title>Codecool Shop - User Profile</title>
 
     <!-- Latest compiled and minified Jquery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -33,7 +33,7 @@
 <div class="jumbotron text-center">
     <h1>Codecool Shop</h1>
 </div>
-<div id="container" >
+<div id="container">
     <div class="row">
         <div class="col" align="center">
             <div class="card">
@@ -41,22 +41,28 @@
                     <form action="/user" method="post">
                         <h2>Customer information</h2><br>
                         <label for="checkoutName">Name</label><br>
-                        <input id="checkoutName" type="text" name="name" th:value="${userinfo['fullname']}" required><br>
+                        <input id="checkoutName" type="text" name="name" th:value="${userinfo['fullname']}"
+                               required><br>
                         <label for="checkoutEmail">E-mail</label><br>
-                        <input id="checkoutEmail" type="email" name="email" th:value="${userinfo['email']}" required><br><br>
+                        <input id="checkoutEmail" type="email" name="email" th:value="${userinfo['email']}"
+                               required><br><br>
                         <label for="checkoutPhoneNumber">Phone</label><br>
-                        <input id="checkoutPhoneNumber" type="text" name="phone" th:value="${userinfo['phone']}" required><br>
+                        <input id="checkoutPhoneNumber" type="text" name="phone" th:value="${userinfo['phone']}"
+                               required><br>
                         <div class="col-4">
                             <br>
                             <p th:text="${session.username} + '\'s address'"> Address </p>
                             <label for="billingCountry">Country</label><br>
-                            <input id="billingCountry" type="text" name="country" th:value="${userinfo['country']}" required><br>
+                            <input id="billingCountry" type="text" name="country" th:value="${userinfo['country']}"
+                                   required><br>
                             <label for="billingCity">City</label><br>
                             <input id="billingCity" type="text" name="city" th:value="${userinfo['city']}" required><br>
                             <label for="billingZipCode">ZIP Code</label><br>
-                            <input id="billingZipCode" type="text" name="zip" th:value="${userinfo['zip']}" required><br>
+                            <input id="billingZipCode" type="text" name="zip" th:value="${userinfo['zip']}"
+                                   required><br>
                             <label for="billingAddress">Address</label><br>
-                            <input id="billingAddress" type="text" name="address" th:value="${userinfo['address']}" required><br>
+                            <input id="billingAddress" type="text" name="address" th:value="${userinfo['address']}"
+                                   required><br>
                         </div>
                         <br>
                         <button type="submit" id="sub">Save Changes</button>
@@ -65,7 +71,7 @@
             </div>
         </div>
     </div>
-    <div id="footer" >
+    <div id="footer">
         <div th:replace="footer.html :: copy"></div>
     </div>
 </div>

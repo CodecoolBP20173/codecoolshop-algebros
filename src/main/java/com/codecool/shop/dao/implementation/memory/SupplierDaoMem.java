@@ -1,9 +1,8 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.memory;
 
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.interfaces.SupplierDao;
 import com.codecool.shop.model.Supplier;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

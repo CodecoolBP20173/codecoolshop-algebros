@@ -1,9 +1,14 @@
 package com.codecool.shop.config;
 
-import com.codecool.shop.dao.implementation.*;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.interfaces.ProductCategoryDao;
+import com.codecool.shop.dao.interfaces.ProductDao;
+import com.codecool.shop.dao.interfaces.SupplierDao;
+import com.codecool.shop.dao.implementation.jdbc.ProductCategoryDaoJdbc;
+import com.codecool.shop.dao.implementation.jdbc.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.jdbc.SupplierDaoJdbc;
+import com.codecool.shop.dao.implementation.memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.memory.ProductDaoMem;
+import com.codecool.shop.dao.implementation.memory.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -15,7 +20,7 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class Initializer implements ServletContextListener {
 
-    boolean isDataAvailable= false;
+    private boolean isDataAvailable = false;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -26,7 +31,7 @@ public class Initializer implements ServletContextListener {
         ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
         ProductDao productDataStoreJdbc = ProductDaoJdbc.getInstance();
 
-        if (productCategoryDataStoreJdbc.getAll().size()>0) {
+        if (productCategoryDataStoreJdbc.getAll().size() > 0) {
             this.isDataAvailable = true;
         }
 

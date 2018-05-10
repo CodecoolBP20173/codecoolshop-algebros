@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 public class NetworkUtils {
     public static HttpSession getHTTPSession(HttpServletRequest req) {
         HttpSession session;
-        if (req.getSession(false) == null  ){
+        if (req.getSession(false) == null) {
             session = req.getSession(true);
             session.setAttribute("Order", new Order());
         } else {
@@ -17,4 +17,8 @@ public class NetworkUtils {
         return session;
     }
 
+    public static boolean checkLoginStatus(HttpSession session){
+        String userId = (String) session.getAttribute("userid");
+        return userId != null;
+    }
 }

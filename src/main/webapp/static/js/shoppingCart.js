@@ -21,6 +21,10 @@ let shoppingCart = {
     },
 
     addShoppingCartButtonListeners: function () {
+        $("#checkOutButton").on("click", function () {
+            window.location.replace("/checkout")
+        });
+
         $(".incrementButton").on("click", function (event) {
             let productId = event.target.dataset.productId;
             let url = "/";
@@ -66,5 +70,13 @@ let shoppingCart = {
                 }
             })
         })
+    },
+
+    hideCartButton: function () {
+        $("#cartButton").hide()
+    },
+
+    showCartButton: function () {
+        $("#cartButton").show()
     }
 };

@@ -6,7 +6,6 @@ import com.codecool.shop.util.NetworkUtils;
 import com.codecool.shop.util.SqlUserUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 
 
 @WebServlet(urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("user");

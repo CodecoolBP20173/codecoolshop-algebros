@@ -1,15 +1,15 @@
 package com.codecool.shop.dao.implementation;
 
-import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.interfaces.ProductDao;
+import com.codecool.shop.dao.implementation.jdbc.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.memory.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,7 +54,7 @@ class ProductDaoTest {
         if (productDao.getClass().equals(ProductDaoMem.getInstance().getClass())) {
             assertEquals(ProductDaoMem.class, ProductDaoMem.getInstance().getClass());
         } else {
-            assertEquals(ProductDaoJdbc.class,ProductDaoJdbc.getInstance().getClass());
+            assertEquals(ProductDaoJdbc.class, ProductDaoJdbc.getInstance().getClass());
         }
 
     }

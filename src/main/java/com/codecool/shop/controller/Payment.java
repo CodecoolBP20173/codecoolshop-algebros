@@ -1,8 +1,8 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.model.Order;
-import com.codecool.shop.processes.PaymentProcess;
+import com.codecool.shop.model.OrderJdbc;
+import com.codecool.shop.util.NetworkUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,21 +21,29 @@ public class Payment extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("product/payment.html", context, resp.getWriter());
-
+        HttpSession session = NetworkUtils.getHTTPSession(req);
+        if (NetworkUtils.checkLoginStatus(session)) {
+            String stringId = (String) session.getAttribute("userid");
+            int userIntId = Integer.parseInt(stringId);
+            OrderJdbc.addOrder(userIntId);
+            OrderJdbc.removeFromOrder(userIntId);
+        } else {
+            resp.sendRedirect("/");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String payPalName = req.getParameter("userName");
-        String creditName = req.getParameter("name");
-        if (payPalName != null || creditName != null) {
-            HttpSession session = req.getSession();
-            Order order = (Order) session.getAttribute("Order");
-            PaymentProcess paymentProcess = new PaymentProcess();
-            paymentProcess.process(order);
-            //   MailProcess.send(order);
+        HttpSession session = req.getSession();
+        if (NetworkUtils.checkLoginStatus(session)) {
+            String payPalName = req.getParameter("userName");
+            String creditName = req.getParameter("name");
+            if (payPalName != null || creditName != null) {
+                resp.sendRedirect("/");
+                session.invalidate();
+            }
+        } else {
             resp.sendRedirect("/");
-            session.invalidate();
         }
     }
 }
