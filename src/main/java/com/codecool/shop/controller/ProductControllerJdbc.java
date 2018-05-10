@@ -6,6 +6,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.cartItem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
@@ -15,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductControllerJdbc {
     private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
@@ -35,8 +37,8 @@ public class ProductControllerJdbc {
         }
     }
 
-    public static void update(int quantity, int id) {
-        Connection dbConnection = null;
+    static void update(int quantity, int id) {
+        Connection dbConnection;
         try {
             dbConnection = Utils.getConnection();
             PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
@@ -48,7 +50,7 @@ public class ProductControllerJdbc {
         }
     }
 
-    public static int findQuantity(int id) {
+    static int findQuantity(int id) {
 
         try {
             Connection dbConnection = Utils.getConnection();
@@ -56,8 +58,7 @@ public class ProductControllerJdbc {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                int result = resultSet.getInt("quantity");
-                return result;
+                return resultSet.getInt("quantity");
             } else {
                 return 0;
             }
@@ -68,7 +69,8 @@ public class ProductControllerJdbc {
 
         return 0;
     }
-    public static Product findProductByProductId(int id){
+
+    private static Product findProductByProductId(int id) {
         try {
             Connection dbConnection = Utils.getConnection();
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE id=?;");
@@ -90,15 +92,17 @@ public class ProductControllerJdbc {
         return null;
     }
 
-    public static List<Product> getShoppingCart() {
-        List<Product> shoppingCart = new ArrayList<>();
+    public static List<cartItem> getShoppingCart() {
+        List<cartItem> shoppingCart = new ArrayList<>();
         try {
             Connection dbConnection = Utils.getConnection();
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Product product = findProductByProductId(resultSet.getInt("productid"));
-                shoppingCart.add(product);
+                String name = Objects.requireNonNull(findProductByProductId(resultSet.getInt("productid"))).getName();
+                int quantity = resultSet.getInt("quantity");
+                int price = resultSet.getInt("price")*quantity;
+                shoppingCart.add(new cartItem(name,quantity,price));
             }
         } catch (SQLException e) {
             e.printStackTrace();
