@@ -10,8 +10,7 @@ import java.util.HashMap;
 
 public class SqlUserUtils {
     public static void addUser(HashMap<String, String> userInfo) {
-        try {
-            Connection connection = Utils.getConnection();
+        try (Connection connection = Utils.getConnection()){
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO users (username,password,email,salt) VALUES (?,?,?,?);");
             stmt.setString(1, userInfo.get("name"));
             stmt.setString(2, userInfo.get("hashedpwd"));
