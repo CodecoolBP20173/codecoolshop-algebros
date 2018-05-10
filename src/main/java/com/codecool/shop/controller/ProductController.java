@@ -39,31 +39,21 @@ public class ProductController extends HttpServlet {
             supplierDataStore = SupplierDaoMem.getInstance();
         }
 
-
-//        Map params = new HashMap<>();
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         List<ProductCategory> categories = productCategoryDataStore.getAll();
+        List<Supplier> suppliers = supplierDataStore.getAll();
 
         context.setVariable("categories", categories);
         String category = req.getParameter("category");
-        if (category != null) {
-            context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(category)));
-        } else {
-            context.setVariable("products", productDataStore.getAll());
-        }
-        List<Supplier> suppliers = supplierDataStore.getAll();
+        String supplier = req.getParameter("supplier");
         HttpSession session = NetworkUtils.getHTTPSession(req);
         Order order = (Order) session.getAttribute("Order");
-
-        String supplier = req.getParameter("supplier");
         if (category == null && supplier == null) {
             context.setVariable("products", productDataStore.getAll());
         } else if (category == null) {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
         } else if (supplier == null) {
-            System.out.println(category);
             ProductCategory productCategory = productCategoryDataStore.find(category);
             context.setVariable("products", productDataStore.getBy(productCategory));
         } else {
