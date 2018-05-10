@@ -1,8 +1,13 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.Jdbc.Utils;
+import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.ProductCategoryDaoJdbc;
+import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductControllerJdbc {
+
+    private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
+    private static SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
+
     public static void add(int id,int userid,int quantity) {
         Connection dbConnection=null;
         try {
@@ -55,41 +64,27 @@ public class ProductControllerJdbc {
 
         return 0;
     }
-    /*public static Product findProductByProductId(int id){
+    public static Product findProductByProductId(int id){
         try {
             Connection dbConnection = Utils.getConnection();
-            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products;");
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE id=?;");
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return ;
-            } else {
-                return 0;
+                String name = resultSet.getString("name");
+                Float defaultPrice=resultSet.getFloat("defaultprice");
+                String defaultCurrency = resultSet.getString("defaultcurrency");
+                String description = resultSet.getString("description");
+                ProductCategory category = productCategoryDataStoreJdbc.find(resultSet.getString("productcategory"));
+                Supplier supplier = supplierDataStoreJdbc.find(resultSet.getString("supplier"));
+                return new Product(name,defaultPrice,defaultCurrency,description,category,supplier);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return 0;
-
+        return null;
     }
     public static Product getShoppingCart() {
-        List<Product> shoppingCart=new ArrayList<>();
-        try {
-            Connection dbConnection = Utils.getConnection();
-            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                shoppingCart.add()
-                return shoppingCart;
-            } else {
-                return 0;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }*/
+        return null;
+    }
 }
