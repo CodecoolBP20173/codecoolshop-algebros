@@ -132,5 +132,17 @@ public class OrderJdbc {
             e.printStackTrace();
         }
     }
+    static void updateDecrement(int id) {
+        Connection dbConnection;
+        try {
+            dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
+            preparedStatement.setInt(1, findQuantity(id)-1);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
