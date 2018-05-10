@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("username", userInfo.get("username"));
             session.setAttribute("userid", userInfo.get("id"));
             session.setAttribute("loggedIn", "true");
+            session.setAttribute("email", userInfo.get("email"));
             String json = UserInfoToJson(userInfo).toJSONString();
             resp.getWriter().write(json);
         } else {

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Codecool Shop</title>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+
+    <!------ Include the above in your HEAD tag ---------->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Codecool Shop</h1>
+</div>
+<div id="container" >
+    <div class="row">
+        <div class="col" align="center">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/user" method="post">
+                        <h2>Customer information</h2><br>
+                        <label for="checkoutName">Name</label><br>
+                        <input id="checkoutName" type="text" name="name" th:value="${userinfo['fullname']}" required><br>
+                        <label for="checkoutEmail">E-mail</label><br>
+                        <input id="checkoutEmail" type="email" name="email" th:value="${userinfo['email']}" required><br><br>
+                        <label for="checkoutPhoneNumber">Phone</label><br>
+                        <input id="checkoutPhoneNumber" type="text" name="phone" th:value="${userinfo['phone']}" required><br>
+                        <div class="col-4">
+                            <br>
+                            <p th:text="${session.username} + '\'s address'"> Address </p>
+                            <label for="billingCountry">Country</label><br>
+                            <input id="billingCountry" type="text" name="country" th:value="${userinfo['country']}" required><br>
+                            <label for="billingCity">City</label><br>
+                            <input id="billingCity" type="text" name="city" th:value="${userinfo['city']}" required><br>
+                            <label for="billingZipCode">ZIP Code</label><br>
+                            <input id="billingZipCode" type="text" name="zip" th:value="${userinfo['zip']}" required><br>
+                            <label for="billingAddress">Address</label><br>
+                            <input id="billingAddress" type="text" name="address" th:value="${userinfo['address']}" required><br>
+                        </div>
+                        <br>
+                        <button type="submit" id="sub">Checkout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer" >
+        <div th:replace="footer.html :: copy"></div>
+    </div>
+</div>
+</body>
+</html>

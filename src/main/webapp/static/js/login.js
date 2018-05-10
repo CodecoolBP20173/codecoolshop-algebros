@@ -3,6 +3,7 @@ let login = {
     loginInit: function () {
         login.loginAjax();
         login.logoutAjax();
+        login.profileButton();
     },
 
     loginTrue: function (userinfo) {
@@ -26,6 +27,7 @@ let login = {
                 success: function (data) {
                     if (JSON.parse(data)[0]["auth"] == "True") {
                         login.loginTrue(JSON.parse(data));
+                        login.profileButton();
                         login.logoutAjax();
                     } else {
                         login.loginFailedAjax();
@@ -53,6 +55,12 @@ let login = {
                 }
             });
         });
+    },
+
+    profileButton : function () {
+      $('#profile-bn').on('click', function () {
+          window.location.replace("/user");
+      })
     },
 
     var : loginButton = `<li class="dropdown">
