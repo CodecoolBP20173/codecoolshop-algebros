@@ -7,6 +7,7 @@ import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.cartItem;
 import com.codecool.shop.util.NetworkUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -97,8 +98,8 @@ public class ProductController extends HttpServlet {
                 json = order.getProductQuantity(id).toJSONString();
                 break;
             case "openCart":
-
-                json = order.getCartItems().toJSONString();
+                List <cartItem> cartItems= ProductControllerJdbc.getShoppingCart();
+                //json = order.getCartItems().toJSONString();
                 break;
         }
         session.setAttribute("Order", order);
