@@ -11,6 +11,7 @@ public class ProductCategory extends BaseModel {
     public ProductCategory(String name, String department, String description) {
         super(name);
         this.department = department;
+        this.description=description;
         this.products = new ArrayList<>();
         this.description = description;
     }
@@ -43,5 +44,7 @@ public class ProductCategory extends BaseModel {
         return Objects.equals(name, category.name) && Objects.equals(description, category.description) && Objects.equals(department, category.department);
     }
 
-
+    public String getDepartment() {
+        return department;
+    }
 }

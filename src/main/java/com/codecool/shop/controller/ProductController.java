@@ -3,10 +3,8 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.util.NetworkUtils;
@@ -14,6 +12,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import com.codecool.shop.model.Order;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,35 +23,40 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
+    ProductDao productDataStore;
+    ProductCategoryDao productCategoryDataStore;
+    SupplierDao supplierDataStore;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-
-//        Map params = new HashMap<>();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (System.getenv("datastore").equals("jdbc")) {
+            productDataStore = ProductDaoJdbc.getInstance();
+            productCategoryDataStore = ProductCategoryDaoJdbc.getInstance();
+            supplierDataStore = SupplierDaoJdbc.getInstance();
+        } else {
+            productDataStore = ProductDaoMem.getInstance();
+            productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            supplierDataStore = SupplierDaoMem.getInstance();
+        }
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         List<ProductCategory> categories = productCategoryDataStore.getAll();
         List<Supplier> suppliers = supplierDataStore.getAll();
-        HttpSession session = NetworkUtils.getHTTPSession(req);
-        Order order = (Order) session.getAttribute("Order");
 
+        context.setVariable("categories", categories);
         String category = req.getParameter("category");
         String supplier = req.getParameter("supplier");
-        if (category == null && supplier == null){
+        HttpSession session = NetworkUtils.getHTTPSession(req);
+        Order order = (Order) session.getAttribute("Order");
+        if (category == null && supplier == null) {
             context.setVariable("products", productDataStore.getAll());
-        }
-        else if (category == null){
+        } else if (category == null) {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
-        }
-        else if (supplier == null){
+        } else if (supplier == null) {
             ProductCategory productCategory = productCategoryDataStore.find(category);
             context.setVariable("products", productDataStore.getBy(productCategory));
-        }
-        else {
+        } else {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier), productCategoryDataStore.find(category)));
         }
 
@@ -74,6 +78,11 @@ public class ProductController extends HttpServlet {
         switch (process) {
             case "add":
                 order.addProduct(id);
+                if (ProductControllerJdbc.findQuantity(id) == 0) {
+                    ProductControllerJdbc.add(id, 1, 1);
+                } else {
+                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id) + 1, id);
+                }
                 break;
             case "remove":
                 order.removeProduct(id);
