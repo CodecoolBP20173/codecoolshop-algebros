@@ -3,16 +3,26 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SupplierDaoTest {
     private static SupplierDao supplierDao;
+    private static boolean isDatabase = false;
 
     @BeforeEach
     void setup() {
-        supplierDao = SupplierDaoMem.getInstance();
+        if (isDatabase) {
+            supplierDao = SupplierDaoJdbc.getInstance();
+            System.out.println("Database");
+            isDatabase = !isDatabase;
+        } else {
+            supplierDao = SupplierDaoMem.getInstance();
+            System.out.println("Memory");
+            isDatabase = !isDatabase;
+        }
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
         Supplier lenovo = new Supplier("Lenovo", "Computers and Phones");
         Supplier samsung = new Supplier("Samsung", "Tablets, Phones and Computers");
@@ -21,50 +31,50 @@ class SupplierDaoTest {
         supplierDao.add(samsung);
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingInstance() {
         if (supplierDao.getClass().equals(SupplierDaoMem.class)) {
             assertEquals(SupplierDaoMem.class, SupplierDaoMem.getInstance().getClass());
         } else {
-            //assertEquals(SupplierDaoJdbc.class,SupplierDaoJdbc.getInstance().getClass());
+            assertEquals(SupplierDaoJdbc.class,SupplierDaoJdbc.getInstance().getClass());
         }
     }
 
-    @Test
+    @RepeatedTest(2)
     void addingSupplier() {
         Supplier nokia = new Supplier("Nokia", "For the food old times");
         supplierDao.add(nokia);
         assertEquals(nokia, supplierDao.find("Nokia"));
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingValidSupplierByString() {
         Supplier nokia = new Supplier("Nokia", "For the food old times");
         supplierDao.add(nokia);
         assertEquals(nokia, supplierDao.find("Nokia"));
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingInvalidSupplierByString() {
         assertNull(supplierDao.find("null"));
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingValidSupplierById() {
         assertEquals(Supplier.class, supplierDao.find(1).getClass());
     }
 
-    @Test
+    @RepeatedTest(2)
     void gettingInvalisSupplierById() {
         assertNull(supplierDao.find(-100));
     }
 
-    @Test
+    @RepeatedTest(2)
     void checkingIfFindByIdGivesBackDifferentResults() {
         assertNotEquals(supplierDao.find(2), supplierDao.find(3));
     }
 
-    @Test
+    @RepeatedTest(2)
     void removingValidSupplier() {
         Supplier nokia = new Supplier("Nokia", "For the good old times");
         supplierDao.add(nokia);
@@ -73,22 +83,22 @@ class SupplierDaoTest {
         assertNull(supplierDao.find(id));
     }
 
-    @Test
+    @RepeatedTest(2)
     void removingInvalidSupplier() {
         int sizeBeforeRemoval = supplierDao.getAll().size();
         supplierDao.remove(-10);
         int sizeAfterRemoval = supplierDao.getAll().size();
-        assertEquals(sizeBeforeRemoval,sizeAfterRemoval);
+        assertEquals(sizeBeforeRemoval, sizeAfterRemoval);
     }
 
-    @Test
-    void addingExistingSuppliers(){
+    @RepeatedTest(2)
+    void addingExistingSuppliers() {
         Supplier makita = new Supplier("Makita", "Smash it");
         supplierDao.add(makita);
         int sizeAfterFirstAdd = supplierDao.getAll().size();
         supplierDao.add(makita);
-        int sizeAfterSecondAdd=supplierDao.getAll().size();
-        assertEquals(sizeAfterFirstAdd,sizeAfterSecondAdd);
+        int sizeAfterSecondAdd = supplierDao.getAll().size();
+        assertEquals(sizeAfterFirstAdd, sizeAfterSecondAdd);
 
     }
 

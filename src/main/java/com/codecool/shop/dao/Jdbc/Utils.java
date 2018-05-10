@@ -12,18 +12,22 @@ public class Utils {
     private static final String DATABASE = System.getenv("database");
     private static final String DB_USER = System.getenv("databaseUsername");
     private static final String DB_PASSWORD = System.getenv("databasePassword");
+    private static Connection connection;
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DATABASE,
-                DB_USER,
-                DB_PASSWORD);
+        if (connection == null) {
+            connection = DriverManager.getConnection(
+                    DATABASE,
+                    DB_USER,
+                    DB_PASSWORD);
+        }
+        return connection;
     }
 
     public static void executeQuery(String query) {
         try (Connection connection = getConnection();
-             Statement statement =connection.createStatement()
-        ){
+             Statement statement = connection.createStatement()
+        ) {
             statement.execute(query);
 
         } catch (SQLException e) {
