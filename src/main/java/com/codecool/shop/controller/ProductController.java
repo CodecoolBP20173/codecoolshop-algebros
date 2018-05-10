@@ -77,30 +77,32 @@ public class ProductController extends HttpServlet {
         HttpSession session = NetworkUtils.getHTTPSession(req);
         Order order = (Order) session.getAttribute("Order");
         String process = req.getParameter("process");
+        String stringId = (String) session.getAttribute("userid");
+        int userId = Integer.parseInt(stringId);
         String json = "";
         switch (process) {
             case "add":
                 order.addProduct(id);
                 if (OrderJdbc.findQuantity(id) == 0) {
-                    OrderJdbc.add(id, 1, 1);
+                    OrderJdbc.add(id, userId, 1);
                 } else {
                     OrderJdbc.update(OrderJdbc.findQuantity(id) + 1, id);
                 }
                 break;
             case "remove":
                 OrderJdbc.removeItemFromCart(id);
-                json = OrderJdbc.getShoppingCart().toJSONString();
+                json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
             case "increment":
                 OrderJdbc.updateIncrement(id);
-                json = OrderJdbc.getShoppingCart().toJSONString();
+                json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
             case "decrement":
                 order.decrementQuantityOfProduct(id);
-                json = OrderJdbc.getShoppingCart().toJSONString();
+                json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
             case "openCart":
-                json = OrderJdbc.getShoppingCart().toJSONString();
+                json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
         }
         session.setAttribute("Order", order);

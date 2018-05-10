@@ -87,10 +87,11 @@ public class OrderJdbc {
         return null;
     }
 
-    public static JSONArray getShoppingCart() {
+    public static JSONArray getShoppingCart(int id) {
         JSONArray cartItems = new JSONArray();
         try (Connection dbConnection = Utils.getConnection()) {
-            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart WHERE userid=?;");
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Product product = findProductByProductId(resultSet.getInt("productid"));
