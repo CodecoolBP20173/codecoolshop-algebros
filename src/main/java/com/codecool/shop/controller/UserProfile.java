@@ -1,10 +1,13 @@
 package com.codecool.shop.controller;
 
+
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.processes.CheckoutProcess;
 import com.codecool.shop.model.Order;
+import com.codecool.shop.processes.CheckoutProcess;
 import com.codecool.shop.util.NetworkUtils;
 import com.codecool.shop.util.SqlUserUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -16,8 +19,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 
-@WebServlet(urlPatterns = {"/checkout"})
-public class Checkout extends HttpServlet {
+@WebServlet(urlPatterns = {"/user"})
+public class UserProfile extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -25,14 +28,10 @@ public class Checkout extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         HttpSession session = NetworkUtils.getHTTPSession(req);
         String email = (String) session.getAttribute("email");
-        Order order = (Order) session.getAttribute("Order");
         HashMap<String, String> userInfo = SqlUserUtils.getUser(email);
         context.setVariable("userinfo", userInfo);
-        //context.setVariable("shoppingCart", order.getCartItems());
-        //context.setVariable("sumPrice", order.getTotalPriceOfOrder());
-        engine.process("product/checkout.html", context, resp.getWriter());
+        engine.process("user/profile.html", context, resp.getWriter());
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -48,9 +47,8 @@ public class Checkout extends HttpServlet {
         userInfo.put("address", req.getParameter("address"));
         userInfo.put("userid", userid);
         SqlUserUtils.updateUser(userInfo);
-        CheckoutProcess checkoutProcess = new CheckoutProcess(userInfo);
-        Order order = (Order) session.getAttribute("Order");
-        checkoutProcess.process(order);
-        resp.sendRedirect("/payment");
+
+        resp.sendRedirect("/");
     }
+
 }
