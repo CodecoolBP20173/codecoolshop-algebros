@@ -4,7 +4,6 @@ import com.codecool.shop.dao.Jdbc.Utils;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
-import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.cartItem;
 import com.codecool.shop.model.ProductCategory;
@@ -22,8 +21,8 @@ public class ProductControllerJdbc {
     private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
     private static SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
 
-    public static void add(int id,int userid,int quantity) {
-        Connection dbConnection=null;
+    public static void add(int id, int userid, int quantity) {
+        Connection dbConnection;
         try {
             dbConnection = Utils.getConnection();
             PreparedStatement preparedStatement = dbConnection.prepareStatement("INSERT INTO shoppingcart (userid,productid,quantity) VALUES (?,?,?)");
@@ -62,7 +61,7 @@ public class ProductControllerJdbc {
                 return 0;
             }
 
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -77,12 +76,12 @@ public class ProductControllerJdbc {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                Float defaultPrice=resultSet.getFloat("defaultprice");
+                Float defaultPrice = resultSet.getFloat("defaultprice");
                 String defaultCurrency = resultSet.getString("defaultcurrency");
                 String description = resultSet.getString("description");
                 ProductCategory category = productCategoryDataStoreJdbc.find(resultSet.getString("productcategory"));
                 Supplier supplier = supplierDataStoreJdbc.find(resultSet.getString("supplier"));
-                return new Product(name,defaultPrice,defaultCurrency,description,category,supplier);
+                return new Product(name, defaultPrice, defaultCurrency, description, category, supplier);
             }
 
         } catch (SQLException e) {
@@ -100,8 +99,8 @@ public class ProductControllerJdbc {
             while (resultSet.next()) {
                 String name = Objects.requireNonNull(findProductByProductId(resultSet.getInt("productid"))).getName();
                 int quantity = resultSet.getInt("quantity");
-                int price = resultSet.getInt("price")*quantity;
-                shoppingCart.add(new cartItem(name,quantity,price));
+                int price = resultSet.getInt("price") * quantity;
+                shoppingCart.add(new cartItem(name, quantity, price));
             }
         } catch (SQLException e) {
             e.printStackTrace();
