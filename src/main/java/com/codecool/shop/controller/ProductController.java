@@ -7,7 +7,6 @@ import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import com.codecool.shop.model.cartItem;
 import com.codecool.shop.util.NetworkUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -79,27 +78,28 @@ public class ProductController extends HttpServlet {
         switch (process) {
             case "add":
                 order.addProduct(id);
-                if (ProductControllerJdbc.findQuantity(id) == 0) {
-                    ProductControllerJdbc.add(id, 1, 1);
+                if (OrderJdbc.findQuantity(id) == 0) {
+                    OrderJdbc.add(id, 1, 1);
                 } else {
-                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id) + 1, id);
+                    OrderJdbc.update(OrderJdbc.findQuantity(id) + 1, id);
                 }
                 break;
             case "remove":
-                order.removeProduct(id);
-                json = order.getCartItems().toJSONString();
+                OrderJdbc.removeItemFromCart(id);
+                json = OrderJdbc.getShoppingCart().toJSONString();
                 break;
             case "increment":
                 ProductControllerJdbc.updateIncrement(id);
                 json = ProductControllerJdbc.getShoppingCart().toJSONString();
+                order.addProduct(id);
+                json = OrderJdbc.getShoppingCart().toJSONString();
                 break;
             case "decrement":
                 order.decrementQuantityOfProduct(id);
-                json = order.getProductQuantity(id).toJSONString();
+                json = OrderJdbc.getShoppingCart().toJSONString();
                 break;
             case "openCart":
-                json = ProductControllerJdbc.getShoppingCart().toJSONString();
-                //json = order.getCartItems().toJSONString();
+                json = OrderJdbc.getShoppingCart().toJSONString();
                 break;
         }
         session.setAttribute("Order", order);

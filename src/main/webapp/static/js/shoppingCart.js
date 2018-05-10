@@ -62,7 +62,7 @@ let shoppingCart = {
                 url: url,
                 success: function (quantityJSONString) {
                     const quantity = JSON.parse(quantityJSONString);
-                    this.removeProductFromCart(quantity);
+                    shoppingCart.loadCart(quantity);
                 }
             })
         })

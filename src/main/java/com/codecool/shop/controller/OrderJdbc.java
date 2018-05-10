@@ -19,14 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ProductControllerJdbc {
+public class OrderJdbc {
     private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
     private static SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
 
     public static void add(int id, int userid, int quantity) {
-        Connection dbConnection;
-        try {
-            dbConnection = Utils.getConnection();
+        try (Connection dbConnection = Utils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("INSERT INTO shoppingcart (userid,productid,quantity) VALUES (?,?,?)");
             preparedStatement.setInt(1, userid);
             preparedStatement.setInt(2, id);
@@ -38,9 +36,8 @@ public class ProductControllerJdbc {
     }
 
     static void update(int quantity, int id) {
-        Connection dbConnection;
-        try {
-            dbConnection = Utils.getConnection();
+
+        try (Connection dbConnection = Utils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
             preparedStatement.setInt(1, quantity);
             preparedStatement.setInt(2, id);
@@ -52,8 +49,7 @@ public class ProductControllerJdbc {
 
     static int findQuantity(int id) {
 
-        try {
-            Connection dbConnection = Utils.getConnection();
+        try (Connection dbConnection = Utils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT quantity FROM shoppingcart WHERE productid = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -71,8 +67,7 @@ public class ProductControllerJdbc {
     }
 
     private static Product findProductByProductId(int id) {
-        try {
-            Connection dbConnection = Utils.getConnection();
+        try (Connection dbConnection = Utils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE id=?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -94,8 +89,7 @@ public class ProductControllerJdbc {
 
     public static JSONArray getShoppingCart() {
         JSONArray cartItems = new JSONArray();
-        try {
-            Connection dbConnection = Utils.getConnection();
+        try (Connection dbConnection = Utils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -103,9 +97,8 @@ public class ProductControllerJdbc {
 
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("name", product.getName());
+                jsonObject.put("id",resultSet.getInt("productid"));
                 int quantity = resultSet.getInt("quantity");
-                int id = resultSet.getInt("productid");
-                jsonObject.put("id",id);
                 jsonObject.put("quantity", quantity);
                 jsonObject.put("price", product.getDefaultPrice() * quantity);
                 cartItems.add(jsonObject);
@@ -115,6 +108,16 @@ public class ProductControllerJdbc {
         }
 
         return cartItems;
+    }
+
+    public static void removeItemFromCart(int productId) {
+        try (Connection dbConnection = Utils.getConnection()) {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM shoppingcart WHERE productid = ?;");
+            preparedStatement.setInt(1,productId);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     static void updateIncrement(int id) {
         Connection dbConnection;
