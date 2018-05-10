@@ -9,6 +9,7 @@ public class Supplier extends BaseModel {
     public Supplier(String name, String description) {
         super(name,description);
         this.products = new ArrayList<>();
+        this.description = description;
 
     }
 
@@ -20,7 +21,7 @@ public class Supplier extends BaseModel {
         return this.products;
     }
 
-    public void addProduct(Product product) {
+    void addProduct(Product product) {
         this.products.add(product);
     }
 
