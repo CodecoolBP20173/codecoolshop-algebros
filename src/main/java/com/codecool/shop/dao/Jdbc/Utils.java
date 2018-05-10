@@ -18,8 +18,3 @@ public class Utils {
                 DB_PASSWORD);
     }
 }
-
-
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/codecoolshop";
-    private static final String DB_USER = "gergelyk89";
-    private static final String DB_PASSWORD = "DaiFtu74";
