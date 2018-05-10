@@ -152,4 +152,10 @@ public class ProductDaoJdbc implements ProductDao{
 
         return productsByCategory;
     }
+
+    //TODO get by Supplier and Category
+    @Override
+    public List<Product> getBy(Supplier supplier, ProductCategory productCategory) {
+        return null;
+    }
 }

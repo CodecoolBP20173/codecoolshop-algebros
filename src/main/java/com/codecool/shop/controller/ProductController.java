@@ -29,11 +29,11 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (System.getenv("datastore").equals("jdbc")){
+        if (System.getenv("datastore").equals("jdbc")) {
             productDataStore = ProductDaoJdbc.getInstance();
             productCategoryDataStore = ProductCategoryDaoJdbc.getInstance();
             supplierDataStore = SupplierDaoJdbc.getInstance();
-        }else{
+        } else {
             productDataStore = ProductDaoMem.getInstance();
             productCategoryDataStore = ProductCategoryDaoMem.getInstance();
             supplierDataStore = SupplierDaoMem.getInstance();
@@ -50,28 +50,23 @@ public class ProductController extends HttpServlet {
         String category = req.getParameter("category");
         if (category != null) {
             context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(category)));
-        }
-        else {
+        } else {
             context.setVariable("products", productDataStore.getAll());
         }
         List<Supplier> suppliers = supplierDataStore.getAll();
         HttpSession session = NetworkUtils.getHTTPSession(req);
         Order order = (Order) session.getAttribute("Order");
 
-        String category = req.getParameter("category");
         String supplier = req.getParameter("supplier");
-        if (category == null && supplier == null){
+        if (category == null && supplier == null) {
             context.setVariable("products", productDataStore.getAll());
-        }
-        else if (category == null){
+        } else if (category == null) {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
-        }
-        else if (supplier == null){
+        } else if (supplier == null) {
             System.out.println(category);
             ProductCategory productCategory = productCategoryDataStore.find(category);
             context.setVariable("products", productDataStore.getBy(productCategory));
-        }
-        else {
+        } else {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier), productCategoryDataStore.find(category)));
         }
 
@@ -93,10 +88,10 @@ public class ProductController extends HttpServlet {
         switch (process) {
             case "add":
                 order.addProduct(id);
-                if (ProductControllerJdbc.findQuantity(id)==0){
-                    ProductControllerJdbc.add(id,1,1);
-                }else{
-                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id)+1,id);
+                if (ProductControllerJdbc.findQuantity(id) == 0) {
+                    ProductControllerJdbc.add(id, 1, 1);
+                } else {
+                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id) + 1, id);
                 }
                 break;
             case "remove":

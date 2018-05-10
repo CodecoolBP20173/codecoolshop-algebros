@@ -53,9 +53,6 @@ public class Product extends BaseModel {
 
     }
 
-    public Currency getDefaultCurrency() {
-        return defaultCurrency;
-    }
 
     @Override
     public String toString() {
