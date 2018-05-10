@@ -1,7 +1,6 @@
 package com.codecool.shop.controller;
 
 
-import com.codecool.shop.model.Product;
 import com.codecool.shop.util.HashUtils;
 import com.codecool.shop.util.NetworkUtils;
 import com.codecool.shop.util.SqlUserUtils;
@@ -52,10 +51,10 @@ public class LoginServlet extends HttpServlet {
         return authLogin;
     }
 
-    public JSONArray UserInfoToJson(HashMap<String, String> userInfo) {
+
+    private JSONArray UserInfoToJson(HashMap<String, String> userInfo) {
         JSONArray userData = new JSONArray();
-        JSONObject jsonObject;
-        jsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("userid", userInfo.get("id"));
         jsonObject.put("username", userInfo.get("username"));
         jsonObject.put("auth", "True");

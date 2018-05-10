@@ -6,12 +6,10 @@ import com.codecool.shop.util.HashUtils;
 import com.codecool.shop.util.SqlUserUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -23,18 +21,15 @@ public class Registration extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         engine.process("user/registration.html", context, resp.getWriter());
     }
 
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-        WebContext context = new WebContext(req, resp, req.getServletContext());
         userInfo = new HashMap<>();
         userInfo.put("name",req.getParameter("Username"));
         userInfo.put("email",req.getParameter("Email"));
@@ -58,5 +53,4 @@ public class Registration extends HttpServlet {
         }
         userInfo.put("hashedpwd", hashedpwrd);
     }
-
 }
