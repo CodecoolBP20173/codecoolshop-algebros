@@ -30,7 +30,7 @@ let shoppingCart = {
                 url: url,
                 success: function (quantityJSONString) {
                     const quantity = JSON.parse(quantityJSONString);
-                    this.incrementNumberOfProduct(productId, quantity["quantity"])
+                    shoppingCart.loadCart(quantity);
                 }
             })
         });
@@ -47,7 +47,7 @@ let shoppingCart = {
                     url: url,
                     success: function (quantityJSONString) {
                         const quantity = JSON.parse(quantityJSONString);
-                        this.decrementNumberOfProduct(productId, quantity["quantity"])
+                        shoppingCart.loadCart(quantity);
                     }
                 })
             }
@@ -66,34 +66,5 @@ let shoppingCart = {
                 }
             })
         })
-    },
-
-    incrementNumberOfProduct: function (productId, quantity) {
-        const filter = "[data-product-id='" + productId + "']";
-        $(".quantity").filter(filter).html(quantity);
-        const defaultPrice = $(".defaultPrice").filter(filter).html();
-        const totalPrice = parseFloat($("#totalPrice").html()) + parseFloat(defaultPrice);
-        $("#totalPrice").html(Number((totalPrice).toFixed(2)).toString());
-    },
-
-    decrementNumberOfProduct: function (productId, quantity) {
-        const filter = "[data-product-id='" + productId + "']";
-        if (quantity == null) {
-            quantity = 0
-        }
-        $(".quantity").filter(filter).html(quantity);
-        const defaultPrice = $(".defaultPrice").filter(filter).html();
-        const totalPrice = parseFloat($("#totalPrice").html()) - parseFloat(defaultPrice);
-        $("#totalPrice").html(Number((totalPrice).toFixed(2)).toString());
-    },
-
-    removeProductFromCart: function (products) {
-        if (products != null) {
-            this.changeCartModal(products);
-            this.addShoppingCartButtonListeners();
-        }
-        else {
-            $("#cartTableBody").empty();
-        }
     }
-}
+};
