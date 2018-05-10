@@ -49,7 +49,6 @@ public class ProductController extends HttpServlet {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
         }
         else if (supplier == null){
-            System.out.println(category);
             ProductCategory productCategory = productCategoryDataStore.find(category);
             context.setVariable("products", productDataStore.getBy(productCategory));
         }
