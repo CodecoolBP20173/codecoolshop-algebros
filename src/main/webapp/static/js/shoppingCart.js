@@ -1,57 +1,99 @@
+let shoppingCart = {
 
-$(".addToCart").on("click", function (event) {
-    const attribute = event.target.dataset.productId;
-    const url = "/";
-    $.ajax({
-        type: "POST",
-        data: {"id": attribute, "process": "add"},
-        url: url,
-        success: function () {
+    loadCart: function (items) {
+        this.changeCartModal(items);
+        this.addShoppingCartButtonListeners();
+    },
+
+    changeCartModal: function (items) {
+        let cartItemsOutput = ``;
+        for (let item of items) {
+            cartItemsOutput += `<tr class="product" data-product-id="${item["id"]}">
+                                <td>${item["name"]}</td>
+                                <td><button class="incrementButton" data-product-id="${item["id"]}">+</button> <span class="quantity" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}">${item["quantity"]}</span> <button class="decrementButton" data-product-id="${item["id"]}">-</button></td>
+                                <td class="defaultPrice" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}" >${item["price"]}</td>
+                                <td><button class="removeProductButton" data-product-id="${item["id"]}" title="remove">x</button></td>
+                            </tr>`;
         }
-    })
-});
+        $("#cartTableBody").html(cartItemsOutput);
+        $("#totalPricePlace").html(`<strong data-total-price="${utils.calculateTotalPrice(items)}" id='totalPrice'>${utils.calculateTotalPrice(items)}</strong>`);
 
-$("#cartButton").on("click", function () {
-    const url = "/";
-    $.ajax({
-        type: "POST",
-        data: {"id": 0, "process": "openCart"},
-        url: url,
-        success: function (productsJSONString) {
-            const products = JSON.parse(productsJSONString);
-            changeCartModal(products);
-            addShoppingCartButtonListeners();
+    },
+
+    addShoppingCartButtonListeners: function () {
+        $(".incrementButton").on("click", function (event) {
+            let productId = event.target.dataset.productId;
+            let url = "/";
+            $.ajax({
+                type: "POST",
+                data: {"id": productId, "process": "increment"},
+                url: url,
+                success: function (quantityJSONString) {
+                    const quantity = JSON.parse(quantityJSONString);
+                    this.incrementNumberOfProduct(productId, quantity["quantity"])
+                }
+            })
+        });
+
+        $(".decrementButton").on("click", function (event) {
+            const productId = event.target.dataset.productId;
+            const filter = "[data-product-id='" + productId + "']";
+            const quant = $(".quantity").filter(filter).html();
+            if (quant > 0) {
+                const url = "/";
+                $.ajax({
+                    type: "POST",
+                    data: {"id": productId, "process": "decrement"},
+                    url: url,
+                    success: function (quantityJSONString) {
+                        const quantity = JSON.parse(quantityJSONString);
+                        this.decrementNumberOfProduct(productId, quantity["quantity"])
+                    }
+                })
+            }
+        });
+
+        $(".removeProductButton").on("click", function (event) {
+            const productId = event.target.dataset.productId;
+            const url = "/";
+            $.ajax({
+                type: "POST",
+                data: {"id": productId, "process": "remove"},
+                url: url,
+                success: function (quantityJSONString) {
+                    const quantity = JSON.parse(quantityJSONString);
+                    this.removeProductFromCart(quantity);
+                }
+            })
+        })
+    },
+
+    incrementNumberOfProduct: function (productId, quantity) {
+        const filter = "[data-product-id='" + productId + "']";
+        $(".quantity").filter(filter).html(quantity);
+        const defaultPrice = $(".defaultPrice").filter(filter).html();
+        const totalPrice = parseFloat($("#totalPrice").html()) + parseFloat(defaultPrice);
+        $("#totalPrice").html(Number((totalPrice).toFixed(2)).toString());
+    },
+
+    decrementNumberOfProduct: function (productId, quantity) {
+        const filter = "[data-product-id='" + productId + "']";
+        if (quantity == null) {
+            quantity = 0
         }
-    })
-});
+        $(".quantity").filter(filter).html(quantity);
+        const defaultPrice = $(".defaultPrice").filter(filter).html();
+        const totalPrice = parseFloat($("#totalPrice").html()) - parseFloat(defaultPrice);
+        $("#totalPrice").html(Number((totalPrice).toFixed(2)).toString());
+    },
 
-$(".categorySelector").on("click", function (event) {
-    let url_string = window.location.href;
-    let url = new URL(url_string);
-    let supplier = url.searchParams.get("supplier");
-    let category = event.target.dataset.category;
-    category = category === "None" ? null : category;
-    createSearchURL(url, category, supplier);
-    window.location.replace(url.toString());
-});
-
-function createSearchURL(url, category, supplier) {
-    url.searchParams.delete("category");
-    url.searchParams.delete("supplier");
-    if (category !== null) {
-        url.searchParams.append("category", category)
-    }
-    if (supplier !== null) {
-        url.searchParams.append("supplier", supplier)
+    removeProductFromCart: function (products) {
+        if (products != null) {
+            this.changeCartModal(products);
+            this.addShoppingCartButtonListeners();
+        }
+        else {
+            $("#cartTableBody").empty();
+        }
     }
 }
-
-$(".supplierSelector").on("click", function (event) {
-    let url_string = window.location.href;
-    let url = new URL(url_string);
-    let category = url.searchParams.get("category");
-    let supplier = event.target.dataset.supplier;
-    supplier = supplier === "None" ? null : supplier;
-    createSearchURL(url, category, supplier);
-    window.location.replace(url.toString());
-});

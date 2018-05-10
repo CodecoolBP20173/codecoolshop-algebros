@@ -26,9 +26,9 @@
 
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
 
-    <script src="static/js/dom.js" defer></script>
+    <script src="static/js/utils.js" defer></script>
     <script src="static/js/shoppingCart.js" defer></script>
-    <script src="/static/js/navbar.js"></script>
+    <script src="/static/js/index.js" defer></script>
 
 </head>
 
@@ -42,7 +42,7 @@
     <div id="navbar" class="row">
         <div class="well well-sm">
             <div class="dropdown">
-                <button onclick="CategoriesDropdown()" class="dropbtn">Category</button>
+                <button id="categoryDropdownButton" class="dropbtn">Category</button>
                 <div id="CategoriesDropdown" class="dropdown-content">
                     <div th:each="cat,iterStart:${categories}">
                         <a class="categorySelector" th:data-category="${cat.name}" th:text="${cat.name}"></a>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button onclick="SuppliersDropdown()" class="dropbtn">Supplier</button>
+                <button id="supplierDropdownButton" class="dropbtn">Supplier</button>
                 <div id="SuppliersDropdown" class="dropdown-content">
                     <div th:each="sup,iterStart:${suppliers}">
                         <a class="supplierSelector" th:data-supplier="${sup.name}" th:text="${sup.name}"></a>
