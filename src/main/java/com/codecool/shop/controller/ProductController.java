@@ -51,11 +51,10 @@ public class ProductController extends HttpServlet {
         if (supplier != null) {
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
         }
-        if (req.getSession(false) == null) {
-            HttpSession session = req.getSession(true);
-            session.setAttribute("Order", new Order());
+        HttpSession session = NetworkUtils.getHTTPSession(req);
+        if (session.getAttribute("loggedIn") == null) {
+            session.setAttribute("loggedIn", "false");
         }
-        HttpSession session = req.getSession(true);
         Order order = (Order) session.getAttribute("Order");
         context.setVariable("shoppingCart", order);
 

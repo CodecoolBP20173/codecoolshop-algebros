@@ -1,8 +1,8 @@
 let login = {
 
-
     loginInit: function () {
         login.loginAjax();
+        login.logoutAjax();
     },
 
     loginTrue: function (userinfo) {
@@ -13,7 +13,6 @@ let login = {
     logoutReplace: function () {
         $('#loginPlace').html(loginButton);
     },
-
 
     loginAjax : function () {
         $('#login').click(function()
@@ -41,7 +40,6 @@ let login = {
         $('#authFail').html("Wrong e-mail or password.");
     },
 
-
     logoutAjax : function () {
         $('#logout-bn').click(function()
         {
@@ -57,11 +55,7 @@ let login = {
         });
     },
 
-};
-
-login.loginInit();
-
-var loginButton = `<li class="dropdown">
+    var : loginButton = `<li class="dropdown">
                     <button id="login-bn" class="dropdown-toggle" data-toggle="dropdown">Login</button>
                     <ul id="login-dp" class="dropdown-menu">
                         <li>
@@ -87,7 +81,12 @@ var loginButton = `<li class="dropdown">
                             </div>
                         </li>
                     </ul>
-                </li>`;
+                </li>`,
+};
+
+login.loginInit();
+
+
 
 
 

@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = NetworkUtils.getHTTPSession(req);
             session.setAttribute("username", userInfo.get("username"));
             session.setAttribute("userid", userInfo.get("id"));
+            session.setAttribute("loggedIn", "true");
             String json = UserInfoToJson(userInfo).toJSONString();
             resp.getWriter().write(json);
         } else {

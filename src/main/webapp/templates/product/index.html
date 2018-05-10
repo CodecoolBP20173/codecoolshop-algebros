@@ -61,34 +61,42 @@
                 Cart
             </button>
             <ul class="nav navbar-nav navbar-right" id="loginPlace">
-                <li class="dropdown">
-                    <button id="login-bn" class="dropdown-toggle" data-toggle="dropdown">Login</button>
-                    <ul id="login-dp" class="dropdown-menu">
-                        <li>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <form class="form" role="form" method="post" action="/login" accept-charset="UTF-8" id="login-nav">
-                                        <div class="form-group">
-                                            <label class="sr-only" for="useremail">Email address</label>
-                                            <input type="email" class="form-control" name="useremail" id="useremail" placeholder="Email address" required>
+                <th:block th:switch="${session.loggedIn}">
+                    <div th:case="'true'">
+                        <button th:text="${session.username} + '\'s profile'" id="profile-bn">Someone's profile</button>
+                        <button id="logout-bn">Logout</button>
+                    </div>
+                    <div th:case="'false'">
+                        <li class="dropdown">
+                            <button id="login-bn" class="dropdown-toggle" data-toggle="dropdown">Login</button>
+                            <ul id="login-dp" class="dropdown-menu">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form class="form" role="form" method="post" action="/login" accept-charset="UTF-8" id="login-nav">
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="useremail">Email address</label>
+                                                    <input type="email" class="form-control" name="useremail" id="useremail" placeholder="Email address" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="userpassword">Password</label>
+                                                    <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="Password" required>
+                                                </div>
+                                                <div id="authFail"></div>
+                                                <div class="form-group">
+                                                    <button id="login" type="button" name="login" class="btn btn-success btn-block">Sign in</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="sr-only" for="userpassword">Password</label>
-                                            <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="Password" required>
+                                        <div class="bottom text-center">
+                                            New here ? <a href="/registration"><b>Join Us</b></a>
                                         </div>
-                                        <div id="authFail"></div>
-                                        <div class="form-group">
-                                            <button id="login" type="button" name="login" class="btn btn-success btn-block">Sign in</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="bottom text-center">
-                                    New here ? <a href="/registration"><b>Join Us</b></a>
-                                </div>
-                            </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
-                    </ul>
-                </li>
+                    </div>
+                </th:block>
             </ul>
         </div>
 
