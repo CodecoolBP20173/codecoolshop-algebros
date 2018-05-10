@@ -17,11 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductControllerJdbc {
-    public static void add(int id, int userid, int quantity) {
-        Connection dbConnection = null;
-
     private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
     private static SupplierDao supplierDataStoreJdbc = SupplierDaoJdbc.getInstance();
+
 
     public static void add(int id,int userid,int quantity) {
         Connection dbConnection=null;
