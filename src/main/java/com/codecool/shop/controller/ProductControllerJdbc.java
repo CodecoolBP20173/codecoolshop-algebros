@@ -1,12 +1,15 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.Jdbc.Utils;
+import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductControllerJdbc {
     public static void add(int id,int userid,int quantity) {
@@ -52,4 +55,41 @@ public class ProductControllerJdbc {
 
         return 0;
     }
+    /*public static Product findProductByProductId(int id){
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return ;
+            } else {
+                return 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+
+    }
+    public static Product getShoppingCart() {
+        List<Product> shoppingCart=new ArrayList<>();
+        try {
+            Connection dbConnection = Utils.getConnection();
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                shoppingCart.add()
+                return shoppingCart;
+            } else {
+                return 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }*/
 }
