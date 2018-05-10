@@ -99,7 +99,6 @@ public class ProductDaoJdbc implements ProductDao {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                // TODO change to join instead of guerry in querry
                 Product result = new Product(resultSet.getString("name"), Float.parseFloat(resultSet.getString("defaultprice")), resultSet.getString("defaultcurrency"), resultSet.getString("description"), productCategoryDataStoreJdbc.find(resultSet.getString("productcategory")), supplierDataStoreJdbc.find(resultSet.getString("supplier")));
                 result.setId(resultSet.getInt("id"));
                 allProducts.add(result);
