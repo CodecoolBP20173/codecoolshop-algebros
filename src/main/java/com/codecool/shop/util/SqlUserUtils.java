@@ -25,8 +25,7 @@ public class SqlUserUtils {
 
     public static HashMap<String, String> getUser(String email) {
         HashMap<String, String> userInfo = new HashMap<>();
-        try {
-            Connection connection = Utils.getConnection();
+        try (Connection connection = Utils.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             stmt.setString(1, email);
             ResultSet result = stmt.executeQuery();
