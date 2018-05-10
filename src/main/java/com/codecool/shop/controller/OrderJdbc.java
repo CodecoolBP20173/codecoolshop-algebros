@@ -111,34 +111,37 @@ public class OrderJdbc {
         return cartItems;
     }
 
-    public static void removeItemFromCart(int productId) {
+    public static void removeItemFromCart(int productId, int userId) {
         try (Connection dbConnection = Utils.getConnection()) {
-            PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM shoppingcart WHERE productid = ?;");
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM shoppingcart WHERE productid = ? AND userid=?;");
             preparedStatement.setInt(1,productId);
+            preparedStatement.setInt(2, userId);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    static void updateIncrement(int id) {
+    static void updateIncrement(int id, int userId) {
         Connection dbConnection;
         try {
             dbConnection = Utils.getConnection();
-            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=? AND userid=?");
             preparedStatement.setInt(1, findQuantity(id)+1);
             preparedStatement.setInt(2, id);
+            preparedStatement.setInt(3, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    static void updateDecrement(int id) {
+    static void updateDecrement(int id, int userId) {
         Connection dbConnection;
         try {
             dbConnection = Utils.getConnection();
-            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=?");
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("UPDATE shoppingcart SET quantity=? WHERE productid=? AND userid=?");
             preparedStatement.setInt(1, findQuantity(id)-1);
             preparedStatement.setInt(2, id);
+            preparedStatement.setInt(3, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

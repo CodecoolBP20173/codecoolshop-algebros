@@ -16,7 +16,7 @@ public class SqlUserUtils {
             stmt.setString(2, userInfo.get("hashedpwd"));
             stmt.setString(3, userInfo.get("email"));
             stmt.setString(4, userInfo.get("salt"));
-            stmt.executeQuery();
+            stmt.execute();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -42,7 +42,7 @@ public class SqlUserUtils {
             stmt.setString(6, userInfo.get("country"));
             stmt.setString(7, userInfo.get("address"));
             stmt.setInt(8, Integer.parseInt(userInfo.get("userid")));
-            stmt.executeQuery();
+            stmt.execute();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

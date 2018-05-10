@@ -90,15 +90,15 @@ public class ProductController extends HttpServlet {
                 }
                 break;
             case "remove":
-                OrderJdbc.removeItemFromCart(id);
+                OrderJdbc.removeItemFromCart(id, userId);
                 json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
             case "increment":
-                OrderJdbc.updateIncrement(id);
+                OrderJdbc.updateIncrement(id, userId);
                 json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
             case "decrement":
-                order.decrementQuantityOfProduct(id);
+                OrderJdbc.updateDecrement(id, userId);
                 json = OrderJdbc.getShoppingCart(userId).toJSONString();
                 break;
             case "openCart":
