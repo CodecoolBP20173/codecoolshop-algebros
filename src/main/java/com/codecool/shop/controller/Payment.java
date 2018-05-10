@@ -20,13 +20,13 @@ public class Payment extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        engine.process("product/payment.html", context, resp.getWriter());
         HttpSession session = NetworkUtils.getHTTPSession(req);
         if (NetworkUtils.checkLoginStatus(session)) {
             String stringId = (String) session.getAttribute("userid");
             int userIntId = Integer.parseInt(stringId);
             OrderJdbc.addOrder(userIntId);
             OrderJdbc.removeFromOrder(userIntId);
+            engine.process("product/payment.html", context, resp.getWriter());
         } else {
             resp.sendRedirect("/");
         }
