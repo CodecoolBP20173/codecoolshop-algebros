@@ -27,6 +27,11 @@ public class Checkout extends HttpServlet {
         String email = (String) session.getAttribute("email");
         Order order = (Order) session.getAttribute("Order");
         HashMap<String, String> userInfo = SqlUserUtils.getUser(email);
+        String stringId = (String) session.getAttribute("userid");
+        int userId = Integer.parseInt(stringId);
+        OrderJdbc.addOrder(userId);
+        OrderJdbc.removeFromOrder(userId);
+        //OrderJdbc.addOrder(id);
         context.setVariable("userinfo", userInfo);
         //context.setVariable("shoppingCart", order.getCartItems());
         //context.setVariable("sumPrice", order.getTotalPriceOfOrder());

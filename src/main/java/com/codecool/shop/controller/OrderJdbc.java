@@ -15,7 +15,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -147,5 +150,44 @@ public class OrderJdbc {
             e.printStackTrace();
         }
     }
+    public static void addOrder(int userid) {
+        try (Connection dbConnection = Utils.getConnection()) {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("INSERT INTO orderlist (status,products,totalprice,userid) VALUES (?,?,?,?)");
+            preparedStatement.setString(1, "checked");
+            preparedStatement.setString(2, getShoppingCart(userid).toString());
+            preparedStatement.setFloat(3, getTotalPrice(userid));
+            preparedStatement.setInt(4, userid);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private static float getTotalPrice(int id) {
+        float price=0;
+        try (Connection dbConnection = Utils.getConnection()) {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart WHERE userid=?;");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                price+=findProductByProductId(resultSet.getInt("productid")).getDefaultPrice()*resultSet.getInt("quantity");
+            }
+            return price;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public static void removeFromOrder(int userid) {
+        try (Connection dbConnection = Utils.getConnection()) {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM shoppingcart WHERE userid=?");
+            preparedStatement.setInt(1, userid);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

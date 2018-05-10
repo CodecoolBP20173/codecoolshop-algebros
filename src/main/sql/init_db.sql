@@ -63,9 +63,9 @@ CREATE TABLE orderlist
     CONSTRAINT orderlist_pkey
     PRIMARY KEY,
   date       DATE,
-  status     VARCHAR(40),
+  status     VARCHAR(500),
   totalprice INTEGER,
-  products   VARCHAR(80),
+  products   VARCHAR(5000),
   userid     INTEGER NOT NULL
 );
 
@@ -120,3 +120,4 @@ CREATE SEQUENCE public.products_id_seq NO MINVALUE NO MAXVALUE NO CYCLE;
 ALTER TABLE public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq');
 ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
+ALTER TABLE public.orderlist ALTER COLUMN date SET DEFAULT current_timestamp;
