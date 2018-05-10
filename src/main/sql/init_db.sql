@@ -14,7 +14,13 @@ CREATE TABLE users
   username VARCHAR(40),
   password VARCHAR(80),
   email VARCHAR(80),
-  salt VARCHAR(120)
+  salt VARCHAR(120),
+  fullname VARCHAR(20),
+  phone VARCHAR(20),
+  country VARCHAR(30),
+  city VARCHAR(30),
+  zip VARCHAR(10),
+  address VARCHAR(80)
 );
 
 

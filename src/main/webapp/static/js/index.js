@@ -31,6 +31,8 @@ let index = {
             }
         });
 
+        
+
         $("#supplierDropdownButton, #supplierArrow").on("click", function () {
             const supplierDropdown = $("#SuppliersDropdown");
             const supplierArrow = $("#supplierArrow");
