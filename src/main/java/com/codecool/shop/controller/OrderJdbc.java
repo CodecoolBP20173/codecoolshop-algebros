@@ -15,10 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -90,11 +88,11 @@ public class OrderJdbc {
         return null;
     }
 
-    public static JSONArray getShoppingCart(int id) {
+    public static JSONArray getShoppingCart(int userId) {
         JSONArray cartItems = new JSONArray();
         try (Connection dbConnection = Utils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart WHERE userid=?;");
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Product product = findProductByProductId(resultSet.getInt("productid"));
@@ -104,7 +102,7 @@ public class OrderJdbc {
                 jsonObject.put("id",resultSet.getInt("productid"));
                 int quantity = resultSet.getInt("quantity");
                 jsonObject.put("quantity", quantity);
-                jsonObject.put("price", product.getDefaultPrice() * quantity);
+                jsonObject.put("price", product.getDefaultPrice());
                 cartItems.add(jsonObject);
             }
         } catch (SQLException e) {
@@ -190,4 +188,20 @@ public class OrderJdbc {
 
 
 
+    static float getTotalPriceOfOrder(int userId){
+        float totalPrice = 0;
+        try (Connection dbConnection = Utils.getConnection()) {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM shoppingcart WHERE userid=?;");
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Product product = findProductByProductId(resultSet.getInt("productid"));
+                int quantity = resultSet.getInt("quantity");
+                totalPrice += product.getDefaultPrice() * quantity;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalPrice;
+    }
 }

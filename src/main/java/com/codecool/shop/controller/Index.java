@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/"})
-public class ProductController extends HttpServlet {
+public class Index extends HttpServlet {
     ProductDao productDataStore;
     ProductCategoryDao productCategoryDataStore;
     SupplierDao supplierDataStore;
@@ -75,37 +75,38 @@ public class ProductController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         HttpSession session = NetworkUtils.getHTTPSession(req);
-        Order order = (Order) session.getAttribute("Order");
         String process = req.getParameter("process");
         String stringId = (String) session.getAttribute("userid");
-        int userId = Integer.parseInt(stringId);
         String json = "";
-        switch (process) {
-            case "add":
-                order.addProduct(id);
-                if (OrderJdbc.findQuantity(id) == 0) {
-                    OrderJdbc.add(id, userId, 1);
-                } else {
-                    OrderJdbc.update(OrderJdbc.findQuantity(id) + 1, id);
-                }
-                break;
-            case "remove":
-                OrderJdbc.removeItemFromCart(id, userId);
-                json = OrderJdbc.getShoppingCart(userId).toJSONString();
-                break;
-            case "increment":
-                OrderJdbc.updateIncrement(id, userId);
-                json = OrderJdbc.getShoppingCart(userId).toJSONString();
-                break;
-            case "decrement":
-                OrderJdbc.updateDecrement(id, userId);
-                json = OrderJdbc.getShoppingCart(userId).toJSONString();
-                break;
-            case "openCart":
-                json = OrderJdbc.getShoppingCart(userId).toJSONString();
-                break;
+        if (stringId != null) {
+        int userId = Integer.parseInt(stringId);
+            switch (process) {
+                case "add":
+                    if (OrderJdbc.findQuantity(id) == 0) {
+                        OrderJdbc.add(id, userId, 1);
+                    } else {
+                        OrderJdbc.update(OrderJdbc.findQuantity(id) + 1, id);
+                    }
+                    break;
+                case "remove":
+                    OrderJdbc.removeItemFromCart(id, userId);
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+                case "increment":
+                    OrderJdbc.updateIncrement(id, userId);
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+                case "decrement":
+                    OrderJdbc.updateDecrement(id, userId);
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+                case "openCart":
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+            }
+        } else {
+            json = "Please log in to add to cart!";
         }
-        session.setAttribute("Order", order);
         resp.getWriter().write(json);
 
     }

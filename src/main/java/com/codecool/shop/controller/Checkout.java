@@ -28,13 +28,14 @@ public class Checkout extends HttpServlet {
         Order order = (Order) session.getAttribute("Order");
         HashMap<String, String> userInfo = SqlUserUtils.getUser(email);
         String stringId = (String) session.getAttribute("userid");
-        int userId = Integer.parseInt(stringId);
-        OrderJdbc.addOrder(userId);
-        OrderJdbc.removeFromOrder(userId);
+        int userIntId = Integer.parseInt(stringId);
+        OrderJdbc.addOrder(userIntId);
+        OrderJdbc.removeFromOrder(userIntId);
         //OrderJdbc.addOrder(id);
+        String userId = (String) session.getAttribute("userid");
         context.setVariable("userinfo", userInfo);
-        //context.setVariable("shoppingCart", order.getCartItems());
-        //context.setVariable("sumPrice", order.getTotalPriceOfOrder());
+        context.setVariable("shoppingCart", OrderJdbc.getShoppingCart(Integer.parseInt(userId)));
+        context.setVariable("sumPrice", OrderJdbc.getTotalPriceOfOrder(Integer.parseInt(userId)));
         engine.process("product/checkout.html", context, resp.getWriter());
     }
 
