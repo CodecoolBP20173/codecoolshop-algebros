@@ -20,4 +20,6 @@ public interface ProductDao {
 
     List<Product> getBy(ProductCategory productCategory);
 
+    List<Product> getBy(Supplier supplier, ProductCategory productCategory);
+
 }

@@ -44,7 +44,6 @@ public class ProductController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("recipient", "World");
         List<ProductCategory> categories = productCategoryDataStore.getAll();
 
         context.setVariable("categories", categories);
@@ -56,18 +55,30 @@ public class ProductController extends HttpServlet {
             context.setVariable("products", productDataStore.getAll());
         }
         List<Supplier> suppliers = supplierDataStore.getAll();
-        context.setVariable("suppliers", suppliers);
+        HttpSession session = NetworkUtils.getHTTPSession(req);
+        Order order = (Order) session.getAttribute("Order");
+
+        String category = req.getParameter("category");
         String supplier = req.getParameter("supplier");
-        if (supplier != null) {
+        if (category == null && supplier == null){
+            context.setVariable("products", productDataStore.getAll());
+        }
+        else if (category == null){
             context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier)));
         }
-        if (req.getSession(false) == null) {
-            HttpSession session = req.getSession(true);
-            session.setAttribute("Order", new Order());
+        else if (supplier == null){
+            System.out.println(category);
+            ProductCategory productCategory = productCategoryDataStore.find(category);
+            context.setVariable("products", productDataStore.getBy(productCategory));
         }
-        HttpSession session = req.getSession(true);
-        Order order = (Order) session.getAttribute("Order");
+        else {
+            context.setVariable("products", productDataStore.getBy(supplierDataStore.find(supplier), productCategoryDataStore.find(category)));
+        }
+
         context.setVariable("shoppingCart", order);
+        context.setVariable("categories", categories);
+        context.setVariable("suppliers", suppliers);
+        context.setVariable("recipient", "World");
 
         engine.process("product/index.html", context, resp.getWriter());
     }

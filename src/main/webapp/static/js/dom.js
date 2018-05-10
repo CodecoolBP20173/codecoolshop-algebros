@@ -1,20 +1,15 @@
 function changeCartModal(items) {
-    let cartItemsOutput = `<tr>
-                                   <th>Product</th> 
-                                       <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th> </th>
-                                   </tr>`;
+    let cartItemsOutput = ``;
     for (let item of items) {
         cartItemsOutput += `<tr class="product" data-product-id="${item["id"]}">
                                 <td>${item["name"]}</td>
                                 <td><button class="incrementButton" data-product-id="${item["id"]}">+</button> <span class="quantity" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}">${item["quantity"]}</span> <button class="decrementButton" data-product-id="${item["id"]}">-</button></td>
-                                <td class="defaultPrice" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}" data-default-price="${item["defaultPrice"]}">${item["price"]}</td>
+                                <td class="defaultPrice" data-product-id="${item["id"]}" data-quantity="${item["quantity"]}" >${item["price"]}</td>
                                 <td><button class="removeProductButton" data-product-id="${item["id"]}" title="remove">x</button></td>
                             </tr>`;
     }
-    document.getElementById("cartTableBody").innerHTML = cartItemsOutput;
-    document.getElementById("totalPricePlace").innerHTML = `<strong id='totalPrice'>${items[0]['totalPrice']} USD<strong>`;
+    $("#cartTableBody").html(cartItemsOutput);
+    $("#totalPricePlace").html(`<strong data-total-price="${calculateTotalPrice(items)}" id='totalPrice'>${calculateTotalPrice(items)}</strong>`);
 }
 
 function addShoppingCartButtonListeners() {
@@ -27,22 +22,26 @@ function addShoppingCartButtonListeners() {
             url: url,
             success: function (quantityJSONString) {
                 const quantity = JSON.parse(quantityJSONString);
-                incrementNumberOfProduct(productId, quantity["quantity"], quantity["totalPrice"])
+                incrementNumberOfProduct(productId, quantity["quantity"])
             }
         })
     });
     $(".decrementButton").on("click", function (event) {
         const productId = event.target.dataset.productId;
-        const url = "/";
-        $.ajax({
-            type: "POST",
-            data: {"id": productId, "process": "decrement"},
-            url: url,
-            success: function (quantityJSONString) {
-                const quantity = JSON.parse(quantityJSONString);
-                decrementNumberOfProduct(productId, quantity["quantity"], quantity["totalPrice"])
-            }
-        })
+        const filter = "[data-product-id='" + productId + "']";
+        const quant = $(".quantity").filter(filter).html();
+        if (quant > 0) {
+            const url = "/";
+            $.ajax({
+                type: "POST",
+                data: {"id": productId, "process": "decrement"},
+                url: url,
+                success: function (quantityJSONString) {
+                    const quantity = JSON.parse(quantityJSONString);
+                    decrementNumberOfProduct(productId, quantity["quantity"])
+                }
+            })
+        }
     });
     $(".removeProductButton").on("click", function (event) {
         const productId = event.target.dataset.productId;
@@ -53,32 +52,33 @@ function addShoppingCartButtonListeners() {
             url: url,
             success: function (quantityJSONString) {
                 const quantity = JSON.parse(quantityJSONString);
-                removeProductFromCart(productId, quantity[0]["totalPrice"]);
-                $("#totalPricePlace").html("<strong>" + Math.round(quantity[0]["totalPrice"]) + " USD</strong>")
+                removeProductFromCart(quantity);
             }
         })
     })
 }
 
-function incrementNumberOfProduct(productId, quantity, totalPrice) {
+function incrementNumberOfProduct(productId, quantity) {
     const filter = "[data-product-id='" + productId + "']";
     $(".quantity").filter(filter).html(quantity);
-    $("#totalPricePlace").html("<strong>" + Math.round(totalPrice) + " USD</strong>")
+    const defaultPrice = $(".defaultPrice").filter(filter).html();
+    const totalPrice = parseFloat($("#totalPrice").html()) + parseFloat(defaultPrice);
+    $("#totalPrice").html(Number((totalPrice).toFixed(2)).toString());
 }
 
-function decrementNumberOfProduct(productId, quantity, totalPrice) {
+function decrementNumberOfProduct(productId, quantity) {
     const filter = "[data-product-id='" + productId + "']";
-    if (quantity > 0) {
-        $(".quantity").filter(filter).html(quantity);
-        $("#totalPricePlace").html("<strong>" + Math.round(totalPrice) + " USD</strong>")
+    if (quantity == null) {
+        quantity = 0
     }
-    else {
-        removeProductFromCart(productId, totalPrice)
-    }
+    $(".quantity").filter(filter).html(quantity);
+    const defaultPrice = $(".defaultPrice").filter(filter).html();
+    const totalPrice = parseFloat($("#totalPrice").html()) - parseFloat(defaultPrice);
+    $("#totalPrice").html(Number((totalPrice).toFixed(2)).toString());
 }
 
 function changePaymentToPayPal() {
-    document.getElementById("paymentMethod").innerHTML = `<div class="col" align="center">
+    $("#paymentMethod").html(`<div class="col" align="center">
                             <div class="card">
                                 <div class="card-body">
                                     <form action="/payment" method="post">
@@ -94,11 +94,11 @@ function changePaymentToPayPal() {
                                     </form>
                                 </div>
                             </div>
-                        </div>`;
+                        </div>`)
 }
 
 function changePaymentToCard() {
-    document.getElementById("paymentMethod").innerHTML = `<div class="col" align="center">
+    $("#paymentMethod").html(`<div class="col" align="center">
                             <form class="card">
                                 <div class="card-body">
                                     <form action="/payment" method="post">
@@ -127,11 +127,23 @@ function changePaymentToCard() {
                                 </form>
                                 </div>
                             </div>
-                        </div>`;
+                        </div>`);
 }
 
-function removeProductFromCart(productId, totalPrice) {
-    const filter = "[data-product-id='" + productId + "']";
-    $("#totalPricePlace").html("<strong>" + totalPrice + " USD</strong>");
-    $(".product").filter(filter).remove();
+function removeProductFromCart(products) {
+    if (products != null){
+    changeCartModal(products);
+    addShoppingCartButtonListeners();
+    }
+    else{
+        $("#cartTableBody").empty();
+    }
+}
+
+function calculateTotalPrice(products) {
+    let totalPrice = 0;
+    for (let i = 0; i < products.length; i++) {
+        totalPrice += products[i]["defaultPrice"] * products[i]["quantity"];
+    }
+    return totalPrice;
 }

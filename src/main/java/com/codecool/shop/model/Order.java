@@ -6,9 +6,7 @@ import com.codecool.shop.processes.PaymentProcess;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Order implements Orderable {
@@ -96,7 +94,6 @@ public class Order implements Orderable {
             jsonObject.put("defaultPrice", product1.getDefaultPrice());
             jsonObject.put("quantity", this.getOrderQuantity().get(product1.getId()));
             jsonObject.put("price", product1.getPrice());
-            jsonObject.put("totalPrice", this.totalPrice());
             productList.add(jsonObject);
 
         }
@@ -106,16 +103,16 @@ public class Order implements Orderable {
     public JSONObject getProductQuantity(int id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("quantity", this.getOrderQuantity().get(id));
-        jsonObject.put("totalPrice", this.totalPrice());
         return jsonObject;
     }
 
-    public double totalPrice() {
-        double sumPrice = 0;
-        List<Product> orderCartItems = this.getItemList();
-        for (Product item : orderCartItems) {
-            sumPrice += (item.getDefaultPrice() * this.getOrderQuantity().get(item.getId()));
+    public float getTotalPriceOfOrder(){
+        Iterator<Product> productsIterator = getItemList().iterator();
+        float totalPrice = 0;
+        while (productsIterator.hasNext()){
+            Product product = productsIterator.next();
+            totalPrice += product.getDefaultPrice();
         }
-        return sumPrice;
+        return totalPrice;
     }
 }

@@ -34,10 +34,14 @@ public class ProductCategory extends BaseModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProductCategory)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ProductCategory)){
+            return false;
+        }
         ProductCategory category = (ProductCategory) o;
-        return Objects.equals(department, category.department);
+        return Objects.equals(name, category.name) && Objects.equals(description, category.description) && Objects.equals(department, category.department);
     }
 
     public String getDepartment() {
