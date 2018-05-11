@@ -1,18 +1,22 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.*;
+import com.codecool.shop.dao.interfaces.ProductCategoryDao;
+import com.codecool.shop.dao.interfaces.ProductDao;
+import com.codecool.shop.dao.interfaces.SupplierDao;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.implementation.jdbc.ProductCategoryDaoJdbc;
+import com.codecool.shop.dao.implementation.jdbc.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.jdbc.SupplierDaoJdbc;
+import com.codecool.shop.dao.implementation.memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.memory.ProductDaoMem;
+import com.codecool.shop.dao.implementation.memory.SupplierDaoMem;
+import com.codecool.shop.model.OrderJdbc;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.util.NetworkUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import com.codecool.shop.model.Order;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +26,13 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/"})
-public class ProductController extends HttpServlet {
-    ProductDao productDataStore;
-    ProductCategoryDao productCategoryDataStore;
-    SupplierDao supplierDataStore;
+public class Index extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ProductDao productDataStore;
+        ProductCategoryDao productCategoryDataStore;
+        SupplierDao supplierDataStore;
         if (System.getenv("datastore").equals("jdbc")) {
             productDataStore = ProductDaoJdbc.getInstance();
             productCategoryDataStore = ProductCategoryDaoJdbc.getInstance();
@@ -75,35 +79,38 @@ public class ProductController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         HttpSession session = NetworkUtils.getHTTPSession(req);
-        Order order = (Order) session.getAttribute("Order");
         String process = req.getParameter("process");
+        String stringId = (String) session.getAttribute("userid");
         String json = "";
-        switch (process) {
-            case "add":
-                order.addProduct(id);
-                if (ProductControllerJdbc.findQuantity(id) == 0) {
-                    ProductControllerJdbc.add(id, 1, 1);
-                } else {
-                    ProductControllerJdbc.update(ProductControllerJdbc.findQuantity(id) + 1, id);
-                }
-                break;
-            case "remove":
-                order.removeProduct(id);
-                json = order.getCartItems().toJSONString();
-                break;
-            case "increment":
-                order.addProduct(id);
-                json = order.getProductQuantity(id).toJSONString();
-                break;
-            case "decrement":
-                order.decrementQuantityOfProduct(id);
-                json = order.getProductQuantity(id).toJSONString();
-                break;
-            case "openCart":
-                json = order.getCartItems().toJSONString();
-                break;
+        if (stringId != null) {
+        int userId = Integer.parseInt(stringId);
+            switch (process) {
+                case "add":
+                    if (OrderJdbc.findQuantity(id) == 0) {
+                        OrderJdbc.add(id, userId, 1);
+                    } else {
+                        OrderJdbc.update(OrderJdbc.findQuantity(id) + 1, id);
+                    }
+                    break;
+                case "remove":
+                    OrderJdbc.removeItemFromCart(id, userId);
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+                case "increment":
+                    OrderJdbc.updateIncrement(id, userId);
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+                case "decrement":
+                    OrderJdbc.updateDecrement(id, userId);
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+                case "openCart":
+                    json = OrderJdbc.getShoppingCart(userId).toJSONString();
+                    break;
+            }
+        } else {
+            json = "Please log in to add to cart!";
         }
-        session.setAttribute("Order", order);
         resp.getWriter().write(json);
 
     }

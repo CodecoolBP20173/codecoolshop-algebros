@@ -8,7 +8,7 @@ $(".credit-card").on("click", function () {
 });
 $("#sub").on('click', function () {
     alert("Your payment was successful!");
-})
+});
 
 function changePaymentToPayPal() {
     $("#paymentMethod").html(`<div class="col" align="center">

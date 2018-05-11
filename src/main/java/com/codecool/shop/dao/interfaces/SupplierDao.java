@@ -1,4 +1,4 @@
-package com.codecool.shop.dao;
+package com.codecool.shop.dao.interfaces;
 
 import com.codecool.shop.model.Supplier;
 

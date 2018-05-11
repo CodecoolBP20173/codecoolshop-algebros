@@ -1,6 +1,6 @@
 package com.codecool.shop.model;
 
-import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.dao.implementation.memory.ProductDaoMem;
 import com.codecool.shop.processes.CheckoutProcess;
 import com.codecool.shop.processes.PaymentProcess;
 import org.json.simple.JSONArray;
@@ -106,10 +106,10 @@ public class Order implements Orderable {
         return jsonObject;
     }
 
-    public float getTotalPriceOfOrder(){
+    public float getTotalPriceOfOrder() {
         Iterator<Product> productsIterator = getItemList().iterator();
         float totalPrice = 0;
-        while (productsIterator.hasNext()){
+        while (productsIterator.hasNext()) {
             Product product = productsIterator.next();
             totalPrice += product.getDefaultPrice();
         }

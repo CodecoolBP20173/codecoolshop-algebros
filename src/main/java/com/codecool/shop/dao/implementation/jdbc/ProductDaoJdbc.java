@@ -1,11 +1,11 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.jdbc;
 
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.interfaces.ProductDao;
+import com.codecool.shop.dao.interfaces.SupplierDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import com.codecool.shop.dao.Jdbc.Utils;
+import com.codecool.shop.util.JDBCUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ProductDaoJdbc implements ProductDao {
         String insertTableSQL = "INSERT INTO products"
                 + "(name,description,defaultprice,defaultcurrency,productcategory,supplier) VALUES"
                 + "(?,?,?,?,?,?)";
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
@@ -53,7 +53,7 @@ public class ProductDaoJdbc implements ProductDao {
     @Override
     public Product find(int id) {
 
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -74,7 +74,7 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public void remove(int id) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM products WHERE id=?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -87,7 +87,7 @@ public class ProductDaoJdbc implements ProductDao {
     @Override
     public List<Product> getAll() {
         List<Product> allProducts = new ArrayList<>();
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -107,7 +107,7 @@ public class ProductDaoJdbc implements ProductDao {
     @Override
     public List<Product> getBy(Supplier supplier) {
         List<Product> productsBySupplier = new ArrayList<>();
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE supplier = ?;");
             preparedStatement.setString(1, supplier.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -127,7 +127,7 @@ public class ProductDaoJdbc implements ProductDao {
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
         List<Product> productsByCategory = new ArrayList<>();
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE productcategory = ?;");
             preparedStatement.setString(1, productCategory.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -147,7 +147,7 @@ public class ProductDaoJdbc implements ProductDao {
     @Override
     public List<Product> getBy(Supplier supplier, ProductCategory productCategory) {
         List<Product> productsByCategory = new ArrayList<>();
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM products WHERE productcategory = ? AND supplier = ? ;");
             preparedStatement.setString(1, productCategory.getName());
             preparedStatement.setString(2, supplier.getName());

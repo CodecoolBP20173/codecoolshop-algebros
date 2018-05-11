@@ -1,5 +1,5 @@
-var $password = $("#password");
-var $confirmPassword = $("#confirm_password");
+const $password = $("#password");
+const $confirmPassword = $("#confirm_password");
 
 $("form span").hide();
 
@@ -15,8 +15,8 @@ function canSubmit() {
     return isPasswordValid() && arePasswordsMatching();
 }
 
-function passwordEvent(){
-    if(isPasswordValid()) {
+function passwordEvent() {
+    if (isPasswordValid()) {
         $password.next().hide();
     } else {
         $password.next().show();
@@ -24,7 +24,7 @@ function passwordEvent(){
 }
 
 function confirmPasswordEvent() {
-    if(arePasswordsMatching()) {
+    if (arePasswordsMatching()) {
         $confirmPassword.next().hide();
     } else {
         $confirmPassword.next().show();

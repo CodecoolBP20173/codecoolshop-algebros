@@ -5,7 +5,7 @@ let index = {
         this.addListeners();
     },
 
-    modifyFilterButtonNames : function(){
+    modifyFilterButtonNames: function () {
         const url = utils.getURL();
         let category = url.searchParams.get("category");
         let supplier = url.searchParams.get("supplier");
@@ -31,7 +31,6 @@ let index = {
             }
         });
 
-        
 
         $("#supplierDropdownButton, #supplierArrow").on("click", function () {
             const supplierDropdown = $("#SuppliersDropdown");
@@ -68,7 +67,10 @@ let index = {
                 type: "POST",
                 data: {"id": attribute, "process": "add"},
                 url: url,
-                success: function () {
+                success: function (message) {
+                    if (message === "Please log in to add to cart!") {
+                        alert(message)
+                    }
                 }
             })
         });

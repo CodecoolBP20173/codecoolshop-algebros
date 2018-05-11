@@ -1,7 +1,7 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.jdbc;
 
-import com.codecool.shop.dao.Jdbc.Utils;
-import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.util.JDBCUtils;
+import com.codecool.shop.dao.interfaces.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
 
 import java.sql.*;
@@ -26,7 +26,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("INSERT INTO productcategory (name,description,department) VALUES (?,?,?)");
             preparedStatement.setString(1, category.getName());
             preparedStatement.setString(2, category.getDescription());
@@ -39,7 +39,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
     @Override
     public ProductCategory find(int id) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM productcategory WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -64,7 +64,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
     @Override
     public ProductCategory find(String name) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM productcategory WHERE name = ?;");
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,7 +79,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
     @Override
     public void remove(int id) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM productcategory WHERE id=?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -92,7 +92,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     @Override
     public List<ProductCategory> getAll() {
         List<ProductCategory> allProductCategory = new ArrayList<>();
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM productcategory;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

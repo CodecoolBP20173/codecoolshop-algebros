@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <button id="cartButton" type="button" class="cartButton" data-toggle="modal" data-target="#cartModal">
+            <button id="cartButton" th:style="${session.userid == null}? 'display:none' : 'display:block'" type="button" class="cartButton" data-toggle="modal" data-target="#cartModal">
                 Cart
             </button>
             <ul class="nav navbar-nav navbar-right" id="loginPlace">
@@ -81,18 +81,23 @@
                                 <li>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <form class="form" role="form" method="post" action="/login" accept-charset="UTF-8" id="login-nav">
+                                            <form class="form" role="form" method="post" action="/login"
+                                                  accept-charset="UTF-8" id="login-nav">
                                                 <div class="form-group">
                                                     <label class="sr-only" for="useremail">Email address</label>
-                                                    <input type="email" class="form-control" name="useremail" id="useremail" placeholder="Email address" required>
+                                                    <input type="email" class="form-control" name="useremail"
+                                                           id="useremail" placeholder="Email address" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="sr-only" for="userpassword">Password</label>
-                                                    <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="Password" required>
+                                                    <input type="password" class="form-control" name="userpassword"
+                                                           id="userpassword" placeholder="Password" required>
                                                 </div>
                                                 <div id="authFail"></div>
                                                 <div class="form-group">
-                                                    <button id="login" type="button" name="login" class="btn btn-success btn-block">Sign in</button>
+                                                    <button id="login" type="button" name="login"
+                                                            class="btn btn-success btn-block">Sign in
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -123,7 +128,8 @@
                                 <strong class="lead" th:text="${prod.getPrice()}">100 USD</strong>
                             </div>
                             <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-success addToCart float-right" th:data-product-id="${prod.id}">Add to cart
+                                <button class="btn btn-success addToCart float-right" th:data-product-id="${prod.id}">
+                                    Add to cart
                                 </button>
                             </div>
                         </div>
@@ -145,21 +151,22 @@
                     <div class="modal-body">
 
                         <table class="table">
-                            <thead><tr>
+                            <thead>
+                            <tr>
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
-                                <th> </th>
-                            </tr></thead>
+                                <th></th>
+                            </tr>
+                            </thead>
                             <tbody id="cartTableBody">
                             </tbody>
                         </table>
-                        <div class="alignRight"><strong>Total Price: </strong><span id="totalPricePlace"></span><strong th:text=" USD"> Currency </strong></div>
+                        <div class="alignRight"><strong>Total Price: </strong><span id="totalPricePlace"></span><strong
+                                th:text=" USD"> Currency </strong></div>
                     </div>
                     <div class="modal-footer">
-                        <form action="/checkout" method="get">
-                            <button type="submit" class="dropbtn">Proceed to checkout</button>
-                        </form>
+                        <button id="checkOutButton" class="dropbtn">Proceed to checkout</button>
                     </div>
                 </div>
             </div>

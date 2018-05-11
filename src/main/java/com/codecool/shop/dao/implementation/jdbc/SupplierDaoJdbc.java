@@ -1,7 +1,7 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.jdbc;
 
-import com.codecool.shop.dao.Jdbc.Utils;
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.util.JDBCUtils;
+import com.codecool.shop.dao.interfaces.SupplierDao;
 import com.codecool.shop.model.Supplier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +31,7 @@ public class SupplierDaoJdbc implements SupplierDao {
         String insertTableSQL = "INSERT INTO supplier"
                 + "(name,description) VALUES"
                 + "(?,?)";
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement(insertTableSQL);
             preparedStatement.setString(1, supplier.getName());
             preparedStatement.setString(2, supplier.getDescription());
@@ -43,7 +43,7 @@ public class SupplierDaoJdbc implements SupplierDao {
 
     @Override
     public Supplier find(int id) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM supplier WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -66,7 +66,7 @@ public class SupplierDaoJdbc implements SupplierDao {
 
     @Override
     public Supplier find(String name) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM supplier WHERE name = ?;");
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -80,7 +80,7 @@ public class SupplierDaoJdbc implements SupplierDao {
 
     @Override
     public void remove(int id) {
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM supplier WHERE id=?");
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -92,7 +92,7 @@ public class SupplierDaoJdbc implements SupplierDao {
     @Override
     public List<Supplier> getAll() {
         List<Supplier> allSupplier = new ArrayList<>();
-        try (Connection dbConnection = Utils.getConnection()) {
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT * FROM supplier;");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

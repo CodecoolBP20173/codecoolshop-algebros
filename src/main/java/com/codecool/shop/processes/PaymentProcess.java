@@ -1,6 +1,6 @@
 package com.codecool.shop.processes;
 
-import com.codecool.shop.controller.AdminLog;
+import com.codecool.shop.util.AdminLog;
 import com.codecool.shop.model.Order;
 import org.json.simple.JSONArray;
 

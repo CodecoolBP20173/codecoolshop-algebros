@@ -1,4 +1,4 @@
-package com.codecool.shop.controller;
+package com.codecool.shop.util;
 
 import org.json.simple.JSONObject;
 

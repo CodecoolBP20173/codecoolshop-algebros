@@ -1,7 +1,5 @@
 package com.codecool.shop.util;
 
-import com.codecool.shop.dao.Jdbc.Utils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,13 +8,13 @@ import java.util.HashMap;
 
 public class SqlUserUtils {
     public static void addUser(HashMap<String, String> userInfo) {
-        try (Connection connection = Utils.getConnection()){
+        try (Connection connection = JDBCUtils.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO users (username,password,email,salt) VALUES (?,?,?,?);");
             stmt.setString(1, userInfo.get("name"));
             stmt.setString(2, userInfo.get("hashedpwd"));
             stmt.setString(3, userInfo.get("email"));
             stmt.setString(4, userInfo.get("salt"));
-            stmt.executeQuery();
+            stmt.execute();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -24,7 +22,7 @@ public class SqlUserUtils {
 
 
     public static void updateUser(HashMap<String, String> userInfo) {
-        try (Connection connection = Utils.getConnection()){
+        try (Connection connection = JDBCUtils.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("UPDATE users SET " +
                     "fullname = ?," +
                     "email = ?," +
@@ -42,7 +40,7 @@ public class SqlUserUtils {
             stmt.setString(6, userInfo.get("country"));
             stmt.setString(7, userInfo.get("address"));
             stmt.setInt(8, Integer.parseInt(userInfo.get("userid")));
-            stmt.executeQuery();
+            stmt.execute();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -50,7 +48,7 @@ public class SqlUserUtils {
 
     public static HashMap<String, String> getUser(String email) {
         HashMap<String, String> userInfo = new HashMap<>();
-        try (Connection connection = Utils.getConnection()) {
+        try (Connection connection = JDBCUtils.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             stmt.setString(1, email);
             ResultSet result = stmt.executeQuery();
