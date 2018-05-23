@@ -6,18 +6,22 @@ import com.codecool.shop.util.NetworkUtils;
 import com.codecool.shop.util.SqlUserUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 
 @WebServlet(urlPatterns = {"/login"})
 public class Login extends HttpServlet {
+
+    @SuppressWarnings("unchecked")
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("user");
@@ -51,7 +55,7 @@ public class Login extends HttpServlet {
         return authLogin;
     }
 
-
+    @SuppressWarnings("unchecked")
     private JSONArray UserInfoToJson(HashMap<String, String> userInfo) {
         JSONArray userData = new JSONArray();
         JSONObject jsonObject = new JSONObject();
