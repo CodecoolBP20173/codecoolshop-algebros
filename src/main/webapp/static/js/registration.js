@@ -3,41 +3,41 @@ let registration = {
     $confirmPassword: $("#confirm_password"),
 
     isPasswordValid: function () {
-        return this.$password.val().length > 8;
+        return registration.$password.val().length > 8;
     },
 
     arePasswordsMatching: function () {
-        return this.$password.val() === this.$confirmPassword.val();
+        return registration.$password.val() === this.$confirmPassword.val();
     },
 
     canSubmit: function () {
-        return registration.isPasswordValid() && payment.arePasswordsMatching();
+        return registration.isPasswordValid() && registration.arePasswordsMatching();
     },
 
     passwordEvent: function () {
         if (registration.isPasswordValid()) {
-            this.$password.next().hide();
+            registration.$password.next().hide();
         } else {
-            this.$password.next().show();
+            registration.$password.next().show();
         }
     },
 
     confirmPasswordEvent: function () {
-        if (payment.arePasswordsMatching()) {
-            this.$confirmPassword.next().hide();
+        if (registration.arePasswordsMatching()) {
+            registration.$confirmPassword.next().hide();
         } else {
-            this.$confirmPassword.next().show();
+            registration.$confirmPassword.next().show();
         }
     },
 
     enableSubmitEvent: function () {
-        $("#submit").prop("disabled", !payment.canSubmit());
+        $("#submit").prop("disabled", !registration.canSubmit());
     },
 
     initRegistration: function () {
-        payment.enableSubmitEvent();
-        this.$password.focus(payment.passwordEvent).keyup(payment.passwordEvent).keyup(payment.confirmPasswordEvent).keyup(payment.enableSubmitEvent);
-        this.$confirmPassword.focus(payment.confirmPasswordEvent).keyup(payment.confirmPasswordEvent).keyup(payment.enableSubmitEvent);
+        registration.enableSubmitEvent();
+        registration.$password.focus(registration.passwordEvent).keyup(registration.passwordEvent).keyup(registration.confirmPasswordEvent).keyup(registration.enableSubmitEvent);
+        registration.$confirmPassword.focus(registration.confirmPasswordEvent).keyup(registration.confirmPasswordEvent).keyup(registration.enableSubmitEvent);
         $("form span").hide();
     }
 };
