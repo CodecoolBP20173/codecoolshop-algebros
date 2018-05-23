@@ -1,5 +1,5 @@
 let payment = {
-    setEventListeners : function () {
+    setEventListeners: function () {
         $(".pay-pal").on("click", function () {
             payment.changePaymentToPayPal();
         });
@@ -11,7 +11,7 @@ let payment = {
         });
     },
 
-    changePaymentToPayPal : function (){
+    changePaymentToPayPal: function () {
         $("#paymentMethod").html($("#paymentPayPal").html())
     },
 
@@ -19,7 +19,7 @@ let payment = {
         $("#paymentMethod").html($("#paymentCard").html());
     },
 
-    initPage : function () {
+    initPage: function () {
         payment.changePaymentToPayPal();
         payment.setEventListeners()
     }

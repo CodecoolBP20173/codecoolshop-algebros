@@ -17,7 +17,7 @@ let login = {
     },
 
     loginAjax: function () {
-        $('#login').on("click",function () {
+        $('#login').on("click", function () {
             let user = $('#useremail').val();
             let pwd = $('#userpassword').val();
             $.ajax({
@@ -43,7 +43,7 @@ let login = {
     },
 
     logoutAjax: function () {
-        $('#logout-bn').on("click",function () {
+        $('#logout-bn').on("click", function () {
             $.ajax({
                 type: "POST",
                 url: "/logout",
