@@ -1,42 +1,52 @@
-const $password = $("#password");
-const $confirmPassword = $("#confirm_password");
+let registration = {
+    $password: $("#password"),
+    $confirmPassword: $("#confirm_password"),
 
-$("form span").hide();
+    isPasswordValid: function () {
+        return this.$password.val().length > 8;
+    },
 
-function isPasswordValid() {
-    return $password.val().length > 8;
-}
+    arePasswordsMatching: function () {
+        return this.$password.val() === this.$confirmPassword.val();
+    },
 
-function arePasswordsMatching() {
-    return $password.val() === $confirmPassword.val();
-}
+    canSubmit: function () {
+        return registration.isPasswordValid() && payment.arePasswordsMatching();
+    },
 
-function canSubmit() {
-    return isPasswordValid() && arePasswordsMatching();
-}
+    passwordEvent: function () {
+        if (registration.isPasswordValid()) {
+            this.$password.next().hide();
+        } else {
+            this.$password.next().show();
+        }
+    },
 
-function passwordEvent() {
-    if (isPasswordValid()) {
-        $password.next().hide();
-    } else {
-        $password.next().show();
+    confirmPasswordEvent: function () {
+        if (payment.arePasswordsMatching()) {
+            this.$confirmPassword.next().hide();
+        } else {
+            this.$confirmPassword.next().show();
+        }
+    },
+
+    enableSubmitEvent: function () {
+        $("#submit").prop("disabled", !payment.canSubmit());
+    },
+
+    initRegistration: function () {
+        payment.enableSubmitEvent();
+        this.$password.focus(payment.passwordEvent).keyup(payment.passwordEvent).keyup(payment.confirmPasswordEvent).keyup(payment.enableSubmitEvent);
+        this.$confirmPassword.focus(payment.confirmPasswordEvent).keyup(payment.confirmPasswordEvent).keyup(payment.enableSubmitEvent);
+        $("form span").hide();
     }
-}
+};
+registration.initRegistration();
 
-function confirmPasswordEvent() {
-    if (arePasswordsMatching()) {
-        $confirmPassword.next().hide();
-    } else {
-        $confirmPassword.next().show();
-    }
-}
 
-function enableSubmitEvent() {
-    $("#submit").prop("disabled", !canSubmit());
-}
 
-$password.focus(passwordEvent).keyup(passwordEvent).keyup(confirmPasswordEvent).keyup(enableSubmitEvent);
 
-$confirmPassword.focus(confirmPasswordEvent).keyup(confirmPasswordEvent).keyup(enableSubmitEvent);
 
-enableSubmitEvent();
+
+
+

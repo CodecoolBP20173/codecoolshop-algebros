@@ -1,17 +1,18 @@
-changePaymentToPayPal();
+let payment = {
+    setEventListeners : function () {
+        $(".pay-pal").on("click", function () {
+            payment.changePaymentToPayPal();
+        });
+        $(".credit-card").on("click", function () {
+            payment.changePaymentToCard();
+        });
+        $("#sub").on('click', function () {
+            alert("Your payment was successful!");
+        });
+    },
 
-$(".pay-pal").on("click", function () {
-    changePaymentToPayPal();
-});
-$(".credit-card").on("click", function () {
-    changePaymentToCard();
-});
-$("#sub").on('click', function () {
-    alert("Your payment was successful!");
-});
-
-function changePaymentToPayPal() {
-    $("#paymentMethod").html(`<div class="col" align="center">
+    changePaymentToPayPal : function (){
+        $("#paymentMethod").html(`<div class="col" align="center">
                             <div class="card">
                                 <div class="card-body">
                                     <form action="/payment" method="post">
@@ -28,10 +29,10 @@ function changePaymentToPayPal() {
                                 </div>
                             </div>
                         </div>`)
-}
+    },
 
-function changePaymentToCard() {
-    $("#paymentMethod").html(`<div class="col" align="center">
+    changePaymentToCard: function () {
+        $("#paymentMethod").html(`<div class="col" align="center">
                             <form class="card">
                                 <div class="card-body">
                                     <form action="/payment" method="post">
@@ -61,4 +62,12 @@ function changePaymentToCard() {
                                 </div>
                             </div>
                         </div>`);
-}
+    },
+
+    initPage : function () {
+        payment.changePaymentToPayPal();
+        payment.setEventListeners()
+    }
+};
+
+payment.initPage();
