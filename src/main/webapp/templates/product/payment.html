@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
 
-    <script src="static/js/dom.js" defer></script>
     <script src="/static/js/payment.js" defer></script>
 
     <title>Codecool Shop - Payment</title>
@@ -59,4 +58,59 @@
     </div>
 </div>
 </body>
+<template id="paymentPayPal">
+    <div class="col" align="center">
+        <div class="card">
+            <div class="card-body">
+                <form action="/payment" method="post">
+                    <h2>PayPal</h2><br>
+                    <p>User name</p>
+                    <input type="text" name="userName"><br>
+                    <br>
+                    <p>Password</p>
+                    <input type="password" name="psw"><br>
+                    <br>
+                    <button style="font-size:12px" id="sub">Submit</button>
+                    <br>
+                    <br><input id="checkBox" type="checkbox">
+                    <p STYLE="font-size: small">By checking this box, I agree to the Terms & Conditions & Privacy
+                        Policy.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="paymentCard">
+    <div class="col" align="center">
+        <div class="card">
+            <div class="card-body">
+                <form action="/payment" method="post">
+                    <h2>Credit card info</h2><br>
+                    <p>Name on card</p>
+                    <input type="text" name="name"><br>
+                    <br>
+                    <p>Card number</p>
+                    <input type="text" name="card" value="0000-0000-0000-0000"><br>
+                    <div class="col-6">
+                        <br>
+                        <p>Expiration</p>
+                        <input type="text" name="month" maxlength="2" size="4" value="1999">
+                        <input type="text" name="year" maxlength="4" size="4" value="01"><br>
+                        <div class="col-6">
+                            <br>
+                            <p style="font-size: small">CVV number</p>
+                            <input type="password" name="cvv" maxlength="3" size="4" id="cvv">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <button style="font-size:12px" id="sub">Submit</button>
+        <br>
+        <br><input id="checkBox" type="checkbox">
+        <p STYLE="font-size: small">By checking this box, I agree to the Terms & Conditions & Privacy Policy.</p>
+        </div>
+</template>
 </html>
