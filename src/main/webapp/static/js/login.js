@@ -63,33 +63,7 @@ let login = {
         })
     },
 
-    var: loginButton = `<li class="dropdown">
-                    <button id="login-bn" class="dropdown-toggle" data-toggle="dropdown">Login</button>
-                    <ul id="login-dp" class="dropdown-menu">
-                        <li>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <form class="form" role="form" method="post" action="/login" accept-charset="UTF-8" id="login-nav">
-                                        <div class="form-group">
-                                            <label class="sr-only" for="useremail">Email address</label>
-                                            <input type="email" class="form-control" name="useremail" id="useremail" placeholder="Email address" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only" for="userpassword">Password</label>
-                                            <input type="password" class="form-control" name="userpassword" id="userpassword" placeholder="Password" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <button id="login" type="button" name="login" class="btn btn-success btn-block">Sign in</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="bottom text-center">
-                                    New here ? <a href="/registration"><b>Join Us</b></a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>`,
+    var: loginButton = $("#loginButton").html(),
 };
 
 login.loginInit();
