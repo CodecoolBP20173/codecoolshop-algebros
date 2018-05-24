@@ -8,16 +8,16 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
 import java.util.Properties;
 
-class MailProcess {
-    static void send(Order order) {
-        String name = order.getCheckoutProcess().getBuyerInfo().get("name");
-        String zipcode = order.getCheckoutProcess().getBuyerInfo().get("zip");
-        String city = order.getCheckoutProcess().getBuyerInfo().get("city");
-        String address = order.getCheckoutProcess().getBuyerInfo().get("address");
-        String orderId = Integer.toString(order.getId());
-        String to = order.getCheckoutProcess().getBuyerInfo().get("email");
+public class MailProcess {
+    public static void send(HashMap<String, String> userinfo) {
+        String name = userinfo.get("name");
+        String zipcode = userinfo.get("zip");
+        String city = userinfo.get("city");
+        String address = userinfo.get("address");
+        String to = userinfo.get("email");
 
         String user = System.getenv("serverEmailName");
         String pass = System.getenv("serverEmailPassword");
@@ -32,7 +32,6 @@ class MailProcess {
         String msg = "";
         msg += "Dear " + name + ",\n";
         msg += "\n";
-        msg += "Order number : " + orderId + "\n";
         msg += "Your order have been sent to : " + "\n";
         msg += "    " + zipcode + "    " + city + "    " + address + "\n";
         msg += "\n";

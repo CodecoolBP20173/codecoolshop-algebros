@@ -2,6 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.OrderJdbc;
+import com.codecool.shop.processes.MailProcess;
 import com.codecool.shop.util.NetworkUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet(urlPatterns = {"/payment"})
 public class Payment extends HttpServlet {
@@ -39,6 +41,10 @@ public class Payment extends HttpServlet {
             String payPalName = req.getParameter("userName");
             String creditName = req.getParameter("name");
             if (payPalName != null || creditName != null) {
+                String stringId = (String) session.getAttribute("userid");
+                int userIntId = Integer.parseInt(stringId);
+                HashMap userInfo = OrderJdbc.getUserInfo(userIntId);
+                MailProcess.send(userInfo);
                 resp.sendRedirect("/");
                 session.invalidate();
             }

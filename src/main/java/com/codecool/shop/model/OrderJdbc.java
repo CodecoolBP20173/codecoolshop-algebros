@@ -6,10 +6,12 @@ import com.codecool.shop.dao.implementation.jdbc.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.jdbc.SupplierDaoJdbc;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class OrderJdbc {
     private static ProductCategoryDaoJdbc productCategoryDataStoreJdbc = ProductCategoryDaoJdbc.getInstance();
@@ -172,10 +174,10 @@ public class OrderJdbc {
         return 0;
     }
 
-    public static void removeFromOrder(int userid) {
+    public static void removeFromOrder(int userId) {
         try (Connection dbConnection = JDBCUtils.getConnection()) {
             PreparedStatement preparedStatement = dbConnection.prepareStatement("DELETE FROM shoppingcart WHERE userid=?");
-            preparedStatement.setInt(1, userid);
+            preparedStatement.setInt(1, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,5 +200,25 @@ public class OrderJdbc {
             e.printStackTrace();
         }
         return totalPrice;
+    }
+
+    public static HashMap<String, String> getUserInfo(int userId) {
+        HashMap<String, String> userInfo = new HashMap<>();
+        try (Connection dbConnection = JDBCUtils.getConnection()) {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement("SELECT fullname,zip,city,address,email FROM users WHERE id=?;");
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            userInfo.put("name", resultSet.getString("fullname"));
+            userInfo.put("zip", resultSet.getString("zip"));
+            userInfo.put("city", resultSet.getString("city"));
+            userInfo.put("address", resultSet.getString("address"));
+            userInfo.put("email", resultSet.getString("email"));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userInfo;
     }
 }

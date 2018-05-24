@@ -27,7 +27,6 @@ public class PaymentProcess extends AbstractProcess {
             AdminLog cartLog = CheckoutProcess.getCartLog();
             cartLog.logStringToAdminLog(order.getId(), orderString);
             cartLog.logStringToAdminLog(order.getId(), buyerJsonArray.toJSONString());
-            MailProcess.send(order);
             cartLog.logStringToAdminLog(order.getId(), "Order with ID: " + order.getId() + " payment successful.");
         }
     }
